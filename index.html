@@ -1,0 +1,546 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>TechExplorer 🚀 — Technologie au Collège</title>
+<link href="https://fonts.googleapis.com/css2?family=Exo+2:wght@400;600;700;900&family=Nunito:wght@400;600;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --cyan: #00d4ff;
+    --cyan-dark: #0099cc;
+    --cyan-glow: #00d4ff44;
+    --blue-deep: #0a1628;
+    --blue-mid: #0d2240;
+    --blue-card: #0f2d52;
+    --blue-card2: #112e54;
+    --white: #f0f8ff;
+    --grey: #8ab4d4;
+    --accent-orange: #ff8c42;
+    --accent-green: #00e676;
+    --accent-purple: #b388ff;
+    --font-head: 'Exo 2', sans-serif;
+    --font-body: 'Nunito', sans-serif;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    font-family: var(--font-body);
+    background: var(--blue-deep);
+    color: var(--white);
+    min-height: 100vh;
+    overflow-x: hidden;
+  }
+
+  /* BACKGROUND ANIMATED GRID */
+  body::before {
+    content: '';
+    position: fixed;
+    inset: 0;
+    background-image:
+      linear-gradient(rgba(0,212,255,0.04) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(0,212,255,0.04) 1px, transparent 1px);
+    background-size: 40px 40px;
+    pointer-events: none;
+    z-index: 0;
+  }
+
+  /* STARS */
+  .stars {
+    position: fixed;
+    inset: 0;
+    pointer-events: none;
+    z-index: 0;
+  }
+  .star {
+    position: absolute;
+    width: 2px; height: 2px;
+    background: white;
+    border-radius: 50%;
+    animation: twinkle var(--d, 3s) infinite;
+    opacity: 0;
+  }
+  @keyframes twinkle {
+    0%, 100% { opacity: 0; }
+    50% { opacity: var(--o, 0.8); }
+  }
+
+  /* NAVBAR */
+  nav {
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    background: rgba(10,22,40,0.92);
+    backdrop-filter: blur(12px);
+    border-bottom: 1px solid rgba(0,212,255,0.2);
+    padding: 0 2rem;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    height: 64px;
+  }
+  .nav-logo {
+    font-family: var(--font-head);
+    font-weight: 900;
+    font-size: 1.4rem;
+    color: var(--cyan);
+    letter-spacing: 1px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    text-decoration: none;
+  }
+  .nav-logo span { color: var(--white); }
+  .nav-links {
+    display: flex;
+    gap: 2rem;
+    list-style: none;
+  }
+  .nav-links a {
+    color: var(--grey);
+    text-decoration: none;
+    font-weight: 600;
+    font-size: 0.9rem;
+    letter-spacing: 0.5px;
+    transition: color 0.2s;
+  }
+  .nav-links a:hover { color: var(--cyan); }
+  .nav-login {
+    background: transparent;
+    border: 1.5px solid var(--cyan);
+    color: var(--cyan);
+    padding: 6px 16px;
+    border-radius: 20px;
+    font-family: var(--font-body);
+    font-weight: 700;
+    font-size: 0.85rem;
+    cursor: pointer;
+    transition: all 0.2s;
+  }
+  .nav-login:hover {
+    background: var(--cyan);
+    color: var(--blue-deep);
+  }
+
+  /* HERO */
+  .hero {
+    position: relative;
+    z-index: 1;
+    text-align: center;
+    padding: 80px 2rem 60px;
+  }
+  .hero-badge {
+    display: inline-block;
+    background: rgba(0,212,255,0.12);
+    border: 1px solid rgba(0,212,255,0.3);
+    color: var(--cyan);
+    font-size: 0.8rem;
+    font-weight: 700;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    padding: 6px 16px;
+    border-radius: 20px;
+    margin-bottom: 24px;
+    animation: fadeDown 0.6s ease both;
+  }
+  .hero h1 {
+    font-family: var(--font-head);
+    font-weight: 900;
+    font-size: clamp(2.8rem, 7vw, 5rem);
+    line-height: 1.05;
+    margin-bottom: 20px;
+    animation: fadeDown 0.7s ease 0.1s both;
+  }
+  .hero h1 .highlight {
+    color: var(--cyan);
+    text-shadow: 0 0 40px var(--cyan-glow);
+  }
+  .hero p {
+    font-size: 1.1rem;
+    color: var(--grey);
+    max-width: 560px;
+    margin: 0 auto 40px;
+    line-height: 1.7;
+    animation: fadeDown 0.7s ease 0.2s both;
+  }
+  .hero-rocket {
+    font-size: 4rem;
+    display: block;
+    margin-bottom: 16px;
+    animation: float 3s ease-in-out infinite, fadeDown 0.6s ease both;
+  }
+  @keyframes float {
+    0%, 100% { transform: translateY(0); }
+    50% { transform: translateY(-12px); }
+  }
+  @keyframes fadeDown {
+    from { opacity: 0; transform: translateY(-20px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  /* NIVEAU CARDS */
+  .niveaux {
+    position: relative;
+    z-index: 1;
+    padding: 20px 2rem 80px;
+    max-width: 1100px;
+    margin: 0 auto;
+  }
+  .niveaux h2 {
+    font-family: var(--font-head);
+    font-weight: 700;
+    font-size: 1.1rem;
+    color: var(--grey);
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    text-align: center;
+    margin-bottom: 40px;
+  }
+  .cards-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 24px;
+  }
+  .card {
+    background: var(--blue-card);
+    border: 1px solid rgba(0,212,255,0.12);
+    border-radius: 20px;
+    padding: 32px 28px;
+    cursor: pointer;
+    transition: transform 0.25s, box-shadow 0.25s, border-color 0.25s;
+    position: relative;
+    overflow: hidden;
+    text-decoration: none;
+    display: block;
+    animation: fadeUp 0.6s ease both;
+  }
+  .card:nth-child(2) { animation-delay: 0.1s; }
+  .card:nth-child(3) { animation-delay: 0.2s; }
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(30px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+  .card::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0; right: 0;
+    height: 3px;
+    background: var(--card-accent, var(--cyan));
+    border-radius: 20px 20px 0 0;
+  }
+  .card:hover {
+    transform: translateY(-6px);
+    box-shadow: 0 16px 48px rgba(0,212,255,0.12);
+    border-color: rgba(0,212,255,0.3);
+  }
+  .card-dispo .card-locked { display: none; }
+  .card-coming .card-content { opacity: 0.5; }
+  .card-locked {
+    position: absolute;
+    top: 16px; right: 16px;
+    font-size: 1.2rem;
+  }
+  .card-emoji {
+    font-size: 2.8rem;
+    margin-bottom: 16px;
+    display: block;
+  }
+  .card-niveau {
+    font-family: var(--font-head);
+    font-weight: 900;
+    font-size: 1.8rem;
+    color: var(--white);
+    margin-bottom: 6px;
+  }
+  .card-niveau span {
+    color: var(--card-accent, var(--cyan));
+  }
+  .card-desc {
+    color: var(--grey);
+    font-size: 0.9rem;
+    line-height: 1.6;
+    margin-bottom: 20px;
+  }
+  .card-tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+  }
+  .tag {
+    background: rgba(0,212,255,0.1);
+    border: 1px solid rgba(0,212,255,0.2);
+    color: var(--cyan);
+    font-size: 0.72rem;
+    font-weight: 700;
+    padding: 3px 10px;
+    border-radius: 20px;
+    letter-spacing: 0.5px;
+  }
+  .tag.orange { background: rgba(255,140,66,0.1); border-color: rgba(255,140,66,0.3); color: var(--accent-orange); }
+  .tag.green { background: rgba(0,230,118,0.1); border-color: rgba(0,230,118,0.3); color: var(--accent-green); }
+  .tag.purple { background: rgba(179,136,255,0.1); border-color: rgba(179,136,255,0.3); color: var(--accent-purple); }
+  .card-btn {
+    margin-top: 24px;
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    background: var(--card-accent, var(--cyan));
+    color: var(--blue-deep);
+    font-family: var(--font-body);
+    font-weight: 800;
+    font-size: 0.88rem;
+    padding: 10px 20px;
+    border-radius: 30px;
+    border: none;
+    cursor: pointer;
+    transition: opacity 0.2s, transform 0.2s;
+    text-decoration: none;
+  }
+  .card-btn:hover { opacity: 0.85; transform: scale(1.03); }
+  .card-btn-ghost {
+    margin-top: 24px;
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    background: transparent;
+    color: var(--grey);
+    font-weight: 700;
+    font-size: 0.85rem;
+    padding: 10px 20px;
+    border-radius: 30px;
+    border: 1px solid rgba(255,255,255,0.1);
+  }
+
+
+
+  /* FOOTER */
+  footer {
+    position: relative;
+    z-index: 1;
+    text-align: center;
+    padding: 32px 2rem;
+    color: var(--grey);
+    font-size: 0.82rem;
+    border-top: 1px solid rgba(0,212,255,0.08);
+  }
+  footer strong { color: var(--cyan); }
+
+  /* MODAL LOGIN */
+  .modal-overlay {
+    display: none;
+    position: fixed;
+    inset: 0;
+    background: rgba(0,0,0,0.7);
+    backdrop-filter: blur(6px);
+    z-index: 200;
+    align-items: center;
+    justify-content: center;
+  }
+  .modal-overlay.open { display: flex; }
+  .modal {
+    background: var(--blue-mid);
+    border: 1px solid rgba(0,212,255,0.25);
+    border-radius: 20px;
+    padding: 40px 36px;
+    width: 100%;
+    max-width: 380px;
+    animation: fadeDown 0.3s ease both;
+  }
+  .modal h3 {
+    font-family: var(--font-head);
+    font-weight: 900;
+    font-size: 1.5rem;
+    margin-bottom: 6px;
+    color: var(--cyan);
+  }
+  .modal p { color: var(--grey); font-size: 0.9rem; margin-bottom: 24px; }
+  .modal label {
+    display: block;
+    font-size: 0.82rem;
+    font-weight: 700;
+    color: var(--grey);
+    letter-spacing: 0.5px;
+    margin-bottom: 6px;
+  }
+  .modal input, .modal select {
+    width: 100%;
+    background: rgba(0,212,255,0.06);
+    border: 1px solid rgba(0,212,255,0.2);
+    border-radius: 10px;
+    color: var(--white);
+    font-family: var(--font-body);
+    font-size: 0.95rem;
+    padding: 10px 14px;
+    margin-bottom: 16px;
+    outline: none;
+    transition: border-color 0.2s;
+  }
+  .modal input:focus, .modal select:focus { border-color: var(--cyan); }
+  .modal select option { background: var(--blue-mid); }
+  .modal-btn {
+    width: 100%;
+    background: var(--cyan);
+    color: var(--blue-deep);
+    font-family: var(--font-body);
+    font-weight: 800;
+    font-size: 1rem;
+    padding: 12px;
+    border-radius: 12px;
+    border: none;
+    cursor: pointer;
+    margin-top: 4px;
+    transition: opacity 0.2s;
+  }
+  .modal-btn:hover { opacity: 0.85; }
+  .modal-close {
+    float: right;
+    background: none;
+    border: none;
+    color: var(--grey);
+    font-size: 1.3rem;
+    cursor: pointer;
+    margin-top: -8px;
+  }
+
+  @media (max-width: 600px) {
+    .nav-links { display: none; }
+    .hero h1 { font-size: 2.4rem; }
+  }
+</style>
+</head>
+<body>
+
+<!-- STARS -->
+<div class="stars" id="stars"></div>
+
+<!-- NAVBAR -->
+<nav>
+  <a class="nav-logo" href="index.html">🚀 <span>Tech</span>Explorer</a>
+  <ul class="nav-links">
+    <li><a href="3eme.html">3ème</a></li>
+    <li><a href="#4eme">4ème</a></li>
+    <li><a href="#5eme">5ème</a></li>
+    <li><a href="guide.html">Guide d'utilisation</a></li>
+  </ul>
+  <button class="nav-login" onclick="openModal()">Connexion</button>
+</nav>
+
+<!-- HERO -->
+<section class="hero">
+  <span class="hero-rocket">🚀</span>
+  <div class="hero-badge">Collège · Cours de Technologie</div>
+  <h1>Explore la <span class="highlight">Techno</span><br>avant le cours !</h1>
+  <p>Vidéos, fiches, quiz et exercices pour préparer chaque séquence en classe inversée. Choisis ton niveau et lance-toi !</p>
+</section>
+
+<!-- NIVEAUX -->
+<section class="niveaux">
+  <h2>Choisir mon niveau</h2>
+  <div class="cards-grid">
+
+    <!-- 3ème -->
+    <a href="3eme.html" class="card card-dispo" style="--card-accent: #00d4ff;">
+      <span class="card-emoji">🎯</span>
+      <div class="card-content">
+        <div class="card-niveau"><span>3</span>ème</div>
+        <div class="card-desc">Projets, stage, préparation au DNB. La dernière année avant le lycée !</div>
+        <div class="card-tags">
+          <span class="tag">Séquences</span>
+          <span class="tag orange">Rapport de stage</span>
+          <span class="tag green">DNB</span>
+          <span class="tag">Quiz</span>
+        </div>
+        <span class="card-btn">Accéder →</span>
+      </div>
+    </a>
+
+    <!-- 4ème -->
+    <div class="card card-coming" id="4eme" style="--card-accent: #ff8c42;">
+      <span class="card-locked">🔒</span>
+      <span class="card-emoji">⚙️</span>
+      <div class="card-content">
+        <div class="card-niveau"><span style="color:var(--accent-orange)">4</span>ème</div>
+        <div class="card-desc">Systèmes techniques, programmation, innovation. En cours de construction...</div>
+        <div class="card-tags">
+          <span class="tag orange">Bientôt</span>
+          <span class="tag">Séquences</span>
+          <span class="tag">Exercices</span>
+        </div>
+        <span class="card-btn-ghost">⏳ En construction</span>
+      </div>
+    </div>
+
+    <!-- 5ème -->
+    <div class="card card-coming" id="5eme" style="--card-accent: #b388ff;">
+      <span class="card-locked">🔒</span>
+      <span class="card-emoji">🔬</span>
+      <div class="card-content">
+        <div class="card-niveau"><span style="color:var(--accent-purple)">5</span>ème</div>
+        <div class="card-desc">Matériaux, énergie, information et objet technique. Bientôt disponible !</div>
+        <div class="card-tags">
+          <span class="tag purple">Bientôt</span>
+          <span class="tag">Séquences</span>
+          <span class="tag">Fiches</span>
+        </div>
+        <span class="card-btn-ghost">⏳ En construction</span>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <p>🚀 <strong>TechExplorer</strong> — Cours de Technologie · Collège Louis Pasteur, Graulhet</p>
+  <p style="margin-top:8px; font-size:0.75rem;">Site de classe inversée · Tous niveaux · 2025–2026</p>
+</footer>
+
+<!-- MODAL LOGIN -->
+<div class="modal-overlay" id="modalOverlay" onclick="closeModalOutside(event)">
+  <div class="modal">
+    <button class="modal-close" onclick="closeModal()">✕</button>
+    <h3>Connexion</h3>
+    <p>Accède à ton espace de classe</p>
+    <label>Ma classe</label>
+    <select>
+      <option value="">— Choisir ma classe —</option>
+      <option>3ème A</option>
+      <option>3ème B</option>
+      <option>3ème C</option>
+      <option>4ème A</option>
+      <option>4ème B</option>
+      <option>5ème A</option>
+      <option>5ème B</option>
+    </select>
+    <label>Identifiant</label>
+    <input type="text" placeholder="Ton identifiant">
+    <label>Mot de passe</label>
+    <input type="password" placeholder="••••••••">
+    <button class="modal-btn">Entrer dans mon espace 🚀</button>
+  </div>
+</div>
+
+<script>
+  // Stars
+  const starsEl = document.getElementById('stars');
+  for (let i = 0; i < 80; i++) {
+    const s = document.createElement('div');
+    s.className = 'star';
+    s.style.cssText = `
+      left: ${Math.random()*100}%;
+      top: ${Math.random()*100}%;
+      --d: ${2 + Math.random()*4}s;
+      --o: ${0.3 + Math.random()*0.7};
+      animation-delay: ${Math.random()*4}s;
+    `;
+    starsEl.appendChild(s);
+  }
+
+  // Modal
+  function openModal() { document.getElementById('modalOverlay').classList.add('open'); }
+  function closeModal() { document.getElementById('modalOverlay').classList.remove('open'); }
+  function closeModalOutside(e) { if (e.target === document.getElementById('modalOverlay')) closeModal(); }
+</script>
+</body>
+</html>
