@@ -3,544 +3,569 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>TechExplorer 🚀 — Technologie au Collège</title>
+<title>TechExplorer 🚀 — 3ème</title>
 <link href="https://fonts.googleapis.com/css2?family=Exo+2:wght@400;600;700;900&family=Nunito:wght@400;600;700&display=swap" rel="stylesheet">
 <style>
   :root {
-    --cyan: #00d4ff;
-    --cyan-dark: #0099cc;
-    --cyan-glow: #00d4ff44;
-    --blue-deep: #0a1628;
-    --blue-mid: #0d2240;
-    --blue-card: #0f2d52;
-    --blue-card2: #112e54;
-    --white: #f0f8ff;
-    --grey: #8ab4d4;
-    --accent-orange: #ff8c42;
-    --accent-green: #00e676;
-    --accent-purple: #b388ff;
-    --font-head: 'Exo 2', sans-serif;
-    --font-body: 'Nunito', sans-serif;
+    --cyan:#00d4ff;--cyan-glow:#00d4ff44;
+    --blue-deep:#0a1628;--blue-mid:#0d2240;--blue-card:#0f2d52;
+    --white:#f0f8ff;--grey:#8ab4d4;
+    --orange:#ff8c42;--green:#00e676;--yellow:#ffd740;--purple:#b388ff;--red:#ff5252;
+    --font-head:'Exo 2',sans-serif;--font-body:'Nunito',sans-serif;
   }
+  *{margin:0;padding:0;box-sizing:border-box;}
+  body{font-family:var(--font-body);background:var(--blue-deep);color:var(--white);min-height:100vh;}
+  body::before{content:'';position:fixed;inset:0;background-image:linear-gradient(rgba(0,212,255,0.03) 1px,transparent 1px),linear-gradient(90deg,rgba(0,212,255,0.03) 1px,transparent 1px);background-size:40px 40px;pointer-events:none;z-index:0;}
 
-  * { margin: 0; padding: 0; box-sizing: border-box; }
+  nav{position:sticky;top:0;z-index:100;background:rgba(10,22,40,0.95);backdrop-filter:blur(12px);border-bottom:1px solid rgba(0,212,255,0.2);padding:0 2rem;display:flex;align-items:center;justify-content:space-between;height:64px;}
+  .nav-logo{font-family:var(--font-head);font-weight:900;font-size:1.3rem;color:var(--cyan);text-decoration:none;display:flex;align-items:center;gap:8px;}
+  .nav-logo span{color:var(--white);}
+  .nav-back{color:var(--grey);text-decoration:none;font-weight:600;font-size:0.9rem;transition:color 0.2s;display:flex;align-items:center;gap:6px;}
+  .nav-back:hover{color:var(--cyan);}
+  .nav-niveau{font-family:var(--font-head);font-weight:900;font-size:1rem;color:var(--cyan);}
 
-  body {
-    font-family: var(--font-body);
-    background: var(--blue-deep);
-    color: var(--white);
-    min-height: 100vh;
-    overflow-x: hidden;
-  }
+  .niveau-header{position:relative;z-index:1;padding:40px 2rem 28px;max-width:1100px;margin:0 auto;display:flex;align-items:center;gap:24px;flex-wrap:wrap;}
+  .niveau-badge{font-family:var(--font-head);font-weight:900;font-size:3.5rem;color:var(--cyan);text-shadow:0 0 40px var(--cyan-glow);line-height:1;}
+  .niveau-info h1{font-family:var(--font-head);font-weight:900;font-size:1.8rem;margin-bottom:4px;}
+  .niveau-info p{color:var(--grey);font-size:0.9rem;}
+  .niveau-stats{margin-left:auto;display:flex;gap:16px;flex-wrap:wrap;}
+  .stat-box{background:var(--blue-card);border:1px solid rgba(0,212,255,0.12);border-radius:14px;padding:12px 18px;text-align:center;min-width:80px;}
+  .stat-val{font-family:var(--font-head);font-weight:900;font-size:1.5rem;color:var(--cyan);}
+  .stat-label{font-size:0.7rem;color:var(--grey);margin-top:2px;line-height:1.3;}
 
-  /* BACKGROUND ANIMATED GRID */
-  body::before {
-    content: '';
-    position: fixed;
-    inset: 0;
-    background-image:
-      linear-gradient(rgba(0,212,255,0.04) 1px, transparent 1px),
-      linear-gradient(90deg, rgba(0,212,255,0.04) 1px, transparent 1px);
-    background-size: 40px 40px;
-    pointer-events: none;
-    z-index: 0;
-  }
+  .progress-section{position:relative;z-index:1;max-width:1100px;margin:0 auto;padding:0 2rem 28px;}
+  .progress-label{display:flex;justify-content:space-between;font-size:0.8rem;color:var(--grey);margin-bottom:6px;font-weight:600;}
+  .progress-bar{background:rgba(0,212,255,0.1);border-radius:20px;height:8px;overflow:hidden;}
+  .progress-fill{height:100%;background:linear-gradient(90deg,var(--cyan),var(--green));border-radius:20px;width:0%;transition:width 1s ease;}
 
-  /* STARS */
-  .stars {
-    position: fixed;
-    inset: 0;
-    pointer-events: none;
-    z-index: 0;
-  }
-  .star {
-    position: absolute;
-    width: 2px; height: 2px;
-    background: white;
-    border-radius: 50%;
-    animation: twinkle var(--d, 3s) infinite;
-    opacity: 0;
-  }
-  @keyframes twinkle {
-    0%, 100% { opacity: 0; }
-    50% { opacity: var(--o, 0.8); }
-  }
+  .tabs{position:relative;z-index:1;max-width:1100px;margin:0 auto;padding:0 2rem 24px;display:flex;gap:8px;flex-wrap:wrap;}
+  .tab-btn{background:transparent;border:1.5px solid rgba(0,212,255,0.2);color:var(--grey);font-family:var(--font-body);font-weight:700;font-size:0.83rem;padding:7px 16px;border-radius:20px;cursor:pointer;transition:all 0.2s;}
+  .tab-btn.active,.tab-btn:hover{background:var(--cyan);color:var(--blue-deep);border-color:var(--cyan);}
 
-  /* NAVBAR */
-  nav {
-    position: sticky;
-    top: 0;
-    z-index: 100;
-    background: rgba(10,22,40,0.92);
-    backdrop-filter: blur(12px);
-    border-bottom: 1px solid rgba(0,212,255,0.2);
-    padding: 0 2rem;
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    height: 64px;
-  }
-  .nav-logo {
-    font-family: var(--font-head);
-    font-weight: 900;
-    font-size: 1.4rem;
-    color: var(--cyan);
-    letter-spacing: 1px;
-    display: flex;
-    align-items: center;
-    gap: 8px;
-    text-decoration: none;
-  }
-  .nav-logo span { color: var(--white); }
-  .nav-links {
-    display: flex;
-    gap: 2rem;
-    list-style: none;
-  }
-  .nav-links a {
-    color: var(--grey);
-    text-decoration: none;
-    font-weight: 600;
-    font-size: 0.9rem;
-    letter-spacing: 0.5px;
-    transition: color 0.2s;
-  }
-  .nav-links a:hover { color: var(--cyan); }
-  .nav-login {
-    background: transparent;
-    border: 1.5px solid var(--cyan);
-    color: var(--cyan);
-    padding: 6px 16px;
-    border-radius: 20px;
-    font-family: var(--font-body);
-    font-weight: 700;
-    font-size: 0.85rem;
-    cursor: pointer;
-    transition: all 0.2s;
-  }
-  .nav-login:hover {
-    background: var(--cyan);
-    color: var(--blue-deep);
-  }
+  .sequences{position:relative;z-index:1;max-width:1100px;margin:0 auto;padding:0 2rem 50px;}
+  .seq-title{font-family:var(--font-head);font-weight:700;font-size:0.8rem;color:var(--grey);letter-spacing:2px;text-transform:uppercase;margin-bottom:14px;}
 
-  /* HERO */
-  .hero {
-    position: relative;
-    z-index: 1;
-    text-align: center;
-    padding: 80px 2rem 60px;
-  }
-  .hero-badge {
-    display: inline-block;
-    background: rgba(0,212,255,0.12);
-    border: 1px solid rgba(0,212,255,0.3);
-    color: var(--cyan);
-    font-size: 0.8rem;
-    font-weight: 700;
-    letter-spacing: 2px;
-    text-transform: uppercase;
-    padding: 6px 16px;
-    border-radius: 20px;
-    margin-bottom: 24px;
-    animation: fadeDown 0.6s ease both;
-  }
-  .hero h1 {
-    font-family: var(--font-head);
-    font-weight: 900;
-    font-size: clamp(2.8rem, 7vw, 5rem);
-    line-height: 1.05;
-    margin-bottom: 20px;
-    animation: fadeDown 0.7s ease 0.1s both;
-  }
-  .hero h1 .highlight {
-    color: var(--cyan);
-    text-shadow: 0 0 40px var(--cyan-glow);
-  }
-  .hero p {
-    font-size: 1.1rem;
-    color: var(--grey);
-    max-width: 560px;
-    margin: 0 auto 40px;
-    line-height: 1.7;
-    animation: fadeDown 0.7s ease 0.2s both;
-  }
-  .hero-rocket {
-    font-size: 4rem;
-    display: block;
-    margin-bottom: 16px;
-    animation: float 3s ease-in-out infinite, fadeDown 0.6s ease both;
-  }
-  @keyframes float {
-    0%, 100% { transform: translateY(0); }
-    50% { transform: translateY(-12px); }
-  }
-  @keyframes fadeDown {
-    from { opacity: 0; transform: translateY(-20px); }
-    to { opacity: 1; transform: translateY(0); }
-  }
+  .seq-card{background:var(--blue-card);border:1px solid rgba(0,212,255,0.1);border-radius:18px;margin-bottom:10px;overflow:hidden;transition:border-color 0.3s,transform 0.3s;}
+  .seq-card.done{border-color:rgba(0,230,118,0.3);}
+  .seq-card.locked{opacity:0.6;}
+  .seq-card.active-seq{border-color:rgba(255,215,64,0.3);}
 
-  /* NIVEAU CARDS */
-  .niveaux {
-    position: relative;
-    z-index: 1;
-    padding: 20px 2rem 80px;
-    max-width: 1100px;
-    margin: 0 auto;
-  }
-  .niveaux h2 {
-    font-family: var(--font-head);
-    font-weight: 700;
-    font-size: 1.1rem;
-    color: var(--grey);
-    letter-spacing: 3px;
-    text-transform: uppercase;
-    text-align: center;
-    margin-bottom: 40px;
-  }
-  .cards-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-    gap: 24px;
-  }
-  .card {
-    background: var(--blue-card);
-    border: 1px solid rgba(0,212,255,0.12);
-    border-radius: 20px;
-    padding: 32px 28px;
-    cursor: pointer;
-    transition: transform 0.25s, box-shadow 0.25s, border-color 0.25s;
-    position: relative;
-    overflow: hidden;
-    text-decoration: none;
-    display: block;
-    animation: fadeUp 0.6s ease both;
-  }
-  .card:nth-child(2) { animation-delay: 0.1s; }
-  .card:nth-child(3) { animation-delay: 0.2s; }
-  @keyframes fadeUp {
-    from { opacity: 0; transform: translateY(30px); }
-    to { opacity: 1; transform: translateY(0); }
-  }
-  .card::before {
-    content: '';
-    position: absolute;
-    top: 0; left: 0; right: 0;
-    height: 3px;
-    background: var(--card-accent, var(--cyan));
-    border-radius: 20px 20px 0 0;
-  }
-  .card:hover {
-    transform: translateY(-6px);
-    box-shadow: 0 16px 48px rgba(0,212,255,0.12);
-    border-color: rgba(0,212,255,0.3);
-  }
-  .card-dispo .card-locked { display: none; }
-  .card-coming .card-content { opacity: 0.5; }
-  .card-locked {
-    position: absolute;
-    top: 16px; right: 16px;
-    font-size: 1.2rem;
-  }
-  .card-emoji {
-    font-size: 2.8rem;
-    margin-bottom: 16px;
-    display: block;
-  }
-  .card-niveau {
-    font-family: var(--font-head);
-    font-weight: 900;
-    font-size: 1.8rem;
-    color: var(--white);
-    margin-bottom: 6px;
-  }
-  .card-niveau span {
-    color: var(--card-accent, var(--cyan));
-  }
-  .card-desc {
-    color: var(--grey);
-    font-size: 0.9rem;
-    line-height: 1.6;
-    margin-bottom: 20px;
-  }
-  .card-tags {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 6px;
-  }
-  .tag {
-    background: rgba(0,212,255,0.1);
-    border: 1px solid rgba(0,212,255,0.2);
-    color: var(--cyan);
-    font-size: 0.72rem;
-    font-weight: 700;
-    padding: 3px 10px;
-    border-radius: 20px;
-    letter-spacing: 0.5px;
-  }
-  .tag.orange { background: rgba(255,140,66,0.1); border-color: rgba(255,140,66,0.3); color: var(--accent-orange); }
-  .tag.green { background: rgba(0,230,118,0.1); border-color: rgba(0,230,118,0.3); color: var(--accent-green); }
-  .tag.purple { background: rgba(179,136,255,0.1); border-color: rgba(179,136,255,0.3); color: var(--accent-purple); }
-  .card-btn {
-    margin-top: 24px;
-    display: inline-flex;
-    align-items: center;
-    gap: 8px;
-    background: var(--card-accent, var(--cyan));
-    color: var(--blue-deep);
-    font-family: var(--font-body);
-    font-weight: 800;
-    font-size: 0.88rem;
-    padding: 10px 20px;
-    border-radius: 30px;
-    border: none;
-    cursor: pointer;
-    transition: opacity 0.2s, transform 0.2s;
-    text-decoration: none;
-  }
-  .card-btn:hover { opacity: 0.85; transform: scale(1.03); }
-  .card-btn-ghost {
-    margin-top: 24px;
-    display: inline-flex;
-    align-items: center;
-    gap: 8px;
-    background: transparent;
-    color: var(--grey);
-    font-weight: 700;
-    font-size: 0.85rem;
-    padding: 10px 20px;
-    border-radius: 30px;
-    border: 1px solid rgba(255,255,255,0.1);
-  }
+  .seq-header{padding:16px 20px;display:flex;align-items:center;gap:14px;}
+  .seq-header.clickable{cursor:pointer;}
+  .seq-header.clickable:hover{background:rgba(0,212,255,0.04);}
 
+  .seq-num{width:40px;height:40px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-family:var(--font-head);font-weight:900;font-size:1rem;flex-shrink:0;background:rgba(0,212,255,0.12);border:2px solid rgba(0,212,255,0.3);color:var(--cyan);}
+  .seq-card.done .seq-num{background:rgba(0,230,118,0.15);border-color:var(--green);color:var(--green);}
+  .seq-card.locked .seq-num{background:rgba(255,255,255,0.04);border-color:rgba(255,255,255,0.1);color:var(--grey);}
+  .seq-card.active-seq .seq-num{background:rgba(255,215,64,0.12);border-color:rgba(255,215,64,0.4);color:var(--yellow);}
 
+  .seq-info{flex:1;min-width:0;}
+  .seq-name{font-family:var(--font-head);font-weight:700;font-size:1rem;margin-bottom:3px;}
+  .seq-meta{font-size:0.77rem;color:var(--grey);}
+  .seq-chips{display:flex;gap:5px;flex-wrap:wrap;margin-top:5px;}
+  .chip{font-size:0.67rem;font-weight:700;padding:2px 8px;border-radius:10px;background:rgba(0,212,255,0.1);color:var(--cyan);border:1px solid rgba(0,212,255,0.2);}
+  .chip.yellow{background:rgba(255,215,64,0.1);color:var(--yellow);border-color:rgba(255,215,64,0.3);}
+  .chip.green{background:rgba(0,230,118,0.1);color:var(--green);border-color:rgba(0,230,118,0.3);}
+  .chip.orange{background:rgba(255,140,66,0.1);color:var(--orange);border-color:rgba(255,140,66,0.3);}
+  .chip.grey{background:rgba(255,255,255,0.05);color:var(--grey);border-color:rgba(255,255,255,0.1);}
 
-  /* FOOTER */
-  footer {
-    position: relative;
-    z-index: 1;
-    text-align: center;
-    padding: 32px 2rem;
-    color: var(--grey);
-    font-size: 0.82rem;
-    border-top: 1px solid rgba(0,212,255,0.08);
-  }
-  footer strong { color: var(--cyan); }
+  .seq-right{display:flex;align-items:center;gap:10px;flex-shrink:0;}
+  .seq-arrow{color:var(--grey);font-size:0.85rem;transition:transform 0.3s;}
+  .seq-card.open .seq-arrow{transform:rotate(90deg);}
 
-  /* MODAL LOGIN */
-  .modal-overlay {
-    display: none;
-    position: fixed;
-    inset: 0;
-    background: rgba(0,0,0,0.7);
-    backdrop-filter: blur(6px);
-    z-index: 200;
-    align-items: center;
-    justify-content: center;
-  }
-  .modal-overlay.open { display: flex; }
-  .modal {
-    background: var(--blue-mid);
-    border: 1px solid rgba(0,212,255,0.25);
-    border-radius: 20px;
-    padding: 40px 36px;
-    width: 100%;
-    max-width: 380px;
-    animation: fadeDown 0.3s ease both;
-  }
-  .modal h3 {
-    font-family: var(--font-head);
-    font-weight: 900;
-    font-size: 1.5rem;
-    margin-bottom: 6px;
-    color: var(--cyan);
-  }
-  .modal p { color: var(--grey); font-size: 0.9rem; margin-bottom: 24px; }
-  .modal label {
-    display: block;
-    font-size: 0.82rem;
-    font-weight: 700;
-    color: var(--grey);
-    letter-spacing: 0.5px;
-    margin-bottom: 6px;
-  }
-  .modal input, .modal select {
-    width: 100%;
-    background: rgba(0,212,255,0.06);
-    border: 1px solid rgba(0,212,255,0.2);
-    border-radius: 10px;
-    color: var(--white);
-    font-family: var(--font-body);
-    font-size: 0.95rem;
-    padding: 10px 14px;
-    margin-bottom: 16px;
-    outline: none;
-    transition: border-color 0.2s;
-  }
-  .modal input:focus, .modal select:focus { border-color: var(--cyan); }
-  .modal select option { background: var(--blue-mid); }
-  .modal-btn {
-    width: 100%;
-    background: var(--cyan);
-    color: var(--blue-deep);
-    font-family: var(--font-body);
-    font-weight: 800;
-    font-size: 1rem;
-    padding: 12px;
-    border-radius: 12px;
-    border: none;
-    cursor: pointer;
-    margin-top: 4px;
-    transition: opacity 0.2s;
-  }
-  .modal-btn:hover { opacity: 0.85; }
-  .modal-close {
-    float: right;
-    background: none;
-    border: none;
-    color: var(--grey);
-    font-size: 1.3rem;
-    cursor: pointer;
-    margin-top: -8px;
-  }
+  .unlock-btn{display:inline-flex;align-items:center;gap:6px;background:rgba(255,215,64,0.1);border:1.5px solid rgba(255,215,64,0.35);color:var(--yellow);font-family:var(--font-body);font-weight:700;font-size:0.77rem;padding:6px 13px;border-radius:20px;cursor:pointer;transition:all 0.2s;white-space:nowrap;}
+  .unlock-btn:hover{background:rgba(255,215,64,0.2);}
 
-  @media (max-width: 600px) {
-    .nav-links { display: none; }
-    .hero h1 { font-size: 2.4rem; }
-  }
+  .seq-body{display:none;padding:4px 20px 18px;border-top:1px solid rgba(0,212,255,0.08);}
+  .seq-card.open .seq-body{display:block;}
+
+  .resources-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(130px,1fr));gap:10px;margin-top:14px;}
+  .resource-btn{background:rgba(0,212,255,0.06);border:1px solid rgba(0,212,255,0.14);border-radius:12px;padding:13px 10px;text-align:center;cursor:pointer;transition:all 0.2s;text-decoration:none;display:block;}
+  .resource-btn:hover{background:rgba(0,212,255,0.12);border-color:var(--cyan);}
+  .resource-btn.highlight{border-color:rgba(0,212,255,0.5);background:rgba(0,212,255,0.1);}
+  .resource-icon{font-size:1.4rem;margin-bottom:5px;}
+  .resource-label{font-size:0.74rem;font-weight:700;color:var(--white);}
+  .resource-sub{font-size:0.67rem;color:var(--grey);margin-top:2px;}
+
+  /* ESPACES DÉDIÉS */
+  .special-section{position:relative;z-index:1;max-width:1100px;margin:0 auto;padding:0 2rem 60px;}
+  .special-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:16px;}
+  .special-card{background:var(--blue-card);border:1px solid rgba(255,140,66,0.2);border-radius:16px;padding:24px 20px;position:relative;overflow:hidden;}
+  .special-card::before{content:'';position:absolute;top:0;left:0;right:0;height:3px;background:var(--orange);}
+  .special-card.dnb{border-color:rgba(0,230,118,0.2);}
+  .special-card.dnb::before{background:var(--green);}
+  .special-card h3{font-family:var(--font-head);font-weight:800;font-size:1rem;margin-bottom:6px;}
+  .special-card p{color:var(--grey);font-size:0.84rem;line-height:1.6;margin-bottom:16px;}
+  .special-btn{display:inline-flex;align-items:center;gap:6px;background:var(--orange);color:#fff;font-weight:800;font-size:0.83rem;padding:8px 16px;border-radius:20px;border:none;cursor:pointer;text-decoration:none;transition:opacity 0.2s;}
+  .special-btn:hover{opacity:0.85;}
+  .special-btn.green{background:var(--green);color:var(--blue-deep);}
+
+  /* MODALES */
+  .modal-overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,0.78);backdrop-filter:blur(8px);z-index:200;align-items:center;justify-content:center;}
+  .modal-overlay.open{display:flex;}
+  .modal{background:var(--blue-mid);border:1px solid rgba(0,212,255,0.25);border-radius:20px;padding:32px 28px;width:100%;max-width:390px;animation:popIn 0.3s ease both;}
+  @keyframes popIn{from{opacity:0;transform:scale(0.92) translateY(-14px)}to{opacity:1;transform:scale(1) translateY(0)}}
+
+  /* modale code générique */
+  .modal-title{font-family:var(--font-head);font-weight:900;font-size:1.3rem;margin-bottom:4px;color:var(--yellow);}
+  .modal-sub{font-size:0.82rem;color:var(--grey);margin-bottom:20px;}
+  .modal label{display:block;font-size:0.8rem;font-weight:700;color:var(--grey);margin-bottom:8px;}
+  .code-input{width:100%;background:rgba(255,215,64,0.07);border:2px solid rgba(255,215,64,0.3);border-radius:12px;color:var(--white);font-family:var(--font-head);font-weight:900;font-size:1.5rem;letter-spacing:8px;text-align:center;padding:12px;outline:none;transition:border-color 0.2s;margin-bottom:8px;}
+  .code-input:focus{border-color:var(--yellow);}
+  .code-input.error{border-color:var(--red);animation:shake 0.4s ease;}
+  .code-input.success{border-color:var(--green);}
+  @keyframes shake{0%,100%{transform:translateX(0)}25%{transform:translateX(-8px)}75%{transform:translateX(8px)}}
+  .code-error{font-size:0.78rem;min-height:18px;margin-bottom:8px;}
+  .code-hint{font-size:0.74rem;color:var(--grey);margin-bottom:18px;}
+  .modal-btns{display:flex;gap:10px;}
+  .btn-primary{flex:1;background:var(--yellow);color:var(--blue-deep);font-family:var(--font-body);font-weight:800;font-size:0.9rem;padding:11px;border-radius:10px;border:none;cursor:pointer;transition:opacity 0.2s;}
+  .btn-primary:hover{opacity:0.85;}
+  .btn-primary.orange{background:var(--orange);color:#fff;}
+  .btn-primary.green{background:var(--green);color:var(--blue-deep);}
+  .btn-cancel{background:transparent;border:1px solid rgba(255,255,255,0.13);color:var(--grey);border-radius:10px;padding:11px 16px;cursor:pointer;font-size:0.88rem;font-family:var(--font-body);}
+
+  /* modale upload */
+  .modal-upload .modal-title{color:var(--orange);}
+  .modal-upload input,.modal-upload select{width:100%;background:rgba(0,212,255,0.05);border:1px solid rgba(0,212,255,0.18);border-radius:10px;color:var(--white);font-family:var(--font-body);font-size:0.88rem;padding:9px 11px;margin-bottom:10px;outline:none;}
+  .modal-upload select option{background:var(--blue-mid);}
+  .upload-zone{border:2px dashed rgba(0,212,255,0.28);border-radius:12px;padding:22px;text-align:center;margin-bottom:12px;cursor:pointer;transition:all 0.2s;}
+  .upload-zone:hover{border-color:var(--cyan);background:rgba(0,212,255,0.04);}
+  .upload-icon{font-size:1.7rem;margin-bottom:5px;}
+  .upload-zone p{font-size:0.78rem;color:var(--grey);}
+  .upload-note{font-size:0.74rem;color:rgba(255,140,66,0.8);margin-bottom:12px;text-align:center;}
+  .btn-upload{flex:1;background:var(--orange);color:#fff;font-family:var(--font-body);font-weight:800;font-size:0.9rem;padding:11px;border-radius:10px;border:none;cursor:pointer;transition:opacity 0.2s;}
+  .btn-upload:hover{opacity:0.85;}
+
+  /* modale DNB */
+  .dnb-buttons{display:flex;flex-direction:column;gap:10px;margin-top:4px;}
+  .dnb-btn{display:flex;align-items:center;gap:12px;background:rgba(0,212,255,0.06);border:1px solid rgba(0,212,255,0.15);border-radius:12px;padding:14px 16px;cursor:pointer;transition:all 0.2s;text-align:left;}
+  .dnb-btn:hover{background:rgba(0,212,255,0.12);border-color:var(--cyan);}
+  .dnb-btn.locked-dnb{opacity:0.55;cursor:default;}
+  .dnb-btn.locked-dnb:hover{background:rgba(0,212,255,0.06);border-color:rgba(0,212,255,0.15);}
+  .dnb-btn-icon{font-size:1.5rem;flex-shrink:0;}
+  .dnb-btn-info .dnb-btn-title{font-family:var(--font-head);font-weight:700;font-size:0.92rem;color:var(--white);}
+  .dnb-btn-info .dnb-btn-sub{font-size:0.74rem;color:var(--grey);margin-top:2px;}
+  .dnb-lock{margin-left:auto;font-size:0.85rem;color:var(--grey);}
+
+  footer{position:relative;z-index:1;text-align:center;padding:24px 2rem;color:var(--grey);font-size:0.8rem;border-top:1px solid rgba(0,212,255,0.08);}
+  footer strong{color:var(--cyan);}
+
+  @media(max-width:600px){.niveau-stats{width:100%}.resources-grid{grid-template-columns:1fr 1fr}.unlock-btn{font-size:0.7rem;padding:5px 10px}}
 </style>
 </head>
 <body>
 
-<!-- STARS -->
-<div class="stars" id="stars"></div>
-
-<!-- NAVBAR -->
 <nav>
   <a class="nav-logo" href="index.html">🚀 <span>Tech</span>Explorer</a>
-  <ul class="nav-links">
-    <li><a href="3eme.html">3ème</a></li>
-    <li><a href="#4eme">4ème</a></li>
-    <li><a href="#5eme">5ème</a></li>
-    <li><a href="guide.html">Guide d'utilisation</a></li>
-  </ul>
-  <button class="nav-login" onclick="openModal()">Connexion</button>
+  <span class="nav-niveau">3ème</span>
+  <a class="nav-back" href="index.html">← Accueil</a>
 </nav>
 
-<!-- HERO -->
-<section class="hero">
-  <span class="hero-rocket">🚀</span>
-  <div class="hero-badge">Collège · Cours de Technologie</div>
-  <h1>Explore la <span class="highlight">Techno</span><br>avant le cours !</h1>
-  <p>Vidéos, fiches, quiz et exercices pour préparer chaque séquence en classe inversée. Choisis ton niveau et lance-toi !</p>
-</section>
+<div class="niveau-header">
+  <div class="niveau-badge">3ème</div>
+  <div class="niveau-info">
+    <h1>Technologie — <span style="color:var(--cyan)">3ème</span></h1>
+    <p>Prépare chaque séquence avant le cours · Classe inversée 🎯</p>
+  </div>
+  <div class="niveau-stats">
+    <div class="stat-box"><div class="stat-val" id="statDone">1</div><div class="stat-label">Séquences<br>terminées</div></div>
+    <div class="stat-box"><div class="stat-val">8</div><div class="stat-label">Total<br>année</div></div>
+    <div class="stat-box"><div class="stat-val" id="statPct" style="color:var(--green)">12%</div><div class="stat-label">Progression</div></div>
+  </div>
+</div>
 
-<!-- NIVEAUX -->
-<section class="niveaux">
-  <h2>Choisir mon niveau</h2>
-  <div class="cards-grid">
+<div class="progress-section">
+  <div class="progress-label"><span>🚀 Progression annuelle</span><span id="pctLabel">1 / 8 séquences</span></div>
+  <div class="progress-bar"><div class="progress-fill" id="progressFill"></div></div>
+</div>
 
-    <!-- 3ème -->
-    <a href="3eme.html" class="card card-dispo" style="--card-accent: #00d4ff;">
-      <span class="card-emoji">🎯</span>
-      <div class="card-content">
-        <div class="card-niveau"><span>3</span>ème</div>
-        <div class="card-desc">Projets, stage, préparation au DNB. La dernière année avant le lycée !</div>
-        <div class="card-tags">
-          <span class="tag">Séquences</span>
-          <span class="tag orange">Rapport de stage</span>
-          <span class="tag green">DNB</span>
-          <span class="tag">Quiz</span>
-        </div>
-        <span class="card-btn">Accéder →</span>
+<div class="tabs">
+  <button class="tab-btn active" onclick="setTab('all',this)">Toutes</button>
+  <button class="tab-btn" onclick="setTab('todo',this)">À faire</button>
+  <button class="tab-btn" onclick="setTab('done',this)">Terminées ✅</button>
+</div>
+
+<div class="sequences">
+  <div class="seq-title">Parcours de l'année</div>
+
+  <!-- SEQ 1 — TERMINÉE -->
+  <div class="seq-card done" data-status="done" data-seq="1">
+    <div class="seq-header clickable" onclick="toggleSeq(this)">
+      <div class="seq-num">✓</div>
+      <div class="seq-info">
+        <div class="seq-name">Séquence 1 — Le monde technique</div>
+        <div class="seq-meta">Besoins, fonctions, objets techniques · 3 semaines</div>
+        <div class="seq-chips"><span class="chip green">✅ Terminée</span></div>
       </div>
-    </a>
-
-    <!-- 4ème -->
-    <div class="card card-coming" id="4eme" style="--card-accent: #ff8c42;">
-      <span class="card-locked">🔒</span>
-      <span class="card-emoji">⚙️</span>
-      <div class="card-content">
-        <div class="card-niveau"><span style="color:var(--accent-orange)">4</span>ème</div>
-        <div class="card-desc">Systèmes techniques, programmation, innovation. En cours de construction...</div>
-        <div class="card-tags">
-          <span class="tag orange">Bientôt</span>
-          <span class="tag">Séquences</span>
-          <span class="tag">Exercices</span>
-        </div>
-        <span class="card-btn-ghost">⏳ En construction</span>
+      <div class="seq-right"><span class="seq-arrow">▶</span></div>
+    </div>
+    <div class="seq-body">
+      <div class="resources-grid">
+        <a href="#" class="resource-btn"><div class="resource-icon">🎬</div><div class="resource-label">Vidéo intro</div><div class="resource-sub">Déjà vue ✓</div></a>
+        <a href="#" class="resource-btn"><div class="resource-icon">📋</div><div class="resource-label">Fiche cours</div><div class="resource-sub">Télécharger PDF</div></a>
+        <a href="#" class="resource-btn"><div class="resource-icon">⚡</div><div class="resource-label">Quiz</div><div class="resource-sub">Terminé ✓</div></a>
+        <a href="#" class="resource-btn"><div class="resource-icon">🔧</div><div class="resource-label">Exercices</div><div class="resource-sub">3 exercices</div></a>
       </div>
     </div>
+  </div>
 
-    <!-- 5ème -->
-    <div class="card card-coming" id="5eme" style="--card-accent: #b388ff;">
-      <span class="card-locked">🔒</span>
-      <span class="card-emoji">🔬</span>
-      <div class="card-content">
-        <div class="card-niveau"><span style="color:var(--accent-purple)">5</span>ème</div>
-        <div class="card-desc">Matériaux, énergie, information et objet technique. Bientôt disponible !</div>
-        <div class="card-tags">
-          <span class="tag purple">Bientôt</span>
-          <span class="tag">Séquences</span>
-          <span class="tag">Fiches</span>
-        </div>
-        <span class="card-btn-ghost">⏳ En construction</span>
+  <!-- SEQ 2 — EN COURS -->
+  <div class="seq-card active-seq open" data-status="inprogress" data-seq="2">
+    <div class="seq-header clickable" onclick="toggleSeq(this)">
+      <div class="seq-num">2</div>
+      <div class="seq-info">
+        <div class="seq-name">Séquence 2 — Analyse fonctionnelle</div>
+        <div class="seq-meta">Fonctions d'usage, d'estime, contraintes · 3 semaines</div>
+        <div class="seq-chips"><span class="chip yellow">⚡ En cours</span></div>
       </div>
+      <div class="seq-right"><span class="seq-arrow">▶</span></div>
+    </div>
+    <div class="seq-body">
+      <div class="resources-grid">
+        <a href="#" class="resource-btn highlight"><div class="resource-icon">🎬</div><div class="resource-label">Vidéo intro</div><div class="resource-sub">👉 À regarder !</div></a>
+        <a href="#" class="resource-btn"><div class="resource-icon">📋</div><div class="resource-label">Fiche cours</div><div class="resource-sub">Télécharger PDF</div></a>
+        <a href="#" class="resource-btn"><div class="resource-icon">⚡</div><div class="resource-label">Quiz</div><div class="resource-sub">Disponible</div></a>
+        <a href="#" class="resource-btn"><div class="resource-icon">🔧</div><div class="resource-label">Exercices</div><div class="resource-sub">2 exercices</div></a>
+        <!-- TP → Google Sheet -->
+        <a href="https://docs.google.com/spreadsheets/d/VOTRE_ID_ICI" target="_blank" class="resource-btn"><div class="resource-icon">📊</div><div class="resource-label">TP à rendre</div><div class="resource-sub">→ Google Sheet</div></a>
+      </div>
+    </div>
+  </div>
+
+  <!-- SEQ 3 à 8 — VERROUILLÉES -->
+  <div class="seq-card locked" data-status="locked" data-seq="3" data-code="TECH03" data-meta="Propriétés, choix, développement durable · 3 semaines">
+    <div class="seq-header">
+      <div class="seq-num">🔒</div>
+      <div class="seq-info"><div class="seq-name">Séquence 3 — Matériaux et procédés</div><div class="seq-meta">Propriétés, choix, développement durable · 3 semaines</div><div class="seq-chips"><span class="chip grey">🔒 Code requis</span></div></div>
+      <div class="seq-right"><button class="unlock-btn" onclick="openUnlock(3,'Séquence 3 — Matériaux et procédés')">🔑 Entrer le code</button></div>
+    </div>
+  </div>
+
+  <div class="seq-card locked" data-status="locked" data-seq="4" data-code="TECH04" data-meta="Sources, conversions, rendement · 3 semaines">
+    <div class="seq-header">
+      <div class="seq-num">🔒</div>
+      <div class="seq-info"><div class="seq-name">Séquence 4 — Énergie et puissance</div><div class="seq-meta">Sources, conversions, rendement · 3 semaines</div><div class="seq-chips"><span class="chip grey">🔒 Code requis</span></div></div>
+      <div class="seq-right"><button class="unlock-btn" onclick="openUnlock(4,'Séquence 4 — Énergie et puissance')">🔑 Entrer le code</button></div>
+    </div>
+  </div>
+
+  <div class="seq-card locked" data-status="locked" data-seq="5" data-code="TECH05" data-meta="Algorithmes, capteurs, actionneurs · 4 semaines">
+    <div class="seq-header">
+      <div class="seq-num">🔒</div>
+      <div class="seq-info"><div class="seq-name">Séquence 5 — Programmation & automatisation</div><div class="seq-meta">Algorithmes, capteurs, actionneurs · 4 semaines</div><div class="seq-chips"><span class="chip grey">🔒 Code requis</span></div></div>
+      <div class="seq-right"><button class="unlock-btn" onclick="openUnlock(5,'Séquence 5 — Programmation & automatisation')">🔑 Entrer le code</button></div>
+    </div>
+  </div>
+
+  <div class="seq-card locked" data-status="locked" data-seq="6" data-code="TECH06" data-meta="Internet, données, cybersécurité · 3 semaines">
+    <div class="seq-header">
+      <div class="seq-num">🔒</div>
+      <div class="seq-info"><div class="seq-name">Séquence 6 — Communication et réseaux</div><div class="seq-meta">Internet, données, cybersécurité · 3 semaines</div><div class="seq-chips"><span class="chip grey">🔒 Code requis</span></div></div>
+      <div class="seq-right"><button class="unlock-btn" onclick="openUnlock(6,'Séquence 6 — Communication et réseaux')">🔑 Entrer le code</button></div>
+    </div>
+  </div>
+
+  <div class="seq-card locked" data-status="locked" data-seq="7" data-code="STAGE7" data-meta="Rapport de stage · Soutenance · DNB" style="border-color:rgba(255,140,66,0.15)">
+    <div class="seq-header">
+      <div class="seq-num" style="background:rgba(255,140,66,0.08);border-color:rgba(255,140,66,0.25);color:var(--orange)">🔒</div>
+      <div class="seq-info"><div class="seq-name">Séquence 7 — Stage d'observation</div><div class="seq-meta">Rapport de stage · Soutenance · DNB</div><div class="seq-chips"><span class="chip orange">🏭 Stage</span><span class="chip grey">🔒 Code requis</span></div></div>
+      <div class="seq-right"><button class="unlock-btn" style="border-color:rgba(255,140,66,0.4);color:var(--orange);background:rgba(255,140,66,0.1)" onclick="openUnlock(7,'Séquence 7 — Stage d\'observation')">🔑 Entrer le code</button></div>
+    </div>
+  </div>
+
+  <div class="seq-card locked" data-status="locked" data-seq="8" data-code="TECH08" data-meta="Mini-projet collectif · Présentation · Bilan">
+    <div class="seq-header">
+      <div class="seq-num">🔒</div>
+      <div class="seq-info"><div class="seq-name">Séquence 8 — Projet de fin d'année</div><div class="seq-meta">Mini-projet collectif · Présentation · Bilan</div><div class="seq-chips"><span class="chip grey">🔒 Code requis</span></div></div>
+      <div class="seq-right"><button class="unlock-btn" onclick="openUnlock(8,'Séquence 8 — Projet de fin d\'année')">🔑 Entrer le code</button></div>
+    </div>
+  </div>
+</div>
+
+<!-- ESPACES DÉDIÉS -->
+<div class="special-section">
+  <div class="seq-title">Espaces dédiés</div>
+  <div class="special-grid">
+
+    <!-- RAPPORT DE STAGE — protégé par code -->
+    <div class="special-card">
+      <h3>🏭 Rapport de stage</h3>
+      <p>Dépose ton rapport de stage au format <strong>PDF uniquement</strong>. L'accès est protégé par un code donné par ton professeur.</p>
+      <button class="special-btn" onclick="openStageModal()">🔑 Accéder au dépôt</button>
+    </div>
+
+    <!-- DNB — protégé par code -->
+    <div class="special-card dnb">
+      <h3>🎓 Préparation DNB</h3>
+      <p>Fiches académiques, sujets d'annales et corrections. Chaque ressource est accessible avec un code donné par ton professeur.</p>
+      <button class="special-btn green" onclick="openDNBModal()">🔑 Accéder aux révisions</button>
     </div>
 
   </div>
-</section>
+</div>
 
-<!-- FOOTER -->
-<footer>
-  <p>🚀 <strong>TechExplorer</strong> — Cours de Technologie · Collège Louis Pasteur, Graulhet</p>
-  <p style="margin-top:8px; font-size:0.75rem;">Site de classe inversée · Tous niveaux · 2025–2026</p>
-</footer>
+<footer>🚀 <strong>TechExplorer</strong> — Cours de Technologie · Collège Louis Pasteur, Graulhet</footer>
 
-<!-- MODAL LOGIN -->
-<div class="modal-overlay" id="modalOverlay" onclick="closeModalOutside(event)">
+<!-- ===== MODALE DÉBLOCAGE SÉQUENCE ===== -->
+<div class="modal-overlay" id="unlockModal" onclick="if(event.target===this)closeUnlock()">
   <div class="modal">
-    <button class="modal-close" onclick="closeModal()">✕</button>
-    <h3>Connexion</h3>
-    <p>Accède à ton espace de classe</p>
-    <label>Ma classe</label>
-    <select>
-      <option value="">— Choisir ma classe —</option>
-      <option>3ème A</option>
-      <option>3ème B</option>
-      <option>3ème C</option>
-      <option>4ème A</option>
-      <option>4ème B</option>
-      <option>5ème A</option>
-      <option>5ème B</option>
-    </select>
-    <label>Identifiant</label>
-    <input type="text" placeholder="Ton identifiant">
-    <label>Mot de passe</label>
-    <input type="password" placeholder="••••••••">
-    <button class="modal-btn">Entrer dans mon espace 🚀</button>
+    <div class="modal-title">🔑 Débloquer la séquence</div>
+    <div class="modal-sub" id="unlockSeqLabel"></div>
+    <label>Code donné par ton professeur :</label>
+    <input type="text" class="code-input" id="codeInput" maxlength="8" placeholder="• • • • • •"
+      oninput="this.value=this.value.toUpperCase();document.getElementById('codeError').textContent='';this.classList.remove('error','success')"
+      onkeydown="if(event.key==='Enter')tryUnlock()">
+    <div class="code-error" id="codeError"></div>
+    <div class="code-hint">💡 Le code est donné en classe au début de chaque nouvelle séquence.</div>
+    <div class="modal-btns">
+      <button class="btn-cancel" onclick="closeUnlock()">Annuler</button>
+      <button class="btn-primary" onclick="tryUnlock()">Déverrouiller 🔓</button>
+    </div>
+  </div>
+</div>
+
+<!-- ===== MODALE STAGE (code + upload PDF) ===== -->
+<div class="modal-overlay" id="stageModal" onclick="if(event.target===this)closeStage()">
+  <div class="modal modal-upload" id="stageModalInner">
+    <!-- Étape 1 : code -->
+    <div id="stageStep1">
+      <div class="modal-title">🏭 Rapport de stage</div>
+      <div class="modal-sub">Entre le code donné par ton professeur pour accéder au dépôt.</div>
+      <label>Code d'accès :</label>
+      <input type="text" class="code-input" id="stageCodeInput" maxlength="8" placeholder="• • • • • •"
+        oninput="this.value=this.value.toUpperCase();document.getElementById('stageCodeError').textContent='';this.classList.remove('error','success')"
+        onkeydown="if(event.key==='Enter')tryStageCode()">
+      <div class="code-error" id="stageCodeError"></div>
+      <div class="code-hint">💡 Seul le format PDF est accepté.</div>
+      <div class="modal-btns">
+        <button class="btn-cancel" onclick="closeStage()">Annuler</button>
+        <button class="btn-primary orange" onclick="tryStageCode()">Valider le code →</button>
+      </div>
+    </div>
+    <!-- Étape 2 : upload -->
+    <div id="stageStep2" style="display:none">
+      <div class="modal-title">📤 Déposer mon rapport</div>
+      <div class="modal-sub">Format PDF uniquement · max 10 Mo</div>
+      <label>Ton prénom et nom</label>
+      <input type="text" placeholder="Ex : Marie Dupont">
+      <label>Ta classe</label>
+      <select><option>3ème A</option><option>3ème B</option><option>3ème C</option></select>
+      <div class="upload-zone" onclick="document.getElementById('stageFile').click()">
+        <div class="upload-icon">📄</div>
+        <p>Clique pour choisir ton fichier PDF</p>
+        <input type="file" id="stageFile" style="display:none" accept=".pdf" onchange="handleStageFile(this)">
+      </div>
+      <div class="upload-note">⚠️ Seul le format PDF est accepté</div>
+      <div class="modal-btns">
+        <button class="btn-cancel" onclick="closeStage()">Annuler</button>
+        <button class="btn-upload">Envoyer 🚀</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ===== MODALE DNB ===== -->
+<div class="modal-overlay" id="dnbModal" onclick="if(event.target===this)closeDNB()">
+  <div class="modal" id="dnbModalInner">
+    <!-- Étape 1 : code -->
+    <div id="dnbStep1">
+      <div class="modal-title" style="color:var(--green)">🎓 Préparation DNB</div>
+      <div class="modal-sub">Entre le code donné par ton professeur pour accéder aux ressources.</div>
+      <label>Code d'accès :</label>
+      <input type="text" class="code-input" id="dnbCodeInput" maxlength="8" placeholder="• • • • • •"
+        style="border-color:rgba(0,230,118,0.3)"
+        oninput="this.value=this.value.toUpperCase();document.getElementById('dnbCodeError').textContent='';this.classList.remove('error','success')"
+        onkeydown="if(event.key==='Enter')tryDNBCode()">
+      <div class="code-error" id="dnbCodeError"></div>
+      <div class="code-hint">💡 Chaque ressource peut avoir son propre code.</div>
+      <div class="modal-btns">
+        <button class="btn-cancel" onclick="closeDNB()">Annuler</button>
+        <button class="btn-primary green" onclick="tryDNBCode()">Valider →</button>
+      </div>
+    </div>
+    <!-- Étape 2 : ressources DNB -->
+    <div id="dnbStep2" style="display:none">
+      <div class="modal-title" style="color:var(--green)">🎓 Ressources DNB</div>
+      <div class="modal-sub">Clique sur la ressource souhaitée. Certaines nécessitent un code supplémentaire.</div>
+      <div class="dnb-buttons">
+        <a href="#" class="dnb-btn" onclick="openDNBResource('fiches');return false;">
+          <span class="dnb-btn-icon">📚</span>
+          <div class="dnb-btn-info"><div class="dnb-btn-title">Fiches académiques & révision</div><div class="dnb-btn-sub">Compétences du programme de technologie</div></div>
+        </a>
+        <a href="#" class="dnb-btn" onclick="openDNBResource('sujets');return false;">
+          <span class="dnb-btn-icon">📝</span>
+          <div class="dnb-btn-info"><div class="dnb-btn-title">Sujets de DNB</div><div class="dnb-btn-sub">Annales officielles · Académie de Toulouse</div></div>
+        </a>
+        <a href="#" class="dnb-btn" onclick="openDNBResource('corrections');return false;">
+          <span class="dnb-btn-icon">✅</span>
+          <div class="dnb-btn-info"><div class="dnb-btn-title">Corrections</div><div class="dnb-btn-sub">Corrigés détaillés des sujets</div></div>
+          <span class="dnb-lock">🔑</span>
+        </a>
+      </div>
+      <div style="margin-top:16px;text-align:right"><button class="btn-cancel" onclick="closeDNB()">Fermer</button></div>
+    </div>
   </div>
 </div>
 
 <script>
-  // Stars
-  const starsEl = document.getElementById('stars');
-  for (let i = 0; i < 80; i++) {
-    const s = document.createElement('div');
-    s.className = 'star';
-    s.style.cssText = `
-      left: ${Math.random()*100}%;
-      top: ${Math.random()*100}%;
-      --d: ${2 + Math.random()*4}s;
-      --o: ${0.3 + Math.random()*0.7};
-      animation-delay: ${Math.random()*4}s;
-    `;
-    starsEl.appendChild(s);
+  const STORAGE_KEY = 'techexplorer_unlocked_3eme';
+  const STAGE_CODE = 'STAGE24';
+  const DNB_CODE   = 'DNB2025';
+
+  function getUnlocked(){try{return JSON.parse(localStorage.getItem(STORAGE_KEY))||[1,2];}catch{return[1,2];}}
+  function saveUnlocked(a){try{localStorage.setItem(STORAGE_KEY,JSON.stringify(a));}catch{}}
+
+  window.addEventListener('DOMContentLoaded',()=>{
+    const u=getUnlocked();
+    document.querySelectorAll('.seq-card[data-seq]').forEach(c=>{
+      if(u.includes(parseInt(c.dataset.seq))&&c.classList.contains('locked'))activateCard(c,false);
+    });
+    setTimeout(updateStats,100);
+    setTimeout(()=>{document.getElementById('progressFill').style.width=calcProgress()+'%';},300);
+  });
+
+  function calcProgress(){return Math.round((document.querySelectorAll('.seq-card.done').length/8)*100);}
+  function updateStats(){
+    const d=document.querySelectorAll('.seq-card.done').length;
+    const p=Math.round((d/8)*100);
+    document.getElementById('statDone').textContent=d;
+    document.getElementById('statPct').textContent=p+'%';
+    document.getElementById('pctLabel').textContent=d+' / 8 séquences';
+    document.getElementById('progressFill').style.width=p+'%';
   }
 
-  // Modal
-  function openModal() { document.getElementById('modalOverlay').classList.add('open'); }
-  function closeModal() { document.getElementById('modalOverlay').classList.remove('open'); }
-  function closeModalOutside(e) { if (e.target === document.getElementById('modalOverlay')) closeModal(); }
+  function toggleSeq(h){const c=h.closest('.seq-card');if(!c.classList.contains('locked'))c.classList.toggle('open');}
+  function setTab(t,b){
+    document.querySelectorAll('.tab-btn').forEach(x=>x.classList.remove('active'));b.classList.add('active');
+    document.querySelectorAll('.seq-card').forEach(c=>{
+      if(t==='all')c.style.display='';
+      else if(t==='done')c.style.display=c.dataset.status==='done'?'':'none';
+      else c.style.display=c.dataset.status!=='done'?'':'none';
+    });
+  }
+
+  // === DÉBLOCAGE SÉQUENCE ===
+  let curSeq=null;
+  function openUnlock(n,name){
+    curSeq=n;
+    document.getElementById('unlockSeqLabel').textContent=name;
+    resetInput('codeInput','codeError');
+    document.getElementById('unlockModal').classList.add('open');
+    setTimeout(()=>document.getElementById('codeInput').focus(),100);
+  }
+  function closeUnlock(){document.getElementById('unlockModal').classList.remove('open');curSeq=null;}
+  function tryUnlock(){
+    const inp=document.getElementById('codeInput'),err=document.getElementById('codeError');
+    const val=inp.value.trim().toUpperCase();
+    if(!val){setErr(err,'Entre un code.');return;}
+    const card=document.querySelector(`.seq-card[data-seq="${curSeq}"]`);
+    if(!card)return;
+    if(val===card.dataset.code){
+      inp.classList.add('success');setOk(err,'✅ Code correct ! Séquence débloquée.');
+      const u=getUnlocked();if(!u.includes(curSeq)){u.push(curSeq);saveUnlocked(u);}
+      setTimeout(()=>{closeUnlock();activateCard(card,true);},850);
+    } else {
+      inp.classList.add('error');setErr(err,'❌ Code incorrect. Demande à ton professeur.');
+      setTimeout(()=>inp.classList.remove('error'),500);
+    }
+  }
+
+  const SEQ_RES={
+    3:[['🎬','Vidéo intro','À regarder !'],['📋','Fiche cours','Télécharger PDF'],['⚡','Quiz','Disponible'],['🔧','Exercices','3 exercices']],
+    4:[['🎬','Vidéo intro','À regarder !'],['📋','Fiche cours','Télécharger PDF'],['⚡','Quiz','Disponible'],['🔧','Exercices','2 exercices']],
+    5:[['🎬','Vidéo intro','À regarder !'],['📋','Fiche cours','Télécharger PDF'],['⚡','Quiz','Disponible'],['🔧','Exercices','Activités'],['📊','TP à rendre','→ Google Sheet']],
+    6:[['🎬','Vidéo intro','À regarder !'],['📋','Fiche cours','Télécharger PDF'],['⚡','Quiz','Disponible'],['🔧','Exercices','3 exercices']],
+    7:[['📄','Consignes stage','Télécharger PDF'],['📤','Déposer rapport','PDF uniquement'],['🎓','Prépa soutenance','Guide + conseils'],['📚','Fiches DNB','Révisions']],
+    8:[['🎬','Vidéo intro','À regarder !'],['📋','Fiche cours','Télécharger PDF'],['⚡','Quiz','Disponible'],['📤','Projet à rendre','Déposer fichier']],
+  };
+
+  function activateCard(card,animate){
+    const n=parseInt(card.dataset.seq);
+    const name=card.querySelector('.seq-name').textContent;
+    const meta=card.dataset.meta||'';
+    const res=(SEQ_RES[n]||[['🎬','Vidéo','À regarder'],['📋','Fiche','PDF'],['⚡','Quiz','Disponible'],['🔧','Exercices','Activités']]);
+    const resHTML=res.map(([ic,lb,sb])=>`<a href="#" class="resource-btn"><div class="resource-icon">${ic}</div><div class="resource-label">${lb}</div><div class="resource-sub">${sb}</div></a>`).join('');
+    card.innerHTML=`
+      <div class="seq-header clickable" onclick="toggleSeq(this)">
+        <div class="seq-num">${n}</div>
+        <div class="seq-info">
+          <div class="seq-name">${name}</div><div class="seq-meta">${meta}</div>
+          <div class="seq-chips"><span class="chip yellow">⚡ Débloquée</span></div>
+        </div>
+        <div class="seq-right"><span class="seq-arrow">▶</span></div>
+      </div>
+      <div class="seq-body"><div class="resources-grid">${resHTML}</div></div>`;
+    card.classList.remove('locked');card.classList.add('active-seq');card.dataset.status='inprogress';
+    if(animate){
+      card.classList.add('open');
+      card.style.borderColor='rgba(255,215,64,0.7)';card.style.transform='scale(1.01)';
+      setTimeout(()=>{card.style.transform='';card.style.borderColor='';},700);
+    }
+  }
+
+  // === STAGE ===
+  function openStageModal(){
+    resetInput('stageCodeInput','stageCodeError');
+    document.getElementById('stageStep1').style.display='';
+    document.getElementById('stageStep2').style.display='none';
+    document.getElementById('stageModal').classList.add('open');
+    setTimeout(()=>document.getElementById('stageCodeInput').focus(),100);
+  }
+  function closeStage(){document.getElementById('stageModal').classList.remove('open');}
+  function tryStageCode(){
+    const inp=document.getElementById('stageCodeInput'),err=document.getElementById('stageCodeError');
+    const val=inp.value.trim().toUpperCase();
+    if(!val){setErr(err,'Entre un code.');return;}
+    if(val===STAGE_CODE){
+      inp.classList.add('success');setOk(err,'✅ Accès autorisé !');
+      setTimeout(()=>{document.getElementById('stageStep1').style.display='none';document.getElementById('stageStep2').style.display='';},700);
+    } else {
+      inp.classList.add('error');setErr(err,'❌ Code incorrect.');
+      setTimeout(()=>inp.classList.remove('error'),500);
+    }
+  }
+  function handleStageFile(input){
+    if(input.files[0]){
+      if(!input.files[0].name.toLowerCase().endsWith('.pdf')){
+        alert('⚠️ Seul le format PDF est accepté !');input.value='';return;
+      }
+      input.closest('.upload-zone').querySelector('p').innerHTML=`✅ <strong>${input.files[0].name}</strong><br><span style="font-size:0.69rem;color:#5a7a9a">Prêt à envoyer</span>`;
+    }
+  }
+
+  // === DNB ===
+  function openDNBModal(){
+    resetInput('dnbCodeInput','dnbCodeError');
+    document.getElementById('dnbStep1').style.display='';
+    document.getElementById('dnbStep2').style.display='none';
+    document.getElementById('dnbModal').classList.add('open');
+    setTimeout(()=>document.getElementById('dnbCodeInput').focus(),100);
+  }
+  function closeDNB(){document.getElementById('dnbModal').classList.remove('open');}
+  function tryDNBCode(){
+    const inp=document.getElementById('dnbCodeInput'),err=document.getElementById('dnbCodeError');
+    const val=inp.value.trim().toUpperCase();
+    if(!val){setErr(err,'Entre un code.');return;}
+    if(val===DNB_CODE){
+      inp.classList.add('success');setOk(err,'✅ Accès autorisé !');
+      setTimeout(()=>{document.getElementById('dnbStep1').style.display='none';document.getElementById('dnbStep2').style.display='';},700);
+    } else {
+      inp.classList.add('error');setErr(err,'❌ Code incorrect.');
+      setTimeout(()=>inp.classList.remove('error'),500);
+    }
+  }
+  function openDNBResource(type){
+    // À connecter vers les vraies URLs quand les documents seront prêts
+    alert('📌 Ressource "'+type+'" — lien à configurer par le professeur.');
+  }
+
+  // === HELPERS ===
+  function resetInput(id,errId){
+    const i=document.getElementById(id);i.value='';i.className='code-input';
+    document.getElementById(errId).textContent='';
+  }
+  function setErr(el,msg){el.style.color='var(--red)';el.textContent=msg;}
+  function setOk(el,msg){el.style.color='var(--green)';el.textContent=msg;}
 </script>
 </body>
 </html>
