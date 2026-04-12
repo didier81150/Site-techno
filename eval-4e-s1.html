@@ -1,0 +1,1554 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>TechExplorer 🚀 — Évaluation : Le diagramme fonctionnel</title>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Sans:ital,wght@0,300;0,400;0,500;1,400&display=swap');
+
+    :root {
+      --bleu:       #1a3a5c;
+      --bleu-clair: #2563a8;
+      --accent:     #f59e0b;
+      --vert:       #16a34a;
+      --rouge:      #dc2626;
+      --fond:       #f0f4f8;
+      --blanc:      #ffffff;
+      --gris:       #64748b;
+      --gris-clair: #e2e8f0;
+      --ombre:      0 4px 20px rgba(26,58,92,.12);
+    }
+
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      font-family: 'DM Sans', sans-serif;
+      background: var(--fond);
+      color: var(--bleu);
+      min-height: 100vh;
+    }
+
+    /* ─── HEADER ─── */
+    header {
+      background: linear-gradient(135deg, var(--bleu) 0%, var(--bleu-clair) 100%);
+      color: white;
+      padding: 2.5rem 2rem 2rem;
+      position: relative;
+      overflow: hidden;
+    }
+    header::before {
+      content: '';
+      position: absolute;
+      right: -60px; top: -60px;
+      width: 280px; height: 280px;
+      border-radius: 50%;
+      background: rgba(255,255,255,.06);
+    }
+    header::after {
+      content: '';
+      position: absolute;
+      right: 60px; top: 40px;
+      width: 140px; height: 140px;
+      border-radius: 50%;
+      background: rgba(245,158,11,.18);
+    }
+    .header-inner { max-width: 860px; margin: 0 auto; position: relative; z-index: 1; }
+    .badge {
+      display: inline-block;
+      background: var(--accent);
+      color: var(--bleu);
+      font-family: 'Syne', sans-serif;
+      font-weight: 700;
+      font-size: .72rem;
+      letter-spacing: .1em;
+      text-transform: uppercase;
+      padding: .25rem .75rem;
+      border-radius: 99px;
+      margin-bottom: 1rem;
+    }
+    header h1 {
+      font-family: 'Syne', sans-serif;
+      font-weight: 800;
+      font-size: clamp(1.5rem, 4vw, 2.4rem);
+      line-height: 1.2;
+    }
+    header p { margin-top: .5rem; opacity: .8; font-size: .95rem; }
+
+    /* ─── CONSIGNES ─── */
+    .consignes {
+      max-width: 860px;
+      margin: 2rem auto 0;
+      padding: 0 1rem;
+    }
+    .alert {
+      background: #fffbeb;
+      border-left: 4px solid var(--accent);
+      border-radius: 8px;
+      padding: 1rem 1.25rem;
+      font-size: .9rem;
+      color: #78350f;
+    }
+    .alert strong { display: block; margin-bottom: .4rem; font-family: 'Syne', sans-serif; }
+
+    /* ─── IDENTIFICATION ─── */
+    .id-bloc {
+      max-width: 860px;
+      margin: 1.5rem auto 0;
+      padding: 0 1rem;
+    }
+    .id-bloc .card {
+      background: white;
+      border-radius: 12px;
+      padding: 1.25rem 1.5rem;
+      box-shadow: var(--ombre);
+      display: flex;
+      gap: 1.5rem;
+      flex-wrap: wrap;
+    }
+    .id-field { display: flex; align-items: center; gap: .6rem; flex: 1; min-width: 200px; }
+    .id-field label { font-weight: 500; white-space: nowrap; font-size: .9rem; }
+    .id-field input {
+      border: 2px solid var(--gris-clair);
+      border-radius: 8px;
+      padding: .45rem .75rem;
+      font-family: inherit;
+      font-size: .9rem;
+      flex: 1;
+      transition: border .2s;
+    }
+    .id-field input:focus { outline: none; border-color: var(--bleu-clair); }
+    .id-field input.champ-erreur,
+    .id-field select.champ-erreur {
+      border-color: var(--rouge) !important;
+      background: #fef2f2;
+      animation: shake .3s ease;
+    }
+    @keyframes shake {
+      0%,100% { transform: translateX(0); }
+      25%      { transform: translateX(-5px); }
+      75%      { transform: translateX(5px); }
+    }
+    #msg-identite {
+      display: none;
+      background: #fef2f2;
+      border: 1.5px solid var(--rouge);
+      color: var(--rouge);
+      border-radius: 8px;
+      padding: .65rem 1rem;
+      font-size: .88rem;
+      font-weight: 600;
+      margin-top: .75rem;
+    }
+    .id-field select {
+      border: 2px solid var(--gris-clair);
+      border-radius: 8px;
+      padding: .45rem .75rem;
+      font-family: inherit;
+      font-size: .9rem;
+      flex: 1;
+      transition: border .2s;
+      background: white;
+      cursor: pointer;
+    }
+    .id-field select:focus { outline: none; border-color: var(--bleu-clair); }
+
+    /* note affichée sous id */
+    #note-affichee {
+      display: none;
+      margin-top: 1rem;
+      background: linear-gradient(135deg, var(--bleu) 0%, var(--bleu-clair) 100%);
+      color: white;
+      border-radius: 10px;
+      padding: .9rem 1.5rem;
+      display: none;
+      align-items: center;
+      gap: 1rem;
+      flex-wrap: wrap;
+    }
+    #note-affichee .note-big {
+      font-family: 'Syne', sans-serif;
+      font-size: 2.2rem;
+      font-weight: 800;
+      line-height: 1;
+    }
+    #note-affichee .note-info { font-size: .9rem; opacity: .9; }
+
+    /* ─── MAIN ─── */
+    main { max-width: 860px; margin: 2rem auto 3rem; padding: 0 1rem; }
+
+    .section-title {
+      font-family: 'Syne', sans-serif;
+      font-size: 1.35rem;
+      font-weight: 700;
+      color: var(--bleu);
+      margin-bottom: 1rem;
+      padding-bottom: .4rem;
+      border-bottom: 3px solid var(--accent);
+      display: inline-block;
+    }
+
+    /* ─── PRÉSENTATION ─── */
+    .pres-card {
+      background: white;
+      border-radius: 12px;
+      padding: 1.5rem;
+      box-shadow: var(--ombre);
+      margin-bottom: 2rem;
+    }
+    .pres-card h3 {
+      font-family: 'Syne', sans-serif;
+      font-weight: 700;
+      color: var(--bleu-clair);
+      margin: 1.2rem 0 .5rem;
+      font-size: 1.05rem;
+    }
+    .pres-card p { line-height: 1.7; font-size: .95rem; color: #334155; margin-bottom: .5rem; }
+
+    .store-schema {
+      background: linear-gradient(160deg, #0f172a 0%, #1e3a5f 60%, #0c4a6e 100%);
+      border: 2px solid #3b82f6;
+      border-radius: 12px;
+      padding: 1.4rem;
+      margin: 1rem 0;
+      text-align: center;
+      position: relative;
+      box-shadow: 0 8px 32px rgba(15,41,66,.35);
+    }
+    /* Petite illustration SVG inline du store */
+    .store-schema svg { max-width: 580px; width: 100%; }
+
+    /* ─── QUESTIONS ─── */
+    .question-block {
+      background: white;
+      border-radius: 12px;
+      padding: 1.5rem;
+      box-shadow: var(--ombre);
+      margin-bottom: 2rem;
+    }
+    .question-block h2 {
+      font-family: 'Syne', sans-serif;
+      font-weight: 700;
+      font-size: 1rem;
+      color: var(--bleu);
+      margin-bottom: 1.2rem;
+      display: flex;
+      align-items: flex-start;
+      gap: .65rem;
+    }
+    .q-num {
+      background: var(--bleu);
+      color: white;
+      font-size: .8rem;
+      font-weight: 800;
+      padding: .2rem .55rem;
+      border-radius: 6px;
+      white-space: nowrap;
+      margin-top: .05rem;
+    }
+
+    /* ─── Q1 : tableau type composants ─── */
+    .type-table { width: 100%; border-collapse: collapse; font-size: .9rem; }
+    .type-table th {
+      background: var(--bleu);
+      color: white;
+      padding: .65rem 1rem;
+      text-align: left;
+      font-family: 'Syne', sans-serif;
+      font-weight: 600;
+    }
+    .type-table th:first-child { border-radius: 8px 0 0 0; }
+    .type-table th:last-child  { border-radius: 0 8px 0 0; }
+    .type-table td {
+      padding: .65rem 1rem;
+      border-bottom: 1px solid var(--gris-clair);
+      vertical-align: middle;
+    }
+    .type-table tr:last-child td { border-bottom: none; }
+    .type-table tr:nth-child(even) td { background: #f8fafc; }
+
+    .radio-group { display: flex; gap: .75rem; flex-wrap: wrap; }
+    .radio-group label {
+      display: flex;
+      align-items: center;
+      gap: .35rem;
+      cursor: pointer;
+      font-size: .88rem;
+      padding: .3rem .6rem;
+      border-radius: 6px;
+      border: 1.5px solid var(--gris-clair);
+      transition: all .15s;
+    }
+    .radio-group label:hover { border-color: var(--bleu-clair); background: #eff6ff; }
+    .radio-group input[type="radio"] { accent-color: var(--bleu-clair); }
+    .radio-group label.correct  { border-color: var(--vert); background: #dcfce7; color: var(--vert); font-weight: 600; }
+    .radio-group label.incorrect { border-color: var(--rouge); background: #fee2e2; color: var(--rouge); }
+
+    /* ─── Q2 : diagramme fonctionnel ─── */
+    .diag-table { width: 100%; border-collapse: collapse; font-size: .88rem; }
+    .diag-table th {
+      background: var(--bleu);
+      color: white;
+      padding: .6rem .9rem;
+      text-align: center;
+      font-family: 'Syne', sans-serif;
+      font-weight: 600;
+    }
+    .diag-table th:first-child  { border-radius: 8px 0 0 0; }
+    .diag-table th:last-child   { border-radius: 0 8px 0 0; }
+    .diag-table th:nth-child(2) { background: #334155; width: 40px; }
+    .diag-table th:nth-child(4) { background: #334155; width: 40px; }
+    .diag-table td {
+      padding: .55rem .75rem;
+      border-bottom: 1px solid var(--gris-clair);
+      vertical-align: middle;
+    }
+    .diag-table .col-arrow { text-align: center; font-size: 1.1rem; color: var(--gris); background: #f1f5f9; }
+    .diag-table .col-fixed { font-weight: 500; }
+    .diag-table select {
+      width: 100%;
+      padding: .4rem .6rem;
+      border: 2px solid var(--gris-clair);
+      border-radius: 8px;
+      font-family: inherit;
+      font-size: .85rem;
+      background: white;
+      cursor: pointer;
+      transition: border .2s;
+      appearance: none;
+      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath d='M1 1l5 5 5-5' stroke='%2364748b' stroke-width='1.5' fill='none' stroke-linecap='round'/%3E%3C/svg%3E");
+      background-repeat: no-repeat;
+      background-position: right .7rem center;
+      padding-right: 2rem;
+    }
+    .diag-table select:focus { outline: none; border-color: var(--bleu-clair); }
+    .diag-table select.correct  { border-color: var(--vert); background-color: #f0fdf4; }
+    .diag-table select.incorrect { border-color: var(--rouge); background-color: #fef2f2; }
+
+    /* ─── BOUTONS ─── */
+    .btn-row {
+      display: flex;
+      gap: 1rem;
+      flex-wrap: wrap;
+      margin-top: 2rem;
+    }
+    .btn {
+      font-family: 'Syne', sans-serif;
+      font-weight: 700;
+      font-size: .95rem;
+      padding: .75rem 1.75rem;
+      border: none;
+      border-radius: 10px;
+      cursor: pointer;
+      transition: transform .15s, box-shadow .15s;
+    }
+    .btn:hover { transform: translateY(-2px); box-shadow: 0 6px 20px rgba(0,0,0,.15); }
+    .btn:active { transform: translateY(0); }
+    .btn-primary { background: var(--bleu); color: white; }
+    .btn-secondary { background: var(--gris-clair); color: var(--bleu); }
+    .btn-vert { background: var(--vert); color: white; }
+    .btn-accent { background: var(--accent); color: var(--bleu); }
+    .btn-rouge  { background: var(--rouge);  color: white; }
+
+    /* bouton désactivé */
+    .btn:disabled {
+      opacity: .35;
+      cursor: not-allowed;
+      transform: none !important;
+      box-shadow: none !important;
+    }
+
+    /* ─── MODAL CODE PROF ─── */
+    .modal-overlay {
+      display: none;
+      position: fixed;
+      inset: 0;
+      background: rgba(15,30,50,.55);
+      backdrop-filter: blur(4px);
+      z-index: 1000;
+      align-items: center;
+      justify-content: center;
+    }
+    .modal-overlay.open { display: flex; }
+    .modal-box {
+      background: white;
+      border-radius: 16px;
+      padding: 2rem;
+      width: min(380px, 90vw);
+      box-shadow: 0 20px 60px rgba(0,0,0,.25);
+      text-align: center;
+    }
+    .modal-box h3 {
+      font-family: 'Syne', sans-serif;
+      font-size: 1.15rem;
+      font-weight: 800;
+      margin-bottom: .4rem;
+      color: var(--bleu);
+    }
+    .modal-box p { font-size: .88rem; color: var(--gris); margin-bottom: 1.2rem; }
+    .modal-box input[type="password"] {
+      width: 100%;
+      border: 2px solid var(--gris-clair);
+      border-radius: 10px;
+      padding: .65rem 1rem;
+      font-size: 1.1rem;
+      letter-spacing: .25em;
+      text-align: center;
+      font-family: inherit;
+      margin-bottom: .8rem;
+      transition: border .2s;
+    }
+    .modal-box input[type="password"]:focus { outline: none; border-color: var(--bleu-clair); }
+    .modal-erreur {
+      color: var(--rouge);
+      font-size: .82rem;
+      font-weight: 600;
+      margin-bottom: .8rem;
+      min-height: 1.2em;
+    }
+    .modal-btns { display: flex; gap: .75rem; justify-content: center; }
+    .lock-icon { font-size: 2rem; margin-bottom: .75rem; }
+
+    /* ─── SCORE ─── */
+    #score-bloc {
+      display: none;
+      background: white;
+      border-radius: 12px;
+      padding: 1.5rem;
+      box-shadow: var(--ombre);
+      margin-top: 1.5rem;
+      text-align: center;
+    }
+    #score-bloc h3 {
+      font-family: 'Syne', sans-serif;
+      font-size: 1.3rem;
+      margin-bottom: .5rem;
+    }
+    .score-value {
+      font-family: 'Syne', sans-serif;
+      font-size: 3rem;
+      font-weight: 800;
+      color: var(--bleu-clair);
+      line-height: 1;
+    }
+    .score-label { color: var(--gris); font-size: .9rem; margin-top: .25rem; }
+    .mention {
+      margin-top: .75rem;
+      font-weight: 600;
+      font-size: 1rem;
+    }
+
+    /* ─── FEEDBACK CELL ─── */
+    .fb { font-size: .8rem; font-style: italic; margin-top: .3rem; display: none; }
+    .fb.ok  { color: var(--vert); }
+    .fb.err { color: var(--rouge); }
+
+    @media (max-width:560px) {
+      .radio-group { flex-direction: column; }
+      .diag-table { font-size: .78rem; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- ════ HEADER ════ -->
+<header>
+  <div class="header-inner">
+    <a href="4eme.html" style="color:rgba(255,255,255,.6);font-size:.82rem;text-decoration:none;display:inline-flex;align-items:center;gap:.4rem;margin-bottom:.75rem;">← Retour au cours 4ème</a>
+    <span class="badge">Automatisme · Cycle 4</span>
+    <h1>Le diagramme fonctionnel — Évaluation</h1>
+    <p>Évaluation interactive — Le store automatique · 🚀 TechExplorer</p>
+  </div>
+</header>
+
+<!-- ════ CONSIGNES ════ -->
+<div class="consignes">
+  <div class="alert">
+    <strong>⚠ Consignes de travail</strong>
+    Avant de commencer : entrez votre nom et votre prénom, puis complétez entièrement l'évaluation.
+    Prenez le temps de relire vos réponses avant de cliquer sur <strong>Évaluer</strong>.
+  </div>
+</div>
+
+<!-- ════ IDENTIFICATION ════ -->
+<div class="id-bloc">
+  <div class="card">
+    <div class="id-field">
+      <label for="nom">Votre nom :</label>
+      <input type="text" id="nom" placeholder="ex. DUPONT">
+    </div>
+    <div class="id-field">
+      <label for="prenom">Votre prénom :</label>
+      <input type="text" id="prenom" placeholder="ex. Marie">
+    </div>
+    <div class="id-field">
+      <label for="niveau">Niveau :</label>
+      <select id="niveau">
+        <option value="">— choisir —</option>
+        <option>5ème</option>
+        <option>4ème</option>
+        <option>3ème</option>
+      </select>
+    </div>
+    <div class="id-field">
+      <label for="classe">Classe :</label>
+      <select id="classe">
+        <option value="">— choisir —</option>
+        <option>3ème A</option>
+        <option>3ème B</option>
+        <option>3ème C</option>
+        <option>4ème A</option>
+        <option>4ème B</option>
+        <option>4ème C</option>
+        <option>5ème A</option>
+        <option>5ème B</option>
+        <option>5ème C</option>
+      </select>
+    </div>
+  </div>
+  <div id="msg-identite">⚠ Veuillez renseigner votre nom, prénom et sélectionner votre classe avant de valider.</div>
+  <!-- note affichée après évaluation -->
+  <div id="note-affichee">
+    <div class="note-big" id="note-val">—</div>
+    <div class="note-info" id="note-detail">Évaluez d'abord le QCM</div>
+  </div>
+</div>
+
+<!-- ════ MAIN ════ -->
+<main>
+
+  <!-- PRÉSENTATION -->
+  <div class="pres-card">
+    <span class="section-title">Présentation</span>
+    <p>Un store permet de protéger une zone des rayons solaires en tenant compte des conditions climatiques.</p>
+    <p>Si le temps est ensoleillé, la toile doit se <strong>dérouler automatiquement</strong>, et s'enrouler dans le cas contraire. De plus, le store ne doit <strong>pas s'ouvrir en cas de vent trop fort</strong> afin d'éviter que la toile ne se déchire.</p>
+
+    <div class="store-schema">
+      <svg viewBox="0 0 580 260" xmlns="http://www.w3.org/2000/svg" aria-label="Schéma du store automatique avec légendes">
+        <defs>
+          <!-- gradient ciel -->
+          <linearGradient id="ciel" x1="0" y1="0" x2="0" y2="1">
+            <stop offset="0%" stop-color="#bae6fd"/>
+            <stop offset="100%" stop-color="#e0f2fe"/>
+          </linearGradient>
+          <!-- gradient sol -->
+          <linearGradient id="sol" x1="0" y1="0" x2="0" y2="1">
+            <stop offset="0%" stop-color="#d1fae5"/>
+            <stop offset="100%" stop-color="#a7f3d0"/>
+          </linearGradient>
+          <!-- gradient toile -->
+          <linearGradient id="toile-grad" x1="0" y1="0" x2="1" y2="1">
+            <stop offset="0%" stop-color="#f59e0b"/>
+            <stop offset="100%" stop-color="#fbbf24"/>
+          </linearGradient>
+          <!-- gradient mur -->
+          <linearGradient id="mur-grad" x1="0" y1="0" x2="1" y2="0">
+            <stop offset="0%" stop-color="#64748b"/>
+            <stop offset="100%" stop-color="#94a3b8"/>
+          </linearGradient>
+          <!-- ombre portée store -->
+          <filter id="ombre-store">
+            <feDropShadow dx="3" dy="4" stdDeviation="3" flood-color="#00000033"/>
+          </filter>
+          <!-- ombre boîtier -->
+          <filter id="ombre-box">
+            <feDropShadow dx="2" dy="2" stdDeviation="2" flood-color="#00000044"/>
+          </filter>
+        </defs>
+
+        <!-- ══ FOND ══ -->
+        <rect x="0" y="0" width="580" height="200" fill="url(#ciel)"/>
+        <rect x="0" y="200" width="580" height="60" fill="url(#sol)"/>
+        <!-- ligne horizon -->
+        <line x1="0" y1="200" x2="580" y2="200" stroke="#6ee7b7" stroke-width="1.5"/>
+
+        <!-- ══ MUR ══ -->
+        <rect x="0" y="0" width="28" height="260" fill="url(#mur-grad)"/>
+        <!-- briques -->
+        <line x1="0" y1="32"  x2="28" y2="32"  stroke="#475569" stroke-width=".8"/>
+        <line x1="0" y1="64"  x2="28" y2="64"  stroke="#475569" stroke-width=".8"/>
+        <line x1="0" y1="96"  x2="28" y2="96"  stroke="#475569" stroke-width=".8"/>
+        <line x1="0" y1="128" x2="28" y2="128" stroke="#475569" stroke-width=".8"/>
+        <line x1="0" y1="160" x2="28" y2="160" stroke="#475569" stroke-width=".8"/>
+        <line x1="0" y1="192" x2="28" y2="192" stroke="#475569" stroke-width=".8"/>
+        <line x1="14" y1="0"  x2="14" y2="32"  stroke="#475569" stroke-width=".8"/>
+        <line x1="14" y1="64" x2="14" y2="96"  stroke="#475569" stroke-width=".8"/>
+        <line x1="14" y1="128" x2="14" y2="160" stroke="#475569" stroke-width=".8"/>
+        <line x1="14" y1="192" x2="14" y2="224" stroke="#475569" stroke-width=".8"/>
+        <text x="14" y="248" font-family="DM Sans,sans-serif" font-size="9" fill="white" text-anchor="middle" font-weight="700">MUR</text>
+
+        <!-- ══ TUBE D'ENROULEMENT ══ -->
+        <circle cx="28" cy="68" r="10" fill="#0f2942" stroke="#1d4ed8" stroke-width="2.5"/>
+        <circle cx="28" cy="68" r="4"  fill="#3b82f6"/>
+        <!-- label tube -->
+        <line x1="38" y1="60" x2="70" y2="44" stroke="#1d4ed8" stroke-width="1" stroke-dasharray="3,2"/>
+        <rect x="70" y="30" width="110" height="22" rx="4" fill="#1d4ed8"/>
+        <text x="125" y="45" font-family="DM Sans,sans-serif" font-size="10" fill="white" text-anchor="middle" font-weight="600">Tube d'enroulement</text>
+
+        <!-- ══ BRAS ARTICULÉS ══ -->
+        <!-- bras haut -->
+        <line x1="28" y1="68" x2="210" y2="140" stroke="#334155" stroke-width="7" stroke-linecap="round" filter="url(#ombre-store)"/>
+        <line x1="28" y1="68" x2="210" y2="140" stroke="#64748b" stroke-width="5" stroke-linecap="round"/>
+        <!-- articulation milieu -->
+        <circle cx="119" cy="104" r="5" fill="#94a3b8" stroke="#334155" stroke-width="1.5"/>
+        <!-- bras bas -->
+        <line x1="28" y1="80" x2="340" y2="140" stroke="#334155" stroke-width="7" stroke-linecap="round" filter="url(#ombre-store)"/>
+        <line x1="28" y1="80" x2="340" y2="140" stroke="#64748b" stroke-width="5" stroke-linecap="round"/>
+        <!-- articulation milieu 2 -->
+        <circle cx="184" cy="110" r="5" fill="#94a3b8" stroke="#334155" stroke-width="1.5"/>
+
+        <!-- label bras articulés -->
+        <line x1="119" y1="104" x2="90" y2="155" stroke="#334155" stroke-width="1" stroke-dasharray="3,2"/>
+        <rect x="40" y="152" width="100" height="20" rx="4" fill="#334155"/>
+        <text x="90" y="166" font-family="DM Sans,sans-serif" font-size="9.5" fill="white" text-anchor="middle" font-weight="600">Bras articulés</text>
+
+        <!-- ══ TOILE ══ -->
+        <polygon points="28,78 210,140 340,140 28,78"
+                 fill="url(#toile-grad)" fill-opacity=".88"
+                 stroke="#d97706" stroke-width="2.5"
+                 filter="url(#ombre-store)"/>
+        <!-- rayures toile -->
+        <line x1="80"  y1="88"  x2="225" y2="140" stroke="#fef3c7" stroke-width="1" stroke-opacity=".5"/>
+        <line x1="132" y1="98"  x2="270" y2="140" stroke="#fef3c7" stroke-width="1" stroke-opacity=".5"/>
+        <line x1="183" y1="108" x2="315" y2="140" stroke="#fef3c7" stroke-width="1" stroke-opacity=".5"/>
+        <!-- label toile -->
+        <line x1="185" y1="114" x2="240" y2="90" stroke="#d97706" stroke-width="1" stroke-dasharray="3,2"/>
+        <rect x="240" y="74" width="58" height="20" rx="4" fill="#d97706"/>
+        <text x="269" y="88" font-family="DM Sans,sans-serif" font-size="10" fill="white" text-anchor="middle" font-weight="700">Toile</text>
+
+        <!-- ══ SOLEIL ══ -->
+        <!-- rayons -->
+        <g stroke="#fbbf24" stroke-width="2.5" stroke-linecap="round">
+          <line x1="480" y1="12" x2="480" y2="2"/>
+          <line x1="500" y1="18" x2="508" y2="10"/>
+          <line x1="510" y1="38" x2="520" y2="38"/>
+          <line x1="500" y1="58" x2="508" y2="66"/>
+          <line x1="480" y1="65" x2="480" y2="75"/>
+          <line x1="460" y1="58" x2="452" y2="66"/>
+          <line x1="450" y1="38" x2="440" y2="38"/>
+          <line x1="460" y1="18" x2="452" y2="10"/>
+        </g>
+        <circle cx="480" cy="38" r="22" fill="#fde047" stroke="#f59e0b" stroke-width="3"/>
+        <circle cx="480" cy="38" r="14" fill="#fbbf24"/>
+        <text x="480" y="95" font-family="DM Sans,sans-serif" font-size="10" fill="#92400e" text-anchor="middle" font-weight="700">Soleil ☀</text>
+
+        <!-- ══ PHOTORÉSISTANCE ══ -->
+        <rect x="385" y="55" width="22" height="16" rx="3" fill="#052e16" stroke="#16a34a" stroke-width="2.5"/>
+        <!-- flèches lumière -->
+        <line x1="395" y1="48" x2="400" y2="56" stroke="#fbbf24" stroke-width="2" marker-end="url(#flecheJ)"/>
+        <line x1="403" y1="45" x2="407" y2="55" stroke="#fbbf24" stroke-width="2" marker-end="url(#flecheJ)"/>
+        <!-- label -->
+        <line x1="385" y1="63" x2="355" y2="80" stroke="#16a34a" stroke-width="1" stroke-dasharray="3,2"/>
+        <rect x="295" y="72" width="114" height="20" rx="4" fill="#16a34a"/>
+        <text x="352" y="86" font-family="DM Sans,sans-serif" font-size="10" fill="white" text-anchor="middle" font-weight="600">Photorésistance</text>
+
+        <!-- ══ ANÉMOMÈTRE ══ -->
+        <!-- mât -->
+        <line x1="430" y1="155" x2="430" y2="125" stroke="#1e40af" stroke-width="3"/>
+        <!-- croix centrale -->
+        <circle cx="430" cy="125" r="4" fill="#1e40af"/>
+        <!-- coupelles -->
+        <line x1="430" y1="125" x2="418" y2="115" stroke="#1e40af" stroke-width="2"/>
+        <circle cx="415" cy="112" r="5" fill="#1e40af" stroke="#bfdbfe" stroke-width="1.5"/>
+        <line x1="430" y1="125" x2="442" y2="115" stroke="#1e40af" stroke-width="2"/>
+        <circle cx="445" cy="112" r="5" fill="#1e40af" stroke="#bfdbfe" stroke-width="1.5"/>
+        <line x1="430" y1="125" x2="430" y2="112" stroke="#1e40af" stroke-width="2"/>
+        <circle cx="430" cy="109" r="5" fill="#1e40af" stroke="#bfdbfe" stroke-width="1.5"/>
+        <!-- label -->
+        <line x1="445" y1="125" x2="468" y2="130" stroke="#1e40af" stroke-width="1" stroke-dasharray="3,2"/>
+        <rect x="467" y="120" width="98" height="20" rx="4" fill="#1e40af"/>
+        <text x="516" y="134" font-family="DM Sans,sans-serif" font-size="10" fill="white" text-anchor="middle" font-weight="600">Anémomètre</text>
+
+        <!-- ══ BOÎTIER DE COMMANDE ══ -->
+        <rect x="88" y="175" width="90" height="46" rx="6" fill="#0f2942" stroke="#3b82f6" stroke-width="2.5" filter="url(#ombre-box)"/>
+        <!-- voyants -->
+        <circle cx="105" cy="188" r="4" fill="#22c55e" stroke="#14532d" stroke-width="1"/>
+        <circle cx="118" cy="188" r="4" fill="#ef4444" stroke="#7f1d1d" stroke-width="1"/>
+        <!-- boutons -->
+        <rect x="100" y="197" width="14" height="8" rx="2" fill="#3b82f6" stroke="#1e3a8a" stroke-width="1"/>
+        <rect x="119" y="197" width="14" height="8" rx="2" fill="#f59e0b" stroke="#92400e" stroke-width="1"/>
+        <!-- texte boîtier -->
+        <text x="133" y="213" font-family="DM Sans,sans-serif" font-size="8" fill="#93c5fd" text-anchor="middle">▲ ▼</text>
+        <text x="133" y="224" font-family="DM Sans,sans-serif" font-size="7" fill="#60a5fa" text-anchor="middle">commande</text>
+        <!-- label boîtier -->
+        <line x1="133" y1="175" x2="155" y2="158" stroke="#3b82f6" stroke-width="1" stroke-dasharray="3,2"/>
+        <rect x="152" y="142" width="130" height="20" rx="4" fill="#1d4ed8"/>
+        <text x="217" y="156" font-family="DM Sans,sans-serif" font-size="10" fill="white" text-anchor="middle" font-weight="600">Boîtier de commande</text>
+
+        <!-- ══ MOTEUR (sous toile) ══ -->
+        <rect x="28" y="144" width="34" height="26" rx="4" fill="#7c3aed" stroke="#a78bfa" stroke-width="2"/>
+        <text x="45" y="161" font-family="DM Sans,sans-serif" font-size="9" fill="white" text-anchor="middle" font-weight="700">M</text>
+        <!-- label moteur -->
+        <line x1="45" y1="170" x2="45" y2="185" stroke="#7c3aed" stroke-width="1" stroke-dasharray="3,2"/>
+        <rect x="8" y="183" width="74" height="18" rx="4" fill="#7c3aed"/>
+        <text x="45" y="196" font-family="DM Sans,sans-serif" font-size="9" fill="white" text-anchor="middle" font-weight="600">Moteur</text>
+
+        <!-- ══ SOL decoratif ══ -->
+        <text x="290" y="225" font-family="DM Sans,sans-serif" font-size="9" fill="#065f46" text-anchor="middle" font-style="italic">Zone protégée du soleil ☀ → ombre créée par la toile</text>
+
+        <!-- définitions marqueurs -->
+        <defs>
+          <marker id="flecheJ" markerWidth="6" markerHeight="6" refX="3" refY="3" orient="auto">
+            <path d="M0,0 L6,3 L0,6 Z" fill="#fbbf24"/>
+          </marker>
+        </defs>
+      </svg>
+      <p style="font-size:.8rem;color:#475569;margin-top:.6rem;font-style:italic;">Schéma du store automatique — composants identifiés</p>
+    </div>
+
+    <h3>Principe de fonctionnement</h3>
+    <p>Le store s'ouvre quand la <strong>photorésistance</strong> détecte la présence de soleil et se referme quand la luminosité diminue.</p>
+    <p>Le système est protégé par un <strong>anémomètre</strong> qui mesure en permanence la vitesse du vent.</p>
+    <p>L'utilisateur peut forcer la descente ou la montée grâce aux <strong>boutons de commande</strong>.</p>
+    <p>Des <strong>voyants</strong> indiquent si les limites de vent et de luminosité sont dépassées. Une <strong>carte électronique</strong> traite les informations et pilote le système.</p>
+
+    <h3>Mouvement de la toile</h3>
+    <p>Un <strong>moteur électrique</strong> génère la rotation, réduite par des <strong>engrenages</strong>. La rotation du tube déroule/enroule la toile, maintenue tendue par 2 <strong>bras articulés</strong>.</p>
+  </div>
+
+  <!-- ══ QUESTION 1 ══ -->
+  <div class="question-block">
+    <h2>
+      <span class="q-num">Q.1</span>
+      Complétez le tableau en précisant le <strong>type</strong> de chaque composant du store.
+    </h2>
+
+    <table class="type-table">
+      <thead>
+        <tr>
+          <th>Composant</th>
+          <th>Type</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>Anémomètre</td>
+          <td>
+            <div class="radio-group" data-correct="capteur">
+              <label><input type="radio" name="q1a" value="actionneur"> Actionneur</label>
+              <label><input type="radio" name="q1a" value="capteur"> Capteur</label>
+              <label><input type="radio" name="q1a" value="effecteur"> Effecteur</label>
+            </div>
+            <div class="fb" id="fb-q1a"></div>
+          </td>
+        </tr>
+        <tr>
+          <td>Bouton de commande</td>
+          <td>
+            <div class="radio-group" data-correct="capteur">
+              <label><input type="radio" name="q1b" value="actionneur"> Actionneur</label>
+              <label><input type="radio" name="q1b" value="capteur"> Capteur</label>
+              <label><input type="radio" name="q1b" value="effecteur"> Effecteur</label>
+            </div>
+            <div class="fb" id="fb-q1b"></div>
+          </td>
+        </tr>
+        <tr>
+          <td>Moteur</td>
+          <td>
+            <div class="radio-group" data-correct="actionneur">
+              <label><input type="radio" name="q1c" value="actionneur"> Actionneur</label>
+              <label><input type="radio" name="q1c" value="capteur"> Capteur</label>
+              <label><input type="radio" name="q1c" value="effecteur"> Effecteur</label>
+            </div>
+            <div class="fb" id="fb-q1c"></div>
+          </td>
+        </tr>
+        <tr>
+          <td>Photorésistance</td>
+          <td>
+            <div class="radio-group" data-correct="capteur">
+              <label><input type="radio" name="q1d" value="actionneur"> Actionneur</label>
+              <label><input type="radio" name="q1d" value="capteur"> Capteur</label>
+              <label><input type="radio" name="q1d" value="effecteur"> Effecteur</label>
+            </div>
+            <div class="fb" id="fb-q1d"></div>
+          </td>
+        </tr>
+        <tr>
+          <td>Toile</td>
+          <td>
+            <div class="radio-group" data-correct="effecteur">
+              <label><input type="radio" name="q1e" value="actionneur"> Actionneur</label>
+              <label><input type="radio" name="q1e" value="capteur"> Capteur</label>
+              <label><input type="radio" name="q1e" value="effecteur"> Effecteur</label>
+            </div>
+            <div class="fb" id="fb-q1e"></div>
+          </td>
+        </tr>
+        <tr>
+          <td>Voyant</td>
+          <td>
+            <div class="radio-group" data-correct="effecteur">
+              <label><input type="radio" name="q1f" value="actionneur"> Actionneur</label>
+              <label><input type="radio" name="q1f" value="capteur"> Capteur</label>
+              <label><input type="radio" name="q1f" value="effecteur"> Effecteur</label>
+            </div>
+            <div class="fb" id="fb-q1f"></div>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <!-- ══ QUESTION 2 ══ -->
+  <div class="question-block">
+    <h2>
+      <span class="q-num">Q.2</span>
+      Complétez le <strong>diagramme fonctionnel</strong> du store automatique.
+    </h2>
+    <p style="font-size:.85rem;color:var(--gris);margin-bottom:1rem;">Choisissez dans la liste déroulante la bonne réponse pour chaque case vide.</p>
+
+    <!--
+      Structure : Fonction d'usage  ─►  Fonction technique  ─►  Solution technologique
+      Lignes manquantes alternent FU ou ST selon le site original.
+    -->
+    <div style="overflow-x:auto;">
+    <table class="diag-table">
+      <thead>
+        <tr>
+          <th>Fonction d'usage</th>
+          <th>◄►</th>
+          <th>Fonction technique</th>
+          <th>◄►</th>
+          <th>Solution technologique</th>
+        </tr>
+      </thead>
+      <tbody>
+
+        <!-- ligne 1 : FT fixe, ST à choisir -->
+        <tr>
+          <td class="col-fixed" rowspan="2">Protéger une zone du soleil</td>
+          <td class="col-arrow" rowspan="2">—</td>
+          <td class="col-fixed">Contrôler l'ensemble du système</td>
+          <td class="col-arrow">—</td>
+          <td>
+            <select id="q2-r1" data-correct="Carte électronique">
+              <option value="">— choisir —</option>
+              <option>Alimenter le système en énergie</option>
+              <option>Anémomètre</option>
+              <option>Carte électronique</option>
+              <option>Commander manuellement le store</option>
+              <option>Faire de l'ombre</option>
+              <option>Maintenir la toile tendue</option>
+              <option>Mesurer la luminosité</option>
+              <option>Moteur</option>
+              <option>Piloter le store à distance</option>
+              <option>Réduire la vitesse de rotation</option>
+              <option>Réseau EDF</option>
+              <option>Télécommande</option>
+              <option>Tube d'enroulement</option>
+              <option>Voyants</option>
+            </select>
+            <div class="fb" id="fb-q2-r1"></div>
+          </td>
+        </tr>
+
+        <!-- ligne 2 : FT vide, ST fixe = Boîtier d'alimentation -->
+        <tr>
+          <td>
+            <select id="q2-r2" data-correct="Alimenter le système en énergie">
+              <option value="">— choisir —</option>
+              <option>Alimenter le système en énergie</option>
+              <option>Commander manuellement le store</option>
+              <option>Contrôler l'ensemble du système</option>
+              <option>Dérouler / Enrouler la toile</option>
+              <option>Faire de l'ombre</option>
+              <option>Générer la rotation du tube</option>
+              <option>Informer l'utilisateur</option>
+              <option>Mesurer la luminosité</option>
+              <option>Mesurer la vitesse du vent</option>
+              <option>Piloter le store à distance</option>
+              <option>Réduire la vitesse de rotation</option>
+            </select>
+            <div class="fb" id="fb-q2-r2"></div>
+          </td>
+          <td class="col-arrow">—</td>
+          <td class="col-fixed">Boîtier d'alimentation</td>
+        </tr>
+
+        <!-- ligne 3 : FT vide, ST fixe = Boutons de commande -->
+        <tr>
+          <td>
+            <select id="q2-r3" data-correct="Commander manuellement le store">
+              <option value="">— choisir —</option>
+              <option>Alimenter le système en énergie</option>
+              <option>Commander manuellement le store</option>
+              <option>Contrôler l'ensemble du système</option>
+              <option>Dérouler / Enrouler la toile</option>
+              <option>Faire de l'ombre</option>
+              <option>Générer la rotation du tube</option>
+              <option>Informer l'utilisateur</option>
+              <option>Mesurer la luminosité</option>
+              <option>Mesurer la vitesse du vent</option>
+              <option>Piloter le store à distance</option>
+              <option>Réduire la vitesse de rotation</option>
+            </select>
+            <div class="fb" id="fb-q2-r3"></div>
+          </td>
+          <td class="col-arrow">—</td>
+          <td class="col-fixed">Boutons de commande</td>
+          <td class="col-arrow">—</td>
+          <td class="col-fixed"></td>
+        </tr>
+
+        <!-- ligne 4 : FU fixe, ST vide = Voyants -->
+        <tr>
+          <td class="col-fixed">Informer l'utilisateur</td>
+          <td class="col-arrow">—</td>
+          <td>
+            <select id="q2-r4" data-correct="Signaler l'état du système">
+              <option value="">— choisir —</option>
+              <option>Alimenter le système en énergie</option>
+              <option>Commander manuellement le store</option>
+              <option>Signaler l'état du système</option>
+              <option>Faire de l'ombre</option>
+              <option>Mesurer la luminosité</option>
+              <option>Mesurer la vitesse du vent</option>
+              <option>Réduire la vitesse de rotation</option>
+            </select>
+            <div class="fb" id="fb-q2-r4"></div>
+          </td>
+          <td class="col-arrow">—</td>
+          <td>
+            <select id="q2-r4b" data-correct="Voyants">
+              <option value="">— choisir —</option>
+              <option>Alimenter le système en énergie</option>
+              <option>Anémomètre</option>
+              <option>Carte électronique</option>
+              <option>Commander manuellement le store</option>
+              <option>Faire de l'ombre</option>
+              <option>Maintenir la toile tendue</option>
+              <option>Mesurer la luminosité</option>
+              <option>Moteur</option>
+              <option>Piloter le store à distance</option>
+              <option>Réduire la vitesse de rotation</option>
+              <option>Réseau EDF</option>
+              <option>Télécommande</option>
+              <option>Tube d'enroulement</option>
+              <option>Voyants</option>
+            </select>
+            <div class="fb" id="fb-q2-r4b"></div>
+          </td>
+        </tr>
+
+        <!-- ligne 5 : FU fixe, ST vide = Anémomètre -->
+        <tr>
+          <td class="col-fixed">Mesurer la vitesse du vent</td>
+          <td class="col-arrow">—</td>
+          <td class="col-fixed">Détecter la vitesse du vent</td>
+          <td class="col-arrow">—</td>
+          <td>
+            <select id="q2-r5" data-correct="Anémomètre">
+              <option value="">— choisir —</option>
+              <option>Alimenter le système en énergie</option>
+              <option>Anémomètre</option>
+              <option>Carte électronique</option>
+              <option>Commander manuellement le store</option>
+              <option>Faire de l'ombre</option>
+              <option>Maintenir la toile tendue</option>
+              <option>Mesurer la luminosité</option>
+              <option>Moteur</option>
+              <option>Piloter le store à distance</option>
+              <option>Réduire la vitesse de rotation</option>
+              <option>Réseau EDF</option>
+              <option>Télécommande</option>
+              <option>Tube d'enroulement</option>
+              <option>Voyants</option>
+            </select>
+            <div class="fb" id="fb-q2-r5"></div>
+          </td>
+        </tr>
+
+        <!-- ligne 6 : FT vide, ST fixe = Photorésistance -->
+        <tr>
+          <td>
+            <select id="q2-r6" data-correct="Mesurer la luminosité">
+              <option value="">— choisir —</option>
+              <option>Alimenter le système en énergie</option>
+              <option>Commander manuellement le store</option>
+              <option>Contrôler l'ensemble du système</option>
+              <option>Dérouler / Enrouler la toile</option>
+              <option>Faire de l'ombre</option>
+              <option>Générer la rotation du tube</option>
+              <option>Informer l'utilisateur</option>
+              <option>Mesurer la luminosité</option>
+              <option>Mesurer la vitesse du vent</option>
+              <option>Piloter le store à distance</option>
+              <option>Réduire la vitesse de rotation</option>
+            </select>
+            <div class="fb" id="fb-q2-r6"></div>
+          </td>
+          <td class="col-arrow">—</td>
+          <td class="col-fixed">Détecter la luminosité</td>
+          <td class="col-arrow">—</td>
+          <td class="col-fixed">Photorésistance</td>
+        </tr>
+
+        <!-- ligne 7 : FU fixe, ST vide = Moteur -->
+        <tr>
+          <td class="col-fixed">Générer la rotation du tube</td>
+          <td class="col-arrow">—</td>
+          <td class="col-fixed">Convertir l'énergie électrique en rotation</td>
+          <td class="col-arrow">—</td>
+          <td>
+            <select id="q2-r7" data-correct="Moteur">
+              <option value="">— choisir —</option>
+              <option>Alimenter le système en énergie</option>
+              <option>Anémomètre</option>
+              <option>Carte électronique</option>
+              <option>Commander manuellement le store</option>
+              <option>Faire de l'ombre</option>
+              <option>Maintenir la toile tendue</option>
+              <option>Mesurer la luminosité</option>
+              <option>Moteur</option>
+              <option>Piloter le store à distance</option>
+              <option>Réduire la vitesse de rotation</option>
+              <option>Réseau EDF</option>
+              <option>Télécommande</option>
+              <option>Tube d'enroulement</option>
+              <option>Voyants</option>
+            </select>
+            <div class="fb" id="fb-q2-r7"></div>
+          </td>
+        </tr>
+
+        <!-- ligne 8 : FT vide, ST fixe = Engrenages -->
+        <tr>
+          <td>
+            <select id="q2-r8" data-correct="Réduire la vitesse de rotation">
+              <option value="">— choisir —</option>
+              <option>Alimenter le système en énergie</option>
+              <option>Commander manuellement le store</option>
+              <option>Contrôler l'ensemble du système</option>
+              <option>Dérouler / Enrouler la toile</option>
+              <option>Faire de l'ombre</option>
+              <option>Générer la rotation du tube</option>
+              <option>Informer l'utilisateur</option>
+              <option>Mesurer la luminosité</option>
+              <option>Mesurer la vitesse du vent</option>
+              <option>Piloter le store à distance</option>
+              <option>Réduire la vitesse de rotation</option>
+            </select>
+            <div class="fb" id="fb-q2-r8"></div>
+          </td>
+          <td class="col-arrow">—</td>
+          <td class="col-fixed">Adapter la vitesse de rotation</td>
+          <td class="col-arrow">—</td>
+          <td class="col-fixed">Engrenages</td>
+        </tr>
+
+        <!-- ligne 9 : FU fixe, ST vide = Tube d'enroulement -->
+        <tr>
+          <td class="col-fixed">Dérouler / Enrouler la toile</td>
+          <td class="col-arrow">—</td>
+          <td class="col-fixed">Transmettre le mouvement à la toile</td>
+          <td class="col-arrow">—</td>
+          <td>
+            <select id="q2-r9" data-correct="Tube d'enroulement">
+              <option value="">— choisir —</option>
+              <option>Alimenter le système en énergie</option>
+              <option>Anémomètre</option>
+              <option>Carte électronique</option>
+              <option>Commander manuellement le store</option>
+              <option>Faire de l'ombre</option>
+              <option>Maintenir la toile tendue</option>
+              <option>Mesurer la luminosité</option>
+              <option>Moteur</option>
+              <option>Piloter le store à distance</option>
+              <option>Réduire la vitesse de rotation</option>
+              <option>Réseau EDF</option>
+              <option>Télécommande</option>
+              <option>Tube d'enroulement</option>
+              <option>Voyants</option>
+            </select>
+            <div class="fb" id="fb-q2-r9"></div>
+          </td>
+        </tr>
+
+        <!-- ligne 10 : FT vide, ST fixe = Bras articulés -->
+        <tr>
+          <td>
+            <select id="q2-r10" data-correct="Maintenir la toile tendue">
+              <option value="">— choisir —</option>
+              <option>Alimenter le système en énergie</option>
+              <option>Commander manuellement le store</option>
+              <option>Contenir le mouvement de la toile</option>
+              <option>Dérouler / Enrouler la toile</option>
+              <option>Faire de l'ombre</option>
+              <option>Générer la rotation du tube</option>
+              <option>Informer l'utilisateur</option>
+              <option>Maintenir la toile tendue</option>
+              <option>Mesurer la luminosité</option>
+              <option>Mesurer la vitesse du vent</option>
+              <option>Réduire la vitesse de rotation</option>
+            </select>
+            <div class="fb" id="fb-q2-r10"></div>
+          </td>
+          <td class="col-arrow">—</td>
+          <td class="col-fixed">Guider et maintenir la toile</td>
+          <td class="col-arrow">—</td>
+          <td class="col-fixed">Bras articulés</td>
+        </tr>
+
+        <!-- ligne 11 : FT vide, ST fixe = Toile -->
+        <tr>
+          <td>
+            <select id="q2-r11" data-correct="Faire de l'ombre">
+              <option value="">— choisir —</option>
+              <option>Alimenter le système en énergie</option>
+              <option>Commander manuellement le store</option>
+              <option>Dérouler / Enrouler la toile</option>
+              <option>Faire de l'ombre</option>
+              <option>Filtrer la lumière solaire</option>
+              <option>Générer la rotation du tube</option>
+              <option>Informer l'utilisateur</option>
+              <option>Maintenir la toile tendue</option>
+              <option>Mesurer la luminosité</option>
+              <option>Mesurer la vitesse du vent</option>
+              <option>Réduire la vitesse de rotation</option>
+            </select>
+            <div class="fb" id="fb-q2-r11"></div>
+          </td>
+          <td class="col-arrow">—</td>
+          <td class="col-fixed">Bloquer les rayons solaires</td>
+          <td class="col-arrow">—</td>
+          <td class="col-fixed">Toile</td>
+        </tr>
+
+      </tbody>
+    </table>
+    </div>
+  </div>
+
+  <!-- ══ BOUTONS ══ -->
+  <div class="btn-row">
+    <button class="btn btn-primary" onclick="evaluer()">🎯 Évaluer</button>
+    <button class="btn btn-secondary" onclick="reinitialiser()">↩ Recommencer</button>
+    <button class="btn btn-accent" id="btn-correction" onclick="afficherCorrection()" disabled>💡 Voir la correction</button>
+    <button class="btn btn-vert" onclick="ouvrirModalProf()">📤 Exporter les notes (Prof)</button>
+    <button class="btn btn-rouge" onclick="ouvrirModalReinit()">🗑 Réinitialiser les notes (Admin)</button>
+  </div>
+  <div id="compteur-notes" style="margin-top:.75rem;font-size:.85rem;color:var(--gris);text-align:center;font-style:italic;"></div>
+
+  <!-- ══ SCORE ══ -->
+  <div id="score-bloc">
+    <h3>Résultat — <span id="score-nom"></span></h3>
+    <div class="score-value" id="score-val">0 / 0</div>
+    <div class="score-label">bonnes réponses</div>
+    <div class="mention" id="score-mention"></div>
+    <div id="envoi-statut" style="margin-top:.75rem;font-size:.82rem;color:#16a34a;font-weight:600;display:none;">
+      ✅ Note transmise au professeur
+    </div>
+  </div>
+
+</main>
+
+<script>
+/* ═══════════════════════════════════════════
+   Correction Q1
+   ═══════════════════════════════════════════ */
+const q1data = [
+  { name:'q1a', fb:'fb-q1a', correct:'capteur'   },
+  { name:'q1b', fb:'fb-q1b', correct:'capteur'   },
+  { name:'q1c', fb:'fb-q1c', correct:'actionneur'},
+  { name:'q1d', fb:'fb-q1d', correct:'capteur'   },
+  { name:'q1e', fb:'fb-q1e', correct:'effecteur' },
+  { name:'q1f', fb:'fb-q1f', correct:'effecteur' },
+];
+
+/* ═══════════════════════════════════════════
+   Correction Q2
+   ═══════════════════════════════════════════ */
+const q2data = [
+  'q2-r1','q2-r2','q2-r3','q2-r4','q2-r4b',
+  'q2-r5','q2-r6','q2-r7','q2-r8','q2-r9','q2-r10','q2-r11'
+];
+
+// stockage de la dernière note calculée
+let dernierResultat = null;
+
+function noteSur20(score, total) {
+  return Math.round((score / total) * 20 * 10) / 10; // arrondi à 0.5 près
+}
+
+function dateAujourdhui() {
+  const d = new Date();
+  return d.toLocaleDateString('fr-FR');
+}
+
+// registre des évaluations déjà enregistrées (doublon = même nom+prénom+classe)
+const registreDoublons = new Set();
+
+function validerIdentite() {
+  const nom    = document.getElementById('nom').value.trim();
+  const prenom = document.getElementById('prenom').value.trim();
+  const classe = document.getElementById('classe').value;
+  const niveau = document.getElementById('niveau').value;
+  let ok = true;
+
+  [['nom', nom], ['prenom', prenom]].forEach(([id, val]) => {
+    const el = document.getElementById(id);
+    if (!val) { el.classList.add('champ-erreur'); ok = false; }
+    else       { el.classList.remove('champ-erreur'); }
+  });
+  const selClasse = document.getElementById('classe');
+  if (!classe) { selClasse.classList.add('champ-erreur'); ok = false; }
+  else         { selClasse.classList.remove('champ-erreur'); }
+
+  const selNiveau = document.getElementById('niveau');
+  if (!niveau) { selNiveau.classList.add('champ-erreur'); ok = false; }
+  else         { selNiveau.classList.remove('champ-erreur'); }
+
+  const msgEl = document.getElementById('msg-identite');
+  if (!ok) {
+    msgEl.textContent = '⚠ Veuillez renseigner votre nom, prénom, niveau et sélectionner votre classe.';
+    msgEl.style.display = 'block';
+    document.getElementById('nom').scrollIntoView({ behavior:'smooth', block:'center' });
+    return false;
+  }
+
+  // Contrôle doublon
+  const cle = (nom + '|' + prenom + '|' + niveau + '|' + classe).toLowerCase();
+  if (registreDoublons.has(cle)) {
+    msgEl.textContent = `⚠ ${prenom} ${nom} (${classe}) a déjà été évalué(e). Utilisez "Recommencer" pour une nouvelle tentative.`;
+    msgEl.style.display = 'block';
+    document.getElementById('nom').scrollIntoView({ behavior:'smooth', block:'center' });
+    return false;
+  }
+
+  msgEl.style.display = 'none';
+  return { nom, prenom, niveau, classe, cle };
+}
+
+function evaluer() {
+  const identite = validerIdentite();
+  if (!identite) return;
+
+  let score = 0;
+  const total = q1data.length + q2data.length;
+
+  // Q1
+  q1data.forEach(q => {
+    const checked = document.querySelector(`input[name="${q.name}"]:checked`);
+    const fb = document.getElementById(q.fb);
+    const labels = document.querySelectorAll(`input[name="${q.name}"]`);
+    labels.forEach(inp => { inp.parentElement.classList.remove('correct','incorrect'); });
+    fb.style.display = 'block';
+    if (checked) {
+      if (checked.value === q.correct) {
+        checked.parentElement.classList.add('correct');
+        fb.textContent = '✓ Correct !'; fb.className = 'fb ok'; score++;
+      } else {
+        checked.parentElement.classList.add('incorrect');
+        labels.forEach(inp => { if (inp.value === q.correct) inp.parentElement.classList.add('correct'); });
+        fb.textContent = `✗ Réponse attendue : ${q.correct}`; fb.className = 'fb err';
+      }
+    } else {
+      labels.forEach(inp => { if (inp.value === q.correct) inp.parentElement.classList.add('correct'); });
+      fb.textContent = `✗ Réponse attendue : ${q.correct}`; fb.className = 'fb err';
+    }
+  });
+
+  // Q2
+  q2data.forEach(id => {
+    const sel = document.getElementById(id);
+    const fb  = document.getElementById('fb-' + id);
+    const correct = sel.dataset.correct;
+    sel.classList.remove('correct','incorrect');
+    if (fb) fb.style.display = 'block';
+    if (sel.value === correct) {
+      sel.classList.add('correct');
+      if (fb) { fb.textContent = '✓ Correct !'; fb.className = 'fb ok'; } score++;
+    } else {
+      sel.classList.add('incorrect');
+      if (fb) { fb.textContent = `✗ Attendu : ${correct}`; fb.className = 'fb err'; }
+    }
+  });
+
+  const nom    = identite.nom;
+  const prenom = identite.prenom;
+  const niveau = identite.niveau;
+  const classe = identite.classe;
+  const note   = noteSur20(score, total);
+  const date   = dateAujourdhui();
+
+  // Enregistrer dans le registre doublon
+  registreDoublons.add(identite.cle);
+
+  // Verrouiller les champs identité
+  document.getElementById('nom').disabled    = true;
+  document.getElementById('prenom').disabled = true;
+  document.getElementById('classe').disabled = true;
+  document.getElementById('niveau').disabled = true;
+
+  dernierResultat = { nom, prenom, niveau, classe, date, score, total, note };
+  sauvegarderNote(dernierResultat);
+  envoyerNoteServeur(dernierResultat);
+  mettreAJourCompteur();
+
+  // Score bloc
+  const bloc = document.getElementById('score-bloc');
+  bloc.style.display = 'block';
+  document.getElementById('score-nom').textContent = `${prenom} ${nom} — ${classe}`;
+  document.getElementById('score-val').textContent = `${score} / ${total}`;
+
+  const pct = score / total;
+  let mention = '';
+  if      (pct >= .9)  mention = `🏆 Excellent ! Note : ${note}/20`;
+  else if (pct >= .75) mention = `👍 Très bien ! Note : ${note}/20`;
+  else if (pct >= .55) mention = `🙂 Bien, continuez vos efforts. Note : ${note}/20`;
+  else                 mention = `📖 À retravailler — relisez le cours. Note : ${note}/20`;
+  document.getElementById('score-mention').textContent = mention;
+
+  // Note sous le bloc identité
+  const noteBloc = document.getElementById('note-affichee');
+  noteBloc.style.display = 'flex';
+  document.getElementById('note-val').textContent = `${note} / 20`;
+  document.getElementById('note-detail').textContent =
+    `${prenom} ${nom} · ${classe} · ${date} · ${score}/${total} bonne${score > 1 ? 's' : ''} réponse${score > 1 ? 's' : ''}`;
+
+  bloc.scrollIntoView({ behavior:'smooth', block:'center' });
+  if (URL_SCRIPT && URL_SCRIPT !== 'COLLER_ICI_URL_APPS_SCRIPT') {
+    document.getElementById('envoi-statut').style.display = 'block';
+  }
+  debloquerCorrection();
+}
+
+/* ═══════════════════════════════════════════
+   Export CSV
+   ═══════════════════════════════════════════ */
+/* ═══════════════════════════════════════════
+   STOCKAGE CUMULATIF DES NOTES (localStorage)
+   ═══════════════════════════════════════════ */
+const STORAGE_KEY  = 'techexplorer_notes_store';
+const CODE_EXPORT  = 'prof2024';   // ← Code 1 : exporter les notes
+const CODE_REINIT  = 'admin9999';  // ← Code 2 : réinitialiser toutes les notes
+
+/* ── URL de votre Google Apps Script (à remplir après déploiement) ── */
+const URL_SCRIPT = 'COLLER_ICI_URL_APPS_SCRIPT';
+
+/* Envoie la note au Google Sheet via Apps Script */
+function envoyerNoteServeur(r) {
+  if (!URL_SCRIPT || URL_SCRIPT === 'COLLER_ICI_URL_APPS_SCRIPT') return;
+  const params = new URLSearchParams({
+    nom:    r.nom,
+    prenom: r.prenom,
+    niveau: r.niveau,
+    classe: r.classe,
+    date:   r.date,
+    score:  r.score,
+    total:  r.total,
+    note:   r.note,
+    eval:   'Diagramme fonctionnel'
+  });
+  // fetch no-cors : on ne lit pas la réponse, juste on envoie
+  fetch(URL_SCRIPT + '?' + params.toString(), { method: 'GET', mode: 'no-cors' })
+    .catch(() => {}); // silencieux si hors-ligne
+}
+
+function chargerNotes() {
+  try { return JSON.parse(localStorage.getItem(STORAGE_KEY) || '[]'); }
+  catch(e) { return []; }
+}
+
+function sauvegarderNote(r) {
+  const notes = chargerNotes();
+  notes.push(r);
+  localStorage.setItem(STORAGE_KEY, JSON.stringify(notes));
+}
+
+function compterNotes() { return chargerNotes().length; }
+
+function mettreAJourCompteur() {
+  const n = compterNotes();
+  const el = document.getElementById('compteur-notes');
+  if (el) el.textContent = n === 0
+    ? 'Aucune note enregistrée pour cette évaluation.'
+    : `${n} note${n > 1 ? 's' : ''} enregistrée${n > 1 ? 's' : ''} pour cette évaluation.`;
+}
+
+/* ═══════════════════════════════════════════
+   Export CSV cumulatif — tri par niveau + classe
+   ═══════════════════════════════════════════ */
+function exporterCSV() {
+  const notes = chargerNotes();
+  if (notes.length === 0) {
+    alert('Aucune note enregistrée à exporter.');
+    return;
+  }
+  // Tri : niveau → classe → nom → prénom
+  const ordreNiveau = {'5ème':1,'4ème':2,'3ème':3};
+  notes.sort((a, b) => {
+    const niv = (ordreNiveau[a.niveau]||9) - (ordreNiveau[b.niveau]||9);
+    if (niv !== 0) return niv;
+    const cl = (a.classe||'').localeCompare(b.classe||'');
+    if (cl !== 0) return cl;
+    const nom = (a.nom||'').localeCompare(b.nom||'');
+    if (nom !== 0) return nom;
+    return (a.prenom||'').localeCompare(b.prenom||'');
+  });
+  const bom     = '\uFEFF';
+  const entetes = 'Nom;Prénom;Niveau;Classe;Date;Score brut;Total;Note /20\n';
+  const lignes  = notes.map(r =>
+    `${r.nom};${r.prenom};${r.niveau||''};${r.classe};${r.date};${r.score};${r.total};${String(r.note).replace('.',',')}` 
+  ).join('\n');
+  const csv = bom + entetes + lignes + '\n';
+
+  const blob = new Blob([csv], { type: 'text/csv;charset=utf-8;' });
+  const url  = URL.createObjectURL(blob);
+  const a    = document.createElement('a');
+  a.href     = url;
+  const today = new Date().toLocaleDateString('fr-FR').replace(/\//g,'-');
+  a.download  = `notes_export_${today}.csv`;
+  document.body.appendChild(a); a.click();
+  document.body.removeChild(a);
+  URL.revokeObjectURL(url);
+}
+
+/* ═══════════════════════════════════════════
+   État correction
+   ═══════════════════════════════════════════ */
+let evaluationValidee = false;
+
+function debloquerCorrection() {
+  evaluationValidee = true;
+  const btn = document.getElementById('btn-correction');
+  btn.disabled = false; btn.title = '';
+}
+
+/* ═══════════════════════════════════════════
+   2 codes professeur
+   ═══════════════════════════════════════════ */
+let actionModal = 'export';
+
+function ouvrirModalProf() {
+  if (!dernierResultat) {
+    alert("Veuillez d'abord évaluer le QCM avant d'exporter.");
+    return;
+  }
+  actionModal = 'export';
+  document.getElementById('modal-titre').textContent = '📤 Exporter les notes';
+  document.getElementById('modal-desc').textContent  =
+    'Entrez le code professeur pour télécharger toutes les notes en CSV (triées par niveau et classe).';
+  document.getElementById('code-prof').value = '';
+  document.getElementById('modal-erreur').textContent = '';
+  document.getElementById('modal-prof').classList.add('open');
+  setTimeout(() => document.getElementById('code-prof').focus(), 100);
+}
+
+function ouvrirModalReinit() {
+  actionModal = 'reinit';
+  document.getElementById('modal-titre').textContent = '🗑 Réinitialiser les notes';
+  document.getElementById('modal-desc').textContent  =
+    'Entrez le code administrateur pour effacer TOUTES les notes enregistrées. Action irréversible.';
+  document.getElementById('code-prof').value = '';
+  document.getElementById('modal-erreur').textContent = '';
+  document.getElementById('modal-prof').classList.add('open');
+  setTimeout(() => document.getElementById('code-prof').focus(), 100);
+}
+
+function fermerModal() {
+  document.getElementById('modal-prof').classList.remove('open');
+}
+
+function validerCode() {
+  const saisi = document.getElementById('code-prof').value;
+  if (actionModal === 'export') {
+    if (saisi === CODE_EXPORT) {
+      fermerModal(); exporterCSV();
+    } else {
+      document.getElementById('modal-erreur').textContent = '❌ Code incorrect, réessayez.';
+      document.getElementById('code-prof').value = '';
+      document.getElementById('code-prof').focus();
+    }
+  } else {
+    if (saisi === CODE_REINIT) {
+      fermerModal();
+      localStorage.removeItem(STORAGE_KEY);
+      mettreAJourCompteur();
+      alert('✅ Toutes les notes ont été effacées.');
+    } else {
+      document.getElementById('modal-erreur').textContent = '❌ Code administrateur incorrect.';
+      document.getElementById('code-prof').value = '';
+      document.getElementById('code-prof').focus();
+    }
+  }
+}
+
+document.addEventListener('DOMContentLoaded', function() {
+  document.getElementById('modal-prof').addEventListener('click', function(e) {
+    if (e.target === this) fermerModal();
+  });
+  mettreAJourCompteur();
+});
+
+
+function reinitialiser() {
+  evaluationValidee = false;
+  const btn = document.getElementById('btn-correction');
+  btn.disabled = true;
+  // Déverrouiller les champs identité
+  document.getElementById('nom').disabled    = false;
+  document.getElementById('prenom').disabled = false;
+  document.getElementById('classe').disabled = false;
+  document.getElementById('niveau').disabled = false;
+  document.getElementById('nom').classList.remove('champ-erreur');
+  document.getElementById('prenom').classList.remove('champ-erreur');
+  document.getElementById('classe').classList.remove('champ-erreur');
+  document.getElementById('niveau').classList.remove('champ-erreur');
+  document.getElementById('msg-identite').style.display = 'none';
+  q1data.forEach(q => {
+    document.querySelectorAll(`input[name="${q.name}"]`).forEach(inp => {
+      inp.checked = false; inp.parentElement.classList.remove('correct','incorrect');
+    });
+    const fb = document.getElementById(q.fb);
+    fb.style.display = 'none'; fb.textContent = '';
+  });
+  q2data.forEach(id => {
+    const sel = document.getElementById(id);
+    sel.value = ''; sel.classList.remove('correct','incorrect');
+    const fb = document.getElementById('fb-' + id);
+    if (fb) { fb.style.display = 'none'; fb.textContent = ''; }
+  });
+  document.getElementById('score-bloc').style.display = 'none';
+  document.getElementById('note-affichee').style.display = 'none';
+  dernierResultat = null;
+}
+
+function afficherCorrection() {
+  q1data.forEach(q => {
+    document.querySelectorAll(`input[name="${q.name}"]`).forEach(inp => {
+      inp.parentElement.classList.remove('correct','incorrect');
+      if (inp.value === q.correct) { inp.checked = true; inp.parentElement.classList.add('correct'); }
+    });
+    const fb = document.getElementById(q.fb);
+    fb.textContent = `✓ Réponse : ${q.correct}`; fb.className = 'fb ok'; fb.style.display = 'block';
+  });
+  q2data.forEach(id => {
+    const sel = document.getElementById(id);
+    sel.value = sel.dataset.correct;
+    sel.classList.remove('incorrect'); sel.classList.add('correct');
+    const fb = document.getElementById('fb-' + id);
+    if (fb) { fb.textContent = `✓ Réponse : ${sel.dataset.correct}`; fb.className = 'fb ok'; fb.style.display = 'block'; }
+  });
+}
+</script>
+<!-- ════ MODAL CODE PROF ════ -->
+<div class="modal-overlay" id="modal-prof">
+  <div class="modal-box">
+    <div class="lock-icon">🔐</div>
+    <h3 id="modal-titre">Accès réservé</h3>
+    <p id="modal-desc">Entrez le code pour continuer.</p>
+    <input type="password" id="code-prof" placeholder="••••" maxlength="12"
+           onkeydown="if(event.key==='Enter') validerCode()">
+    <div class="modal-erreur" id="modal-erreur"></div>
+    <div class="modal-btns">
+      <button class="btn btn-secondary" onclick="fermerModal()">Annuler</button>
+      <button class="btn btn-vert" onclick="validerCode()">✔ Valider</button>
+    </div>
+  </div>
+</div>
+
+</body>
+</html>

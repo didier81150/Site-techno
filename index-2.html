@@ -1,0 +1,380 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>TechExplorer 🚀 — Technologie Collège</title>
+  <style>
+    :root {
+      --primary: #1a1a2e;
+      --accent: #e94560;
+      --accent2: #0f3460;
+      --bg: #f0f2f5;
+      --card: #ffffff;
+      --text: #2d3436;
+      --text-muted: #636e72;
+      --border: #dfe6e9;
+      --success: #00b894;
+      --c5: #0984e3;
+      --c4: #6c5ce7;
+      --c3: #e94560;
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      font-family: 'Segoe UI', system-ui, sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+    }
+
+    /* HEADER */
+    header {
+      background: var(--primary);
+      color: white;
+      padding: 0 24px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      height: 60px;
+      box-shadow: 0 2px 12px rgba(0,0,0,0.3);
+    }
+    .brand {
+      font-size: 22px;
+      font-weight: 900;
+      letter-spacing: 0.5px;
+    }
+    .brand span { color: var(--accent); }
+    #header-clock {
+      font-family: monospace;
+      font-size: 17px;
+      font-weight: 700;
+      color: var(--accent);
+      letter-spacing: 2px;
+      background: rgba(233,69,96,0.12);
+      padding: 4px 12px;
+      border-radius: 6px;
+    }
+
+    /* HERO */
+    .hero {
+      background: linear-gradient(135deg, var(--primary) 0%, var(--accent2) 100%);
+      color: white;
+      text-align: center;
+      padding: 56px 20px 48px;
+    }
+    .hero h1 {
+      font-size: 36px;
+      font-weight: 900;
+      margin-bottom: 12px;
+    }
+    .hero h1 span { color: var(--accent); }
+    .hero p {
+      font-size: 16px;
+      opacity: 0.85;
+      max-width: 480px;
+      margin: 0 auto;
+      line-height: 1.6;
+    }
+    .hero .school {
+      display: inline-block;
+      margin-top: 16px;
+      background: rgba(255,255,255,0.12);
+      padding: 6px 18px;
+      border-radius: 20px;
+      font-size: 13px;
+      font-weight: 600;
+      letter-spacing: 0.5px;
+    }
+
+    /* LEVEL CARDS */
+    .levels-section {
+      flex: 1;
+      max-width: 900px;
+      margin: 0 auto;
+      padding: 48px 20px;
+      width: 100%;
+    }
+    .levels-title {
+      text-align: center;
+      font-size: 13px;
+      font-weight: 700;
+      color: var(--text-muted);
+      text-transform: uppercase;
+      letter-spacing: 1.5px;
+      margin-bottom: 28px;
+    }
+    .levels-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 20px;
+    }
+    .level-card {
+      background: var(--card);
+      border-radius: 16px;
+      padding: 32px 24px;
+      text-align: center;
+      text-decoration: none;
+      color: var(--text);
+      border: 2px solid transparent;
+      box-shadow: 0 4px 16px rgba(0,0,0,0.08);
+      transition: all 0.25s ease;
+      display: block;
+      position: relative;
+      overflow: hidden;
+    }
+    .level-card::before {
+      content: '';
+      position: absolute;
+      top: 0; left: 0; right: 0;
+      height: 5px;
+    }
+    .level-card.c5::before { background: var(--c5); }
+    .level-card.c4::before { background: var(--c4); }
+    .level-card.c3::before { background: var(--c3); }
+
+    .level-card:hover {
+      transform: translateY(-6px);
+      box-shadow: 0 12px 32px rgba(0,0,0,0.14);
+    }
+    .level-card.c5:hover { border-color: var(--c5); }
+    .level-card.c4:hover { border-color: var(--c4); }
+    .level-card.c3:hover { border-color: var(--c3); }
+
+    .level-emoji { font-size: 48px; margin-bottom: 14px; display: block; }
+    .level-num {
+      font-size: 32px;
+      font-weight: 900;
+      margin-bottom: 4px;
+    }
+    .level-card.c5 .level-num { color: var(--c5); }
+    .level-card.c4 .level-num { color: var(--c4); }
+    .level-card.c3 .level-num { color: var(--c3); }
+
+    .level-label {
+      font-size: 13px;
+      color: var(--text-muted);
+      margin-bottom: 16px;
+    }
+    .level-topics {
+      list-style: none;
+      text-align: left;
+      font-size: 12px;
+      color: var(--text-muted);
+      line-height: 1.9;
+    }
+    .level-topics li::before { content: '→ '; font-weight: 700; }
+    .level-card.c5 .level-topics li::before { color: var(--c5); }
+    .level-card.c4 .level-topics li::before { color: var(--c4); }
+    .level-card.c3 .level-topics li::before { color: var(--c3); }
+
+    .level-btn {
+      display: inline-block;
+      margin-top: 20px;
+      padding: 9px 22px;
+      border-radius: 8px;
+      font-size: 13px;
+      font-weight: 700;
+      color: white;
+    }
+    .level-card.c5 .level-btn { background: var(--c5); }
+    .level-card.c4 .level-btn { background: var(--c4); }
+    .level-card.c3 .level-btn { background: var(--c3); }
+
+    /* SIDEBAR RESOURCES strip */
+    .resources-strip {
+      background: white;
+      border-top: 1px solid var(--border);
+      padding: 20px;
+    }
+    .resources-strip h3 {
+      text-align: center;
+      font-size: 12px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      color: var(--text-muted);
+      margin-bottom: 14px;
+    }
+    .resources-grid {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      justify-content: center;
+      max-width: 900px;
+      margin: 0 auto;
+    }
+    .res-group {
+      background: var(--bg);
+      border-radius: 10px;
+      padding: 10px 14px;
+      min-width: 140px;
+    }
+    .res-group-title {
+      font-size: 10px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.8px;
+      color: var(--text-muted);
+      margin-bottom: 6px;
+    }
+    .res-group a {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      font-size: 12px;
+      color: var(--text);
+      text-decoration: none;
+      padding: 3px 0;
+      transition: color 0.15s;
+    }
+    .res-group a:hover { color: var(--accent); }
+
+    /* FOOTER */
+    footer {
+      background: var(--primary);
+      color: #888;
+      text-align: center;
+      padding: 16px;
+      font-size: 11px;
+    }
+    footer strong { color: var(--accent); }
+    footer a { color: #aaa; text-decoration: none; }
+    footer a:hover { color: var(--accent); }
+
+    @media (max-width: 700px) {
+      .levels-grid { grid-template-columns: 1fr; }
+      .hero h1 { font-size: 26px; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- HEADER -->
+<header>
+  <div class="brand">🚀 <span>Tech</span>Explorer</div>
+  <div id="header-clock">00:00:00</div>
+</header>
+
+<!-- HERO -->
+<div class="hero">
+  <h1>Bienvenue sur <span>TechExplorer</span> 🚀</h1>
+  <p>Ton espace de classe inversée en Technologie. Prépare tes séquences avant le cours et progresse à ton rythme.</p>
+  <span class="school">🏫 Collège Louis Pasteur · Graulhet</span>
+</div>
+
+<!-- LEVELS -->
+<div class="levels-section">
+  <div class="levels-title">Choisis ton niveau</div>
+  <div class="levels-grid">
+
+    <!-- 5ème -->
+    <a href="5eme.html" class="level-card c5">
+      <span class="level-emoji">🏗️</span>
+      <div class="level-num">5ème</div>
+      <div class="level-label">Cycle 4 — Année 1</div>
+      <ul class="level-topics">
+        <li>Construction & matériaux</li>
+        <li>Énergie & environnement</li>
+        <li>Objets techniques</li>
+        <li>Dessin technique</li>
+        <li>Développement durable</li>
+      </ul>
+      <span class="level-btn">Accéder →</span>
+    </a>
+
+    <!-- 4ème -->
+    <a href="4eme.html" class="level-card c4">
+      <span class="level-emoji">🤖</span>
+      <div class="level-num">4ème</div>
+      <div class="level-label">Cycle 4 — Année 2</div>
+      <ul class="level-topics">
+        <li>Systèmes automatiques</li>
+        <li>Capteurs & actionneurs</li>
+        <li>Programmation</li>
+        <li>Chaînes fonctionnelles</li>
+        <li>Domotique</li>
+      </ul>
+      <span class="level-btn">Accéder →</span>
+    </a>
+
+    <!-- 3ème -->
+    <a href="3eme.html" class="level-card c3">
+      <span class="level-emoji">🎓</span>
+      <div class="level-num">3ème</div>
+      <div class="level-label">Cycle 4 — Année 3</div>
+      <ul class="level-topics">
+        <li>Analyse fonctionnelle</li>
+        <li>Énergie & puissance</li>
+        <li>Programmation avancée</li>
+        <li>Stage d'observation</li>
+        <li>Préparation DNB</li>
+      </ul>
+      <span class="level-btn">Accéder →</span>
+    </a>
+
+  </div>
+</div>
+
+<!-- RESOURCES STRIP -->
+<div class="resources-strip">
+  <h3>🔗 Ressources utiles</h3>
+  <div class="resources-grid">
+    <div class="res-group">
+      <div class="res-group-title">🔍 Recherche</div>
+      <a href="https://www.duckduckgo.com/" target="_blank">🦆 DuckDuckGo</a>
+      <a href="https://www.ecosia.org/" target="_blank">🌿 Ecosia</a>
+      <a href="https://www.google.fr/" target="_blank">🔎 Google</a>
+      <a href="https://www.qwant.com/" target="_blank">🔵 Qwant</a>
+    </div>
+    <div class="res-group">
+      <div class="res-group-title">📖 Dictionnaires</div>
+      <a href="https://www.le-dictionnaire.com/" target="_blank">📘 Dictionnaire</a>
+      <a href="https://www.larousse.fr/" target="_blank">📕 Larousse</a>
+      <a href="https://dictionnaire.lerobert.com/" target="_blank">📗 Le Robert</a>
+    </div>
+    <div class="res-group">
+      <div class="res-group-title">🌐 Encyclopédies</div>
+      <a href="https://fr.vikidia.org/" target="_blank">📙 Vikidia</a>
+      <a href="https://fr.wikimini.org/" target="_blank">📒 Wikimini</a>
+      <a href="https://fr.wikipedia.org/" target="_blank">📓 Wikipédia</a>
+    </div>
+    <div class="res-group">
+      <div class="res-group-title">🌤️ Météo</div>
+      <a href="https://vigilance.meteofrance.fr/fr" target="_blank">🗺️ Météo-France</a>
+      <a href="https://www.vigicrues.gouv.fr/" target="_blank">🌊 Vigicrues</a>
+    </div>
+    <div class="res-group">
+      <div class="res-group-title">💾 Logiciels gratuits</div>
+      <a href="https://www.mozilla.org/fr/firefox/" target="_blank">🦊 Firefox</a>
+      <a href="https://www.sumatrapdfreader.org/" target="_blank">📄 Sumatra PDF</a>
+      <a href="https://ruffle.rs/" target="_blank">🎞️ Ruffle</a>
+    </div>
+  </div>
+</div>
+
+<!-- FOOTER -->
+<footer>
+  <div>🚀 <strong>TechExplorer</strong> — Cours de Technologie · Collège Louis Pasteur, Graulhet</div>
+  <div style="margin-top:6px;">
+    <a href="#">À propos</a> &nbsp;|&nbsp;
+    <a href="#">Mentions légales</a> &nbsp;|&nbsp;
+    <a href="https://creativecommons.org/licenses/by-nc-nd/3.0/fr/" target="_blank">CC BY-NC-ND 3.0</a>
+  </div>
+</footer>
+
+<script>
+  function updateClock() {
+    const now = new Date();
+    const h = String(now.getHours()).padStart(2,'0');
+    const m = String(now.getMinutes()).padStart(2,'0');
+    const s = String(now.getSeconds()).padStart(2,'0');
+    document.getElementById('header-clock').textContent = h+':'+m+':'+s;
+  }
+  updateClock();
+  setInterval(updateClock, 1000);
+</script>
+</body>
+</html>

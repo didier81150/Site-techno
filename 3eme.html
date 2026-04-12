@@ -1,0 +1,998 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>TechExplorer 🚀 — Technologie 3ème</title>
+  <style>
+    :root {
+      --primary: #1a1a2e;
+      --accent: #e94560;
+      --accent2: #0f3460;
+      --bg: #f0f2f5;
+      --card: #ffffff;
+      --text: #2d3436;
+      --text-muted: #636e72;
+      --border: #dfe6e9;
+      --success: #00b894;
+      --warning: #fdcb6e;
+      --locked: #b2bec3;
+      --progress: #6c5ce7;
+      --sidebar-w: 230px;
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      font-family: 'Segoe UI', system-ui, sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      min-height: 100vh;
+    }
+
+    /* ── HEADER ── */
+    header {
+      background: var(--primary);
+      color: white;
+      padding: 0 20px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      height: 56px;
+      position: sticky;
+      top: 0;
+      z-index: 200;
+      box-shadow: 0 2px 12px rgba(0,0,0,0.3);
+    }
+    .header-brand {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      font-size: 20px;
+      font-weight: 800;
+      letter-spacing: 0.5px;
+    }
+    .header-brand span { color: var(--accent); }
+    .header-class {
+      background: var(--accent);
+      color: white;
+      font-size: 11px;
+      font-weight: 700;
+      padding: 3px 10px;
+      border-radius: 20px;
+      letter-spacing: 1px;
+    }
+    .header-right {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+    }
+    #header-clock {
+      font-family: monospace;
+      font-size: 16px;
+      font-weight: 700;
+      color: var(--accent);
+      letter-spacing: 2px;
+      background: rgba(233,69,96,0.12);
+      padding: 4px 10px;
+      border-radius: 6px;
+    }
+    .btn-resources {
+      background: var(--accent2);
+      color: white;
+      border: none;
+      padding: 6px 14px;
+      border-radius: 6px;
+      font-size: 12px;
+      font-weight: 600;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      transition: background 0.2s;
+    }
+    .btn-resources:hover { background: #1a4a8a; }
+
+    /* ── LAYOUT ── */
+    .page-layout {
+      max-width: 1200px;
+      margin: 0 auto;
+      display: grid;
+      grid-template-columns: 1fr var(--sidebar-w);
+      gap: 20px;
+      padding: 20px 16px;
+      align-items: start;
+    }
+
+    /* ── SIDEBAR ── */
+    #sidebar {
+      position: sticky;
+      top: 74px;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+
+    .sb-card {
+      background: var(--card);
+      border-radius: 10px;
+      overflow: hidden;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.07);
+      border: 1px solid var(--border);
+    }
+    .sb-card h3 {
+      background: var(--primary);
+      color: white;
+      font-size: 11px;
+      font-weight: 700;
+      padding: 7px 12px;
+      text-transform: uppercase;
+      letter-spacing: 0.8px;
+    }
+    .sb-body {
+      padding: 8px 10px;
+    }
+    .sb-body a {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      padding: 5px 4px;
+      color: var(--text);
+      font-size: 12px;
+      text-decoration: none;
+      border-radius: 5px;
+      transition: background 0.15s, color 0.15s;
+    }
+    .sb-body a:hover {
+      background: #fff4f6;
+      color: var(--accent);
+    }
+    .sb-ico { font-size: 15px; width: 20px; text-align: center; flex-shrink: 0; }
+
+    /* Clock in sidebar */
+    #sb-clock {
+      font-size: 26px;
+      font-weight: 800;
+      color: var(--accent);
+      text-align: center;
+      padding: 12px 8px 8px;
+      letter-spacing: 3px;
+      font-family: monospace;
+    }
+    .sb-date {
+      text-align: center;
+      font-size: 11px;
+      color: var(--text-muted);
+      padding-bottom: 10px;
+    }
+
+    /* Météo links */
+    .sb-meteo a {
+      flex-direction: column;
+      align-items: flex-start;
+      gap: 2px;
+      padding: 6px 4px;
+    }
+    .sb-meteo a .meteo-label { font-size: 12px; font-weight: 600; }
+    .sb-meteo a .meteo-sub { font-size: 10px; color: var(--text-muted); }
+
+    /* ── MAIN CONTENT ── */
+    #main { min-width: 0; }
+
+    /* Stats bar */
+    .stats-bar {
+      background: var(--card);
+      border-radius: 12px;
+      padding: 16px 20px;
+      display: flex;
+      gap: 20px;
+      align-items: center;
+      margin-bottom: 18px;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.07);
+      border: 1px solid var(--border);
+      flex-wrap: wrap;
+    }
+    .stat-item { text-align: center; }
+    .stat-num {
+      font-size: 26px;
+      font-weight: 900;
+      color: var(--accent);
+      line-height: 1;
+    }
+    .stat-label {
+      font-size: 11px;
+      color: var(--text-muted);
+      margin-top: 2px;
+    }
+    .stat-divider {
+      width: 1px;
+      height: 40px;
+      background: var(--border);
+    }
+    .progress-wrap { flex: 1; min-width: 160px; }
+    .progress-label {
+      font-size: 12px;
+      font-weight: 600;
+      margin-bottom: 6px;
+      display: flex;
+      justify-content: space-between;
+    }
+    .progress-bar {
+      height: 10px;
+      background: #eee;
+      border-radius: 10px;
+      overflow: hidden;
+    }
+    .progress-fill {
+      height: 100%;
+      background: linear-gradient(90deg, var(--progress), var(--accent));
+      border-radius: 10px;
+      width: 12%;
+      transition: width 0.6s ease;
+    }
+
+    /* Filter tabs */
+    .filter-tabs {
+      display: flex;
+      gap: 8px;
+      margin-bottom: 16px;
+      flex-wrap: wrap;
+    }
+    .filter-tab {
+      padding: 6px 16px;
+      border-radius: 20px;
+      font-size: 12px;
+      font-weight: 600;
+      cursor: pointer;
+      border: 2px solid var(--border);
+      background: white;
+      color: var(--text-muted);
+      transition: all 0.2s;
+    }
+    .filter-tab.active {
+      background: var(--accent);
+      color: white;
+      border-color: var(--accent);
+    }
+
+    /* Section title */
+    .section-title {
+      font-size: 13px;
+      font-weight: 700;
+      color: var(--text-muted);
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      margin-bottom: 12px;
+    }
+
+    /* ── SEQUENCE CARDS ── */
+    .seq-card {
+      background: var(--card);
+      border-radius: 12px;
+      margin-bottom: 14px;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.07);
+      border: 1px solid var(--border);
+      overflow: hidden;
+      transition: box-shadow 0.2s;
+    }
+    .seq-card:hover { box-shadow: 0 4px 16px rgba(0,0,0,0.11); }
+
+    .seq-card.done { border-left: 4px solid var(--success); }
+    .seq-card.current { border-left: 4px solid var(--accent); }
+    .seq-card.locked { border-left: 4px solid var(--locked); opacity: 0.75; }
+
+    .seq-header {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      padding: 14px 16px;
+    }
+    .seq-num {
+      width: 36px;
+      height: 36px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: 900;
+      font-size: 14px;
+      flex-shrink: 0;
+    }
+    .done .seq-num { background: var(--success); color: white; }
+    .current .seq-num { background: var(--accent); color: white; }
+    .locked .seq-num { background: var(--locked); color: white; }
+
+    .seq-info { flex: 1; }
+    .seq-title {
+      font-size: 14px;
+      font-weight: 700;
+      margin-bottom: 3px;
+    }
+    .seq-sub {
+      font-size: 11.5px;
+      color: var(--text-muted);
+    }
+    .seq-badge {
+      font-size: 11px;
+      font-weight: 700;
+      padding: 3px 10px;
+      border-radius: 12px;
+    }
+    .done .seq-badge { background: #d4f5ec; color: var(--success); }
+    .current .seq-badge { background: #fdeaea; color: var(--accent); }
+    .locked .seq-badge { background: #f0f0f0; color: var(--locked); }
+
+    /* Resources row */
+    .seq-resources {
+      display: flex;
+      gap: 8px;
+      padding: 0 16px 14px;
+      flex-wrap: wrap;
+    }
+    .res-btn {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      padding: 6px 12px;
+      border-radius: 8px;
+      font-size: 11.5px;
+      font-weight: 600;
+      text-decoration: none;
+      transition: all 0.2s;
+      border: 1.5px solid transparent;
+    }
+    .res-btn.video { background: #fff0f3; color: var(--accent); border-color: #ffd6de; }
+    .res-btn.video:hover { background: var(--accent); color: white; }
+    .res-btn.fiche { background: #f0f4ff; color: var(--accent2); border-color: #c9d8f5; }
+    .res-btn.fiche:hover { background: var(--accent2); color: white; }
+    .res-btn.quiz { background: #fffbf0; color: #e67e22; border-color: #fde9b0; }
+    .res-btn.quiz:hover { background: #e67e22; color: white; }
+    .res-btn.exo { background: #f0fff8; color: var(--success); border-color: #b2ecd8; }
+    .res-btn.exo:hover { background: var(--success); color: white; }
+    .res-btn.tp { background: #f5f0ff; color: var(--progress); border-color: #d9ccf5; }
+    .res-btn.tp:hover { background: var(--progress); color: white; }
+
+    .res-sub { font-size: 10px; font-weight: 400; opacity: 0.8; }
+
+    /* Lock overlay */
+    .seq-lock {
+      padding: 10px 16px 14px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+    .btn-unlock {
+      background: var(--accent2);
+      color: white;
+      border: none;
+      padding: 7px 16px;
+      border-radius: 8px;
+      font-size: 12px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: background 0.2s;
+    }
+    .btn-unlock:hover { background: #1a4a8a; }
+    .lock-hint { font-size: 11px; color: var(--text-muted); }
+
+    /* ── DEDICATED SPACES ── */
+    .spaces-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 14px;
+      margin-top: 6px;
+    }
+    .space-card {
+      background: var(--card);
+      border-radius: 12px;
+      padding: 18px;
+      border: 1px solid var(--border);
+      box-shadow: 0 2px 8px rgba(0,0,0,0.07);
+    }
+    .space-card h3 { font-size: 14px; font-weight: 700; margin-bottom: 6px; }
+    .space-card p { font-size: 12px; color: var(--text-muted); margin-bottom: 12px; line-height: 1.5; }
+    .btn-space {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      background: var(--primary);
+      color: white;
+      padding: 8px 16px;
+      border-radius: 8px;
+      font-size: 12px;
+      font-weight: 600;
+      text-decoration: none;
+      border: none;
+      cursor: pointer;
+      transition: background 0.2s;
+    }
+    .btn-space:hover { background: var(--accent2); color: white; }
+
+    /* ── FOOTER ── */
+    footer {
+      background: var(--primary);
+      color: #888;
+      text-align: center;
+      padding: 16px;
+      font-size: 11px;
+      margin-top: 30px;
+    }
+    footer strong { color: var(--accent); }
+    footer a { color: #aaa; text-decoration: none; }
+    footer a:hover { color: var(--accent); }
+
+    /* ── MODAL ── */
+    .modal-overlay {
+      display: none;
+      position: fixed;
+      inset: 0;
+      background: rgba(0,0,0,0.55);
+      z-index: 500;
+      align-items: center;
+      justify-content: center;
+    }
+    .modal-overlay.open { display: flex; }
+    .modal {
+      background: white;
+      border-radius: 14px;
+      padding: 28px;
+      width: 360px;
+      max-width: 90vw;
+      box-shadow: 0 20px 60px rgba(0,0,0,0.25);
+    }
+    .modal h2 { font-size: 18px; margin-bottom: 8px; }
+    .modal p { font-size: 13px; color: var(--text-muted); margin-bottom: 18px; line-height: 1.5; }
+    .modal input {
+      width: 100%;
+      padding: 10px 14px;
+      border: 2px solid var(--border);
+      border-radius: 8px;
+      font-size: 15px;
+      letter-spacing: 3px;
+      text-align: center;
+      margin-bottom: 8px;
+      outline: none;
+      transition: border-color 0.2s;
+    }
+    .modal input:focus { border-color: var(--accent); }
+    .modal-hint { font-size: 11px; color: var(--text-muted); margin-bottom: 16px; }
+    .modal-btns { display: flex; gap: 10px; justify-content: flex-end; }
+    .btn-cancel {
+      padding: 8px 16px;
+      border: 2px solid var(--border);
+      border-radius: 8px;
+      background: white;
+      font-size: 13px;
+      font-weight: 600;
+      cursor: pointer;
+      color: var(--text-muted);
+    }
+    .btn-confirm {
+      padding: 8px 18px;
+      background: var(--accent);
+      color: white;
+      border: none;
+      border-radius: 8px;
+      font-size: 13px;
+      font-weight: 700;
+      cursor: pointer;
+      transition: background 0.2s;
+    }
+    .btn-confirm:hover { background: #c0392b; }
+
+    /* Stage upload modal */
+    .file-drop {
+      border: 2px dashed var(--border);
+      border-radius: 10px;
+      padding: 24px;
+      text-align: center;
+      margin-bottom: 14px;
+      cursor: pointer;
+      transition: border-color 0.2s;
+    }
+    .file-drop:hover { border-color: var(--accent); }
+    .file-drop .drop-icon { font-size: 32px; margin-bottom: 8px; }
+    .file-drop p { font-size: 12px; color: var(--text-muted); }
+    .file-drop input { display: none; }
+
+    select, .modal select {
+      width: 100%;
+      padding: 8px 12px;
+      border: 2px solid var(--border);
+      border-radius: 8px;
+      font-size: 13px;
+      margin-bottom: 10px;
+      outline: none;
+    }
+    .modal .field-label { font-size: 11px; font-weight: 700; color: var(--text-muted); margin-bottom: 4px; text-transform: uppercase; letter-spacing: 0.5px; }
+
+    /* DNB resources */
+    .dnb-resources { display: flex; flex-direction: column; gap: 8px; }
+    .dnb-res-btn {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      padding: 12px 16px;
+      background: var(--bg);
+      border-radius: 10px;
+      text-decoration: none;
+      color: var(--text);
+      transition: background 0.2s;
+      border: 1px solid var(--border);
+    }
+    .dnb-res-btn:hover { background: #fff4f6; color: var(--accent); }
+    .dnb-res-icon { font-size: 20px; flex-shrink: 0; }
+    .dnb-res-info strong { display: block; font-size: 13px; font-weight: 700; }
+    .dnb-res-info span { font-size: 11px; color: var(--text-muted); }
+
+    /* ── RESPONSIVE ── */
+    @media (max-width: 768px) {
+      .page-layout {
+        grid-template-columns: 1fr;
+        padding: 12px;
+      }
+      #sidebar {
+        position: static;
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 10px;
+      }
+      .spaces-grid { grid-template-columns: 1fr; }
+      #header-clock { display: none; }
+    }
+    @media (max-width: 480px) {
+      #sidebar { grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- HEADER -->
+<header>
+  <div class="header-brand">
+    🚀 <span>Tech</span>Explorer
+  </div>
+  <div class="header-right">
+    <div id="header-clock">00:00:00</div>
+    <span class="header-class">3ème</span>
+  </div>
+</header>
+
+<!-- PAGE LAYOUT -->
+<div class="page-layout">
+
+  <!-- MAIN CONTENT -->
+  <main id="main">
+
+    <!-- Stats bar -->
+    <div class="stats-bar">
+      <div class="stat-item">
+        <div class="stat-num">1</div>
+        <div class="stat-label">Séquences<br>terminées</div>
+      </div>
+      <div class="stat-divider"></div>
+      <div class="stat-item">
+        <div class="stat-num">8</div>
+        <div class="stat-label">Total<br>année</div>
+      </div>
+      <div class="stat-divider"></div>
+      <div class="progress-wrap">
+        <div class="progress-label">
+          <span>🚀 Progression annuelle</span>
+          <span>1 / 8 séquences</span>
+        </div>
+        <div class="progress-bar">
+          <div class="progress-fill"></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Filters -->
+    <div class="filter-tabs">
+      <button class="filter-tab active" onclick="filterSeq('all', this)">Toutes</button>
+      <button class="filter-tab" onclick="filterSeq('todo', this)">À faire</button>
+      <button class="filter-tab" onclick="filterSeq('done', this)">Terminées ✅</button>
+    </div>
+
+    <div class="section-title">Parcours de l'année</div>
+
+    <!-- SEQ 1 - Done -->
+    <div class="seq-card done" data-status="done">
+      <div class="seq-header">
+        <div class="seq-num">✓</div>
+        <div class="seq-info">
+          <div class="seq-title">Séquence 1 — Le monde technique</div>
+          <div class="seq-sub">Besoins, fonctions, objets techniques · 3 semaines</div>
+        </div>
+        <span class="seq-badge">✅ Terminée</span>
+      </div>
+      <div class="seq-resources">
+        <a href="#" class="res-btn video">🎬 Vidéo intro <span class="res-sub">Déjà vue ✓</span></a>
+        <a href="#" class="res-btn fiche">📋 Fiche cours <span class="res-sub">Télécharger PDF</span></a>
+        <a href="eval-3e-s2.html" class="res-btn quiz">⚡ Quiz <span class="res-sub">Terminé ✓</span></a>
+        <a href="eval-3e-s2.html" class="res-btn exo">🔧 Exercices notés <span class="res-sub">Évaluation →</span></a>
+      </div>
+    </div>
+
+    <!-- SEQ 2 - Current -->
+    <div class="seq-card current" data-status="current">
+      <div class="seq-header">
+        <div class="seq-num">▶</div>
+        <div class="seq-info">
+          <div class="seq-title">Séquence 2 — Analyse fonctionnelle</div>
+          <div class="seq-sub">Fonctions d'usage, d'estime, contraintes · 3 semaines</div>
+        </div>
+        <span class="seq-badge">⚡ En cours</span>
+      </div>
+      <div class="seq-resources">
+        <a href="#" class="res-btn video">🎬 Vidéo intro <span class="res-sub">👉 À regarder !</span></a>
+        <a href="#" class="res-btn fiche">📋 Fiche cours <span class="res-sub">Télécharger PDF</span></a>
+        <a href="eval-3e-s2.html" class="res-btn quiz">⚡ Quiz <span class="res-sub">Disponible</span></a>
+        <a href="eval-3e-s2.html" class="res-btn exo">🔧 Exercices notés <span class="res-sub">Évaluation →</span></a>
+        <a href="https://docs.google.com/spreadsheets/d/VOTRE_ID_ICI" target="_blank" class="res-btn tp">📊 TP à rendre <span class="res-sub">→ Google Sheet</span></a>
+      </div>
+    </div>
+
+    <!-- SEQ 3 - Locked -->
+    <div class="seq-card locked" data-status="locked">
+      <div class="seq-header">
+        <div class="seq-num">🔒</div>
+        <div class="seq-info">
+          <div class="seq-title">Séquence 3 — Matériaux et procédés</div>
+          <div class="seq-sub">Propriétés, choix, développement durable · 3 semaines</div>
+        </div>
+        <span class="seq-badge">🔒 Code requis</span>
+      </div>
+      <div class="seq-lock">
+        <button class="btn-unlock" onclick="openUnlock('seq3')">🔑 Entrer le code</button>
+        <span class="lock-hint">Code donné en classe au début de la séquence</span>
+      </div>
+    </div>
+
+    <!-- SEQ 4 - Locked -->
+    <div class="seq-card locked" data-status="locked">
+      <div class="seq-header">
+        <div class="seq-num">🔒</div>
+        <div class="seq-info">
+          <div class="seq-title">Séquence 4 — Énergie et puissance</div>
+          <div class="seq-sub">Sources, conversions, rendement · 3 semaines</div>
+        </div>
+        <span class="seq-badge">🔒 Code requis</span>
+      </div>
+      <div class="seq-lock">
+        <button class="btn-unlock" onclick="openUnlock('seq4')">🔑 Entrer le code</button>
+        <span class="lock-hint">Code donné en classe au début de la séquence</span>
+      </div>
+    </div>
+
+    <!-- SEQ 5 - Locked -->
+    <div class="seq-card locked" data-status="locked">
+      <div class="seq-header">
+        <div class="seq-num">🔒</div>
+        <div class="seq-info">
+          <div class="seq-title">Séquence 5 — Programmation & automatisation</div>
+          <div class="seq-sub">Algorithmes, capteurs, actionneurs · 4 semaines</div>
+        </div>
+        <span class="seq-badge">🔒 Code requis</span>
+      </div>
+      <div class="seq-lock">
+        <button class="btn-unlock" onclick="openUnlock('seq5')">🔑 Entrer le code</button>
+        <span class="lock-hint">Code donné en classe au début de la séquence</span>
+      </div>
+    </div>
+
+    <!-- SEQ 6 - Locked -->
+    <div class="seq-card locked" data-status="locked">
+      <div class="seq-header">
+        <div class="seq-num">🔒</div>
+        <div class="seq-info">
+          <div class="seq-title">Séquence 6 — Communication et réseaux</div>
+          <div class="seq-sub">Internet, données, cybersécurité · 3 semaines</div>
+        </div>
+        <span class="seq-badge">🔒 Code requis</span>
+      </div>
+      <div class="seq-lock">
+        <button class="btn-unlock" onclick="openUnlock('seq6')">🔑 Entrer le code</button>
+        <span class="lock-hint">Code donné en classe au début de la séquence</span>
+      </div>
+    </div>
+
+    <!-- SEQ 7 - Locked (Stage) -->
+    <div class="seq-card locked" data-status="locked">
+      <div class="seq-header">
+        <div class="seq-num">🔒</div>
+        <div class="seq-info">
+          <div class="seq-title">Séquence 7 — Stage d'observation</div>
+          <div class="seq-sub">Rapport de stage · Soutenance · DNB</div>
+        </div>
+        <span class="seq-badge">🏭 Stage · 🔒 Code requis</span>
+      </div>
+      <div class="seq-lock">
+        <button class="btn-unlock" onclick="openUnlock('seq7')">🔑 Entrer le code</button>
+        <span class="lock-hint">Code donné en classe au début de la séquence</span>
+      </div>
+    </div>
+
+    <!-- SEQ 8 - Locked -->
+    <div class="seq-card locked" data-status="locked">
+      <div class="seq-header">
+        <div class="seq-num">🔒</div>
+        <div class="seq-info">
+          <div class="seq-title">Séquence 8 — Projet de fin d'année</div>
+          <div class="seq-sub">Mini-projet collectif · Présentation · Bilan</div>
+        </div>
+        <span class="seq-badge">🔒 Code requis</span>
+      </div>
+      <div class="seq-lock">
+        <button class="btn-unlock" onclick="openUnlock('seq8')">🔑 Entrer le code</button>
+        <span class="lock-hint">Code donné en classe au début de la séquence</span>
+      </div>
+    </div>
+
+    <!-- ── ESPACES DÉDIÉS ── -->
+    <div class="section-title" style="margin-top: 28px;">Espaces dédiés</div>
+    <div class="spaces-grid">
+      <div class="space-card">
+        <h3>🏭 Rapport de stage</h3>
+        <p>Dépose ton rapport de stage au format <strong>PDF uniquement</strong>. L'accès est protégé par un code donné par ton professeur.</p>
+        <button class="btn-space" onclick="openStageCode()">🔑 Accéder au dépôt</button>
+      </div>
+      <div class="space-card">
+        <h3>🎓 Préparation DNB</h3>
+        <p>Fiches académiques, sujets d'annales et corrections. Chaque ressource est accessible avec un code donné par ton professeur.</p>
+        <button class="btn-space" onclick="openDNBCode()">🔑 Accéder aux révisions</button>
+      </div>
+    </div>
+
+  </main>
+
+  <!-- SIDEBAR -->
+  <aside id="sidebar">
+
+    <!-- Horloge -->
+    <div class="sb-card">
+      <h3>⏰ Heure</h3>
+      <div id="sb-clock">00:00:00</div>
+      <div class="sb-date" id="sb-date"></div>
+    </div>
+
+    <!-- Recherche -->
+    <div class="sb-card">
+      <h3>🔍 Recherche</h3>
+      <div class="sb-body">
+        <a href="https://www.duckduckgo.com/" target="_blank"><span class="sb-ico">🦆</span> DuckDuckGo</a>
+        <a href="https://www.ecosia.org/" target="_blank"><span class="sb-ico">🌿</span> Ecosia</a>
+        <a href="https://www.google.fr/" target="_blank"><span class="sb-ico">🔎</span> Google</a>
+        <a href="https://www.qwant.com/" target="_blank"><span class="sb-ico">🔵</span> Qwant</a>
+      </div>
+    </div>
+
+    <!-- Dictionnaires -->
+    <div class="sb-card">
+      <h3>📖 Dictionnaires</h3>
+      <div class="sb-body">
+        <a href="https://www.le-dictionnaire.com/" target="_blank"><span class="sb-ico">📘</span> Dictionnaire</a>
+        <a href="https://www.larousse.fr/" target="_blank"><span class="sb-ico">📕</span> Larousse</a>
+        <a href="https://dictionnaire.lerobert.com/" target="_blank"><span class="sb-ico">📗</span> Le Robert</a>
+      </div>
+    </div>
+
+    <!-- Encyclopédies -->
+    <div class="sb-card">
+      <h3>🌐 Encyclopédies</h3>
+      <div class="sb-body">
+        <a href="https://fr.vikidia.org/" target="_blank"><span class="sb-ico">📙</span> Vikidia</a>
+        <a href="https://fr.wikimini.org/" target="_blank"><span class="sb-ico">📒</span> Wikimini</a>
+        <a href="https://fr.wikipedia.org/" target="_blank"><span class="sb-ico">📓</span> Wikipédia</a>
+      </div>
+    </div>
+
+    <!-- Météo -->
+    <div class="sb-card">
+      <h3>🌤️ Météo</h3>
+      <div class="sb-body sb-meteo">
+        <a href="https://vigilance.meteofrance.fr/fr" target="_blank">
+          <span class="sb-ico">🗺️</span>
+          <div><div class="meteo-label">Météo-France</div><div class="meteo-sub">Vigilance nationale</div></div>
+        </a>
+        <a href="https://www.vigicrues.gouv.fr/" target="_blank">
+          <span class="sb-ico">🌊</span>
+          <div><div class="meteo-label">Vigicrues</div><div class="meteo-sub">Vigilance crues</div></div>
+        </a>
+      </div>
+    </div>
+
+    <!-- Freewares -->
+    <div class="sb-card">
+      <h3>💾 Logiciels gratuits</h3>
+      <div class="sb-body">
+        <a href="https://www.mozilla.org/fr/firefox/" target="_blank"><span class="sb-ico">🦊</span> Mozilla Firefox</a>
+        <a href="https://www.sumatrapdfreader.org/" target="_blank"><span class="sb-ico">📄</span> Sumatra PDF</a>
+        <a href="https://ruffle.rs/" target="_blank"><span class="sb-ico">🎞️</span> Ruffle (Flash)</a>
+      </div>
+    </div>
+
+  </aside>
+
+</div><!-- end .page-layout -->
+
+<!-- FOOTER -->
+<footer>
+  <div>🚀 <strong>TechExplorer</strong> — Cours de Technologie · Collège Louis Pasteur, Graulhet</div>
+  <div style="margin-top:6px;">
+    <a href="#">À propos</a> &nbsp;|&nbsp;
+    <a href="#">Mentions légales</a> &nbsp;|&nbsp;
+    <a href="https://creativecommons.org/licenses/by-nc-nd/3.0/fr/" target="_blank">CC BY-NC-ND 3.0</a>
+  </div>
+</footer>
+
+<!-- ── MODALS ── -->
+
+<!-- Unlock sequence modal -->
+<div class="modal-overlay" id="modal-unlock">
+  <div class="modal">
+    <h2>🔑 Débloquer la séquence</h2>
+    <p>Code donné par ton professeur :</p>
+    <input type="text" id="unlock-input" placeholder="••••" maxlength="8">
+    <div class="modal-hint">💡 Le code est donné en classe au début de chaque nouvelle séquence.</div>
+    <div class="modal-btns">
+      <button class="btn-cancel" onclick="closeModal('modal-unlock')">Annuler</button>
+      <button class="btn-confirm" onclick="closeModal('modal-unlock')">Déverrouiller 🔓</button>
+    </div>
+  </div>
+</div>
+
+<!-- Stage code modal -->
+<div class="modal-overlay" id="modal-stage-code">
+  <div class="modal">
+    <h2>🏭 Rapport de stage</h2>
+    <p>Entre le code donné par ton professeur pour accéder au dépôt.</p>
+    <input type="text" id="stage-code-input" placeholder="••••" maxlength="8">
+    <div class="modal-hint">💡 Seul le format PDF est accepté.</div>
+    <div class="modal-btns">
+      <button class="btn-cancel" onclick="closeModal('modal-stage-code')">Annuler</button>
+      <button class="btn-confirm" onclick="openStageUpload()">Valider le code →</button>
+    </div>
+  </div>
+</div>
+
+<!-- Stage upload modal -->
+<div class="modal-overlay" id="modal-stage-upload">
+  <div class="modal">
+    <h2>📤 Déposer mon rapport</h2>
+    <p>Format PDF uniquement · max 10 Mo</p>
+    <div class="field-label">Ton prénom et nom</div>
+    <input type="text" placeholder="Ex : Marie Dupont" style="letter-spacing:0; text-align:left; margin-bottom:10px;">
+    <div class="field-label">Ta classe</div>
+    <select>
+      <option>3ème A</option>
+      <option>3ème B</option>
+      <option>3ème C</option>
+    </select>
+    <div class="file-drop" onclick="document.getElementById('file-input').click()">
+      <div class="drop-icon">📄</div>
+      <p>Clique pour choisir ton fichier PDF</p>
+      <p style="font-size:10px; margin-top:4px; color:#e94560;">⚠️ Seul le format PDF est accepté</p>
+      <input type="file" id="file-input" accept=".pdf">
+    </div>
+    <div class="modal-btns">
+      <button class="btn-cancel" onclick="closeModal('modal-stage-upload')">Annuler</button>
+      <button class="btn-confirm">Envoyer 🚀</button>
+    </div>
+  </div>
+</div>
+
+<!-- DNB code modal -->
+<div class="modal-overlay" id="modal-dnb-code">
+  <div class="modal">
+    <h2>🎓 Préparation DNB</h2>
+    <p>Entre le code donné par ton professeur pour accéder aux ressources.</p>
+    <input type="text" id="dnb-code-input" placeholder="••••" maxlength="8">
+    <div class="modal-hint">💡 Chaque ressource peut avoir son propre code.</div>
+    <div class="modal-btns">
+      <button class="btn-cancel" onclick="closeModal('modal-dnb-code')">Annuler</button>
+      <button class="btn-confirm" onclick="openDNBResources()">Valider →</button>
+    </div>
+  </div>
+</div>
+
+<!-- DNB resources modal -->
+<div class="modal-overlay" id="modal-dnb-resources">
+  <div class="modal">
+    <h2>🎓 Ressources DNB</h2>
+    <p>Clique sur la ressource souhaitée.</p>
+    <div class="dnb-resources">
+      <a href="#" class="dnb-res-btn">
+        <span class="dnb-res-icon">📚</span>
+        <div class="dnb-res-info">
+          <strong>Fiches académiques & révision</strong>
+          <span>Compétences du programme de technologie</span>
+        </div>
+      </a>
+      <a href="#" class="dnb-res-btn">
+        <span class="dnb-res-icon">📝</span>
+        <div class="dnb-res-info">
+          <strong>Sujets de DNB</strong>
+          <span>Annales officielles · Académie de Toulouse</span>
+        </div>
+      </a>
+      <a href="#" class="dnb-res-btn">
+        <span class="dnb-res-icon">✅</span>
+        <div class="dnb-res-info">
+          <strong>Corrections 🔑</strong>
+          <span>Corrigés détaillés des sujets</span>
+        </div>
+      </a>
+    </div>
+    <div class="modal-btns" style="margin-top:16px;">
+      <button class="btn-cancel" onclick="closeModal('modal-dnb-resources')">Fermer</button>
+    </div>
+  </div>
+</div>
+
+<script>
+  // ── CLOCK ──
+  function updateClock() {
+    const now = new Date();
+    const h = String(now.getHours()).padStart(2, '0');
+    const m = String(now.getMinutes()).padStart(2, '0');
+    const s = String(now.getSeconds()).padStart(2, '0');
+    const time = h + ':' + m + ':' + s;
+    document.getElementById('header-clock').textContent = time;
+    document.getElementById('sb-clock').textContent = time;
+
+    const days = ['Dimanche','Lundi','Mardi','Mercredi','Jeudi','Vendredi','Samedi'];
+    const months = ['jan.','fév.','mar.','avr.','mai','juin','juil.','août','sep.','oct.','nov.','déc.'];
+    document.getElementById('sb-date').textContent =
+      days[now.getDay()] + ' ' + now.getDate() + ' ' + months[now.getMonth()] + ' ' + now.getFullYear();
+  }
+  updateClock();
+  setInterval(updateClock, 1000);
+
+  // ── FILTER ──
+  function filterSeq(type, btn) {
+    document.querySelectorAll('.filter-tab').forEach(t => t.classList.remove('active'));
+    btn.classList.add('active');
+    document.querySelectorAll('.seq-card').forEach(card => {
+      const status = card.dataset.status;
+      if (type === 'all') card.style.display = '';
+      else if (type === 'done') card.style.display = (status === 'done') ? '' : 'none';
+      else if (type === 'todo') card.style.display = (status === 'current' || status === 'locked') ? '' : 'none';
+    });
+  }
+
+  // ── MODALS ──
+  function openUnlock(seq) {
+    document.getElementById('modal-unlock').classList.add('open');
+    document.getElementById('unlock-input').value = '';
+    setTimeout(() => document.getElementById('unlock-input').focus(), 100);
+  }
+  function closeModal(id) {
+    document.getElementById(id).classList.remove('open');
+  }
+  function openStageCode() {
+    closeModal('modal-stage-code');
+    document.getElementById('modal-stage-code').classList.add('open');
+  }
+  function openStageUpload() {
+    closeModal('modal-stage-code');
+    document.getElementById('modal-stage-upload').classList.add('open');
+  }
+  function openDNBCode() {
+    document.getElementById('modal-dnb-code').classList.add('open');
+  }
+  function openDNBResources() {
+    closeModal('modal-dnb-code');
+    document.getElementById('modal-dnb-resources').classList.add('open');
+  }
+
+  // Close modal on overlay click
+  document.querySelectorAll('.modal-overlay').forEach(overlay => {
+    overlay.addEventListener('click', e => {
+      if (e.target === overlay) overlay.classList.remove('open');
+    });
+  });
+</script>
+
+</body>
+</html>

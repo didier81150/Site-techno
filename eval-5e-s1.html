@@ -1,0 +1,1023 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>TechExplorer 🚀 — Évaluation : Objets techniques et matériaux</title>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Sans:ital,wght@0,300;0,400;0,500;1,400&display=swap');
+
+    :root {
+      --bleu:       #1a3a5c;
+      --bleu-clair: #2563a8;
+      --accent:     #f59e0b;
+      --vert:       #16a34a;
+      --rouge:      #dc2626;
+      --fond:       #f0f4f8;
+      --blanc:      #ffffff;
+      --gris:       #64748b;
+      --gris-clair: #e2e8f0;
+      --ombre:      0 4px 20px rgba(26,58,92,.12);
+    }
+
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      font-family: 'DM Sans', sans-serif;
+      background: var(--fond);
+      color: var(--bleu);
+      min-height: 100vh;
+    }
+
+    /* ─── HEADER ─── */
+    header {
+      background: linear-gradient(135deg, var(--bleu) 0%, var(--bleu-clair) 100%);
+      color: white;
+      padding: 2.5rem 2rem 2rem;
+      position: relative;
+      overflow: hidden;
+    }
+    header::before {
+      content: '';
+      position: absolute;
+      right: -60px; top: -60px;
+      width: 280px; height: 280px;
+      border-radius: 50%;
+      background: rgba(255,255,255,.06);
+    }
+    header::after {
+      content: '';
+      position: absolute;
+      right: 60px; top: 40px;
+      width: 140px; height: 140px;
+      border-radius: 50%;
+      background: rgba(245,158,11,.18);
+    }
+    .header-inner { max-width: 860px; margin: 0 auto; position: relative; z-index: 1; }
+    .badge {
+      display: inline-block;
+      background: var(--accent);
+      color: var(--bleu);
+      font-family: 'Syne', sans-serif;
+      font-weight: 700;
+      font-size: .72rem;
+      letter-spacing: .1em;
+      text-transform: uppercase;
+      padding: .25rem .75rem;
+      border-radius: 99px;
+      margin-bottom: 1rem;
+    }
+    header h1 {
+      font-family: 'Syne', sans-serif;
+      font-weight: 800;
+      font-size: clamp(1.5rem, 4vw, 2.4rem);
+      line-height: 1.2;
+    }
+    header p { margin-top: .5rem; opacity: .8; font-size: .95rem; }
+
+    /* ─── CONSIGNES ─── */
+    .consignes {
+      max-width: 860px;
+      margin: 2rem auto 0;
+      padding: 0 1rem;
+    }
+    .alert {
+      background: #fffbeb;
+      border-left: 4px solid var(--accent);
+      border-radius: 8px;
+      padding: 1rem 1.25rem;
+      font-size: .9rem;
+      color: #78350f;
+    }
+    .alert strong { display: block; margin-bottom: .4rem; font-family: 'Syne', sans-serif; }
+
+    /* ─── IDENTIFICATION ─── */
+    .id-bloc {
+      max-width: 860px;
+      margin: 1.5rem auto 0;
+      padding: 0 1rem;
+    }
+    .id-bloc .card {
+      background: white;
+      border-radius: 12px;
+      padding: 1.25rem 1.5rem;
+      box-shadow: var(--ombre);
+      display: flex;
+      gap: 1.5rem;
+      flex-wrap: wrap;
+    }
+    .id-field { display: flex; align-items: center; gap: .6rem; flex: 1; min-width: 200px; }
+    .id-field label { font-weight: 500; white-space: nowrap; font-size: .9rem; }
+    .id-field input {
+      border: 2px solid var(--gris-clair);
+      border-radius: 8px;
+      padding: .45rem .75rem;
+      font-family: inherit;
+      font-size: .9rem;
+      flex: 1;
+      transition: border .2s;
+    }
+    .id-field input:focus { outline: none; border-color: var(--bleu-clair); }
+    .id-field input.champ-erreur,
+    .id-field select.champ-erreur {
+      border-color: var(--rouge) !important;
+      background: #fef2f2;
+      animation: shake .3s ease;
+    }
+    @keyframes shake {
+      0%,100% { transform: translateX(0); }
+      25%      { transform: translateX(-5px); }
+      75%      { transform: translateX(5px); }
+    }
+    #msg-identite {
+      display: none;
+      background: #fef2f2;
+      border: 1.5px solid var(--rouge);
+      color: var(--rouge);
+      border-radius: 8px;
+      padding: .65rem 1rem;
+      font-size: .88rem;
+      font-weight: 600;
+      margin-top: .75rem;
+    }
+    .id-field select {
+      border: 2px solid var(--gris-clair);
+      border-radius: 8px;
+      padding: .45rem .75rem;
+      font-family: inherit;
+      font-size: .9rem;
+      flex: 1;
+      transition: border .2s;
+      background: white;
+      cursor: pointer;
+    }
+    .id-field select:focus { outline: none; border-color: var(--bleu-clair); }
+
+    /* note affichée sous id */
+    #note-affichee {
+      display: none;
+      margin-top: 1rem;
+      background: linear-gradient(135deg, var(--bleu) 0%, var(--bleu-clair) 100%);
+      color: white;
+      border-radius: 10px;
+      padding: .9rem 1.5rem;
+      display: none;
+      align-items: center;
+      gap: 1rem;
+      flex-wrap: wrap;
+    }
+    #note-affichee .note-big {
+      font-family: 'Syne', sans-serif;
+      font-size: 2.2rem;
+      font-weight: 800;
+      line-height: 1;
+    }
+    #note-affichee .note-info { font-size: .9rem; opacity: .9; }
+
+    /* ─── MAIN ─── */
+    main { max-width: 860px; margin: 2rem auto 3rem; padding: 0 1rem; }
+
+    .section-title {
+      font-family: 'Syne', sans-serif;
+      font-size: 1.35rem;
+      font-weight: 700;
+      color: var(--bleu);
+      margin-bottom: 1rem;
+      padding-bottom: .4rem;
+      border-bottom: 3px solid var(--accent);
+      display: inline-block;
+    }
+
+    /* ─── PRÉSENTATION ─── */
+    .pres-card {
+      background: white;
+      border-radius: 12px;
+      padding: 1.5rem;
+      box-shadow: var(--ombre);
+      margin-bottom: 2rem;
+    }
+    .pres-card h3 {
+      font-family: 'Syne', sans-serif;
+      font-weight: 700;
+      color: var(--bleu-clair);
+      margin: 1.2rem 0 .5rem;
+      font-size: 1.05rem;
+    }
+    .pres-card p { line-height: 1.7; font-size: .95rem; color: #334155; margin-bottom: .5rem; }
+
+    .store-schema {
+      background: linear-gradient(160deg, #0f172a 0%, #1e3a5f 60%, #0c4a6e 100%);
+      border: 2px solid #3b82f6;
+      border-radius: 12px;
+      padding: 1.4rem;
+      margin: 1rem 0;
+      text-align: center;
+      position: relative;
+      box-shadow: 0 8px 32px rgba(15,41,66,.35);
+    }
+    /* Petite illustration SVG inline du store */
+    .store-schema svg { max-width: 580px; width: 100%; }
+
+    /* ─── QUESTIONS ─── */
+    .question-block {
+      background: white;
+      border-radius: 12px;
+      padding: 1.5rem;
+      box-shadow: var(--ombre);
+      margin-bottom: 2rem;
+    }
+    .question-block h2 {
+      font-family: 'Syne', sans-serif;
+      font-weight: 700;
+      font-size: 1rem;
+      color: var(--bleu);
+      margin-bottom: 1.2rem;
+      display: flex;
+      align-items: flex-start;
+      gap: .65rem;
+    }
+    .q-num {
+      background: var(--bleu);
+      color: white;
+      font-size: .8rem;
+      font-weight: 800;
+      padding: .2rem .55rem;
+      border-radius: 6px;
+      white-space: nowrap;
+      margin-top: .05rem;
+    }
+
+    /* ─── Q1 : tableau type composants ─── */
+    .type-table { width: 100%; border-collapse: collapse; font-size: .9rem; }
+    .type-table th {
+      background: var(--bleu);
+      color: white;
+      padding: .65rem 1rem;
+      text-align: left;
+      font-family: 'Syne', sans-serif;
+      font-weight: 600;
+    }
+    .type-table th:first-child { border-radius: 8px 0 0 0; }
+    .type-table th:last-child  { border-radius: 0 8px 0 0; }
+    .type-table td {
+      padding: .65rem 1rem;
+      border-bottom: 1px solid var(--gris-clair);
+      vertical-align: middle;
+    }
+    .type-table tr:last-child td { border-bottom: none; }
+    .type-table tr:nth-child(even) td { background: #f8fafc; }
+
+    .radio-group { display: flex; gap: .75rem; flex-wrap: wrap; }
+    .radio-group label {
+      display: flex;
+      align-items: center;
+      gap: .35rem;
+      cursor: pointer;
+      font-size: .88rem;
+      padding: .3rem .6rem;
+      border-radius: 6px;
+      border: 1.5px solid var(--gris-clair);
+      transition: all .15s;
+    }
+    .radio-group label:hover { border-color: var(--bleu-clair); background: #eff6ff; }
+    .radio-group input[type="radio"] { accent-color: var(--bleu-clair); }
+    .radio-group label.correct  { border-color: var(--vert); background: #dcfce7; color: var(--vert); font-weight: 600; }
+    .radio-group label.incorrect { border-color: var(--rouge); background: #fee2e2; color: var(--rouge); }
+
+    /* ─── Q2 : diagramme fonctionnel ─── */
+    .diag-table { width: 100%; border-collapse: collapse; font-size: .88rem; }
+    .diag-table th {
+      background: var(--bleu);
+      color: white;
+      padding: .6rem .9rem;
+      text-align: center;
+      font-family: 'Syne', sans-serif;
+      font-weight: 600;
+    }
+    .diag-table th:first-child  { border-radius: 8px 0 0 0; }
+    .diag-table th:last-child   { border-radius: 0 8px 0 0; }
+    .diag-table th:nth-child(2) { background: #334155; width: 40px; }
+    .diag-table th:nth-child(4) { background: #334155; width: 40px; }
+    .diag-table td {
+      padding: .55rem .75rem;
+      border-bottom: 1px solid var(--gris-clair);
+      vertical-align: middle;
+    }
+    .diag-table .col-arrow { text-align: center; font-size: 1.1rem; color: var(--gris); background: #f1f5f9; }
+    .diag-table .col-fixed { font-weight: 500; }
+    .diag-table select {
+      width: 100%;
+      padding: .4rem .6rem;
+      border: 2px solid var(--gris-clair);
+      border-radius: 8px;
+      font-family: inherit;
+      font-size: .85rem;
+      background: white;
+      cursor: pointer;
+      transition: border .2s;
+      appearance: none;
+      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath d='M1 1l5 5 5-5' stroke='%2364748b' stroke-width='1.5' fill='none' stroke-linecap='round'/%3E%3C/svg%3E");
+      background-repeat: no-repeat;
+      background-position: right .7rem center;
+      padding-right: 2rem;
+    }
+    .diag-table select:focus { outline: none; border-color: var(--bleu-clair); }
+    .diag-table select.correct  { border-color: var(--vert); background-color: #f0fdf4; }
+    .diag-table select.incorrect { border-color: var(--rouge); background-color: #fef2f2; }
+
+    /* ─── BOUTONS ─── */
+    .btn-row {
+      display: flex;
+      gap: 1rem;
+      flex-wrap: wrap;
+      margin-top: 2rem;
+    }
+    .btn {
+      font-family: 'Syne', sans-serif;
+      font-weight: 700;
+      font-size: .95rem;
+      padding: .75rem 1.75rem;
+      border: none;
+      border-radius: 10px;
+      cursor: pointer;
+      transition: transform .15s, box-shadow .15s;
+    }
+    .btn:hover { transform: translateY(-2px); box-shadow: 0 6px 20px rgba(0,0,0,.15); }
+    .btn:active { transform: translateY(0); }
+    .btn-primary { background: var(--bleu); color: white; }
+    .btn-secondary { background: var(--gris-clair); color: var(--bleu); }
+    .btn-vert { background: var(--vert); color: white; }
+    .btn-accent { background: var(--accent); color: var(--bleu); }
+    .btn-rouge  { background: var(--rouge);  color: white; }
+
+    /* bouton désactivé */
+    .btn:disabled {
+      opacity: .35;
+      cursor: not-allowed;
+      transform: none !important;
+      box-shadow: none !important;
+    }
+
+    /* ─── MODAL CODE PROF ─── */
+    .modal-overlay {
+      display: none;
+      position: fixed;
+      inset: 0;
+      background: rgba(15,30,50,.55);
+      backdrop-filter: blur(4px);
+      z-index: 1000;
+      align-items: center;
+      justify-content: center;
+    }
+    .modal-overlay.open { display: flex; }
+    .modal-box {
+      background: white;
+      border-radius: 16px;
+      padding: 2rem;
+      width: min(380px, 90vw);
+      box-shadow: 0 20px 60px rgba(0,0,0,.25);
+      text-align: center;
+    }
+    .modal-box h3 {
+      font-family: 'Syne', sans-serif;
+      font-size: 1.15rem;
+      font-weight: 800;
+      margin-bottom: .4rem;
+      color: var(--bleu);
+    }
+    .modal-box p { font-size: .88rem; color: var(--gris); margin-bottom: 1.2rem; }
+    .modal-box input[type="password"] {
+      width: 100%;
+      border: 2px solid var(--gris-clair);
+      border-radius: 10px;
+      padding: .65rem 1rem;
+      font-size: 1.1rem;
+      letter-spacing: .25em;
+      text-align: center;
+      font-family: inherit;
+      margin-bottom: .8rem;
+      transition: border .2s;
+    }
+    .modal-box input[type="password"]:focus { outline: none; border-color: var(--bleu-clair); }
+    .modal-erreur {
+      color: var(--rouge);
+      font-size: .82rem;
+      font-weight: 600;
+      margin-bottom: .8rem;
+      min-height: 1.2em;
+    }
+    .modal-btns { display: flex; gap: .75rem; justify-content: center; }
+    .lock-icon { font-size: 2rem; margin-bottom: .75rem; }
+
+    /* ─── SCORE ─── */
+    #score-bloc {
+      display: none;
+      background: white;
+      border-radius: 12px;
+      padding: 1.5rem;
+      box-shadow: var(--ombre);
+      margin-top: 1.5rem;
+      text-align: center;
+    }
+    #score-bloc h3 {
+      font-family: 'Syne', sans-serif;
+      font-size: 1.3rem;
+      margin-bottom: .5rem;
+    }
+    .score-value {
+      font-family: 'Syne', sans-serif;
+      font-size: 3rem;
+      font-weight: 800;
+      color: var(--bleu-clair);
+      line-height: 1;
+    }
+    .score-label { color: var(--gris); font-size: .9rem; margin-top: .25rem; }
+    .mention {
+      margin-top: .75rem;
+      font-weight: 600;
+      font-size: 1rem;
+    }
+
+    /* ─── FEEDBACK CELL ─── */
+    .fb { font-size: .8rem; font-style: italic; margin-top: .3rem; display: none; }
+    .fb.ok  { color: var(--vert); }
+    .fb.err { color: var(--rouge); }
+
+    @media (max-width:560px) {
+      .radio-group { flex-direction: column; }
+      .diag-table { font-size: .78rem; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- ════ HEADER ════ -->
+
+<body>
+
+<!-- ════ HEADER ════ -->
+<header>
+  <div class="header-inner">
+    <a href="5eme.html" style="color:rgba(255,255,255,.6);font-size:.82rem;text-decoration:none;display:inline-flex;align-items:center;gap:.4rem;margin-bottom:.75rem;">← Retour au cours 5ème</a>
+    <span class="badge">Matériaux · 5ème</span>
+    <h1>Objets techniques &amp; matériaux — Évaluation</h1>
+    <p>Évaluation interactive · Séquence 1 · 🚀 TechExplorer</p>
+  </div>
+</header>
+
+<!-- ════ CONSIGNES ════ -->
+<div class="consignes">
+  <div class="alert">
+    <strong>⚠ Consignes de travail</strong>
+    Avant de commencer : entrez votre nom, prénom, niveau et classe, puis complétez entièrement l'évaluation.
+    Prenez le temps de relire vos réponses avant de cliquer sur <strong>Évaluer</strong>.
+  </div>
+</div>
+
+<!-- ════ IDENTIFICATION ════ -->
+<div class="id-bloc">
+  <div class="card">
+    <div class="id-field">
+      <label for="nom">Votre nom :</label>
+      <input type="text" id="nom" placeholder="ex. DUPONT">
+    </div>
+    <div class="id-field">
+      <label for="prenom">Votre prénom :</label>
+      <input type="text" id="prenom" placeholder="ex. Marie">
+    </div>
+    <div class="id-field">
+      <label for="niveau">Niveau :</label>
+      <select id="niveau">
+        <option value="">— choisir —</option>
+        <option>5ème</option>
+        <option>4ème</option>
+        <option>3ème</option>
+      </select>
+    </div>
+    <div class="id-field">
+      <label for="classe">Classe :</label>
+      <select id="classe">
+        <option value="">— choisir —</option>
+        <option>5ème A</option>
+        <option>5ème B</option>
+        <option>5ème C</option>
+      </select>
+    </div>
+  </div>
+  <div id="msg-identite">⚠ Veuillez renseigner votre nom, prénom, niveau et sélectionner votre classe avant de valider.</div>
+  <div id="note-affichee">
+    <div class="note-big" id="note-val">—</div>
+    <div class="note-info" id="note-detail">Évaluez d'abord le QCM</div>
+  </div>
+</div>
+
+<!-- ════ MAIN ════ -->
+<main>
+
+  <div class="pres-card">
+    <span class="section-title">Présentation</span>
+    <p>Les matériaux sont classés en grandes <strong>familles</strong> : métaux, polymères, céramiques, composites et bois. Le choix d'un matériau dépend de ses <strong>propriétés</strong> (résistance, légèreté, conductivité, etc.) et des contraintes d'usage.</p>
+    <p>Un <strong>objet technique</strong> répond à un besoin en utilisant des matériaux et des solutions technologiques adaptées.</p>
+  </div>
+
+  <div class="question-block">
+    <h2><span class="q-num">Q.1</span> Identifiez la <strong>famille de matériau</strong> de chaque objet.</h2>
+    <table class="type-table">
+      <thead><tr><th>Matériau</th><th>Famille</th></tr></thead>
+      <tbody>
+        <tr><td>Aluminium</td><td>
+          <div class="radio-group" data-correct="Métal">
+            <label><input type="radio" name="q1a" value="Métal"> Métal</label>
+            <label><input type="radio" name="q1a" value="Polymère"> Polymère</label>
+            <label><input type="radio" name="q1a" value="Céramique"> Céramique</label>
+            <label><input type="radio" name="q1a" value="Bois"> Bois</label>
+          </div><div class="fb" id="fb-q1a"></div></td></tr>
+        <tr><td>PVC</td><td>
+          <div class="radio-group" data-correct="Polymère">
+            <label><input type="radio" name="q1b" value="Métal"> Métal</label>
+            <label><input type="radio" name="q1b" value="Polymère"> Polymère</label>
+            <label><input type="radio" name="q1b" value="Céramique"> Céramique</label>
+            <label><input type="radio" name="q1b" value="Bois"> Bois</label>
+          </div><div class="fb" id="fb-q1b"></div></td></tr>
+        <tr><td>Chêne</td><td>
+          <div class="radio-group" data-correct="Bois">
+            <label><input type="radio" name="q1c" value="Métal"> Métal</label>
+            <label><input type="radio" name="q1c" value="Polymère"> Polymère</label>
+            <label><input type="radio" name="q1c" value="Céramique"> Céramique</label>
+            <label><input type="radio" name="q1c" value="Bois"> Bois</label>
+          </div><div class="fb" id="fb-q1c"></div></td></tr>
+        <tr><td>Verre</td><td>
+          <div class="radio-group" data-correct="Céramique">
+            <label><input type="radio" name="q1d" value="Métal"> Métal</label>
+            <label><input type="radio" name="q1d" value="Polymère"> Polymère</label>
+            <label><input type="radio" name="q1d" value="Céramique"> Céramique</label>
+            <label><input type="radio" name="q1d" value="Bois"> Bois</label>
+          </div><div class="fb" id="fb-q1d"></div></td></tr>
+        <tr><td>Fibre de carbone</td><td>
+          <div class="radio-group" data-correct="Composite">
+            <label><input type="radio" name="q1e" value="Métal"> Métal</label>
+            <label><input type="radio" name="q1e" value="Polymère"> Polymère</label>
+            <label><input type="radio" name="q1e" value="Composite"> Composite</label>
+            <label><input type="radio" name="q1e" value="Bois"> Bois</label>
+          </div><div class="fb" id="fb-q1e"></div></td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="question-block">
+    <h2><span class="q-num">Q.2</span> Associez chaque propriété au bon matériau.</h2>
+    <div style="overflow-x:auto;">
+    <table class="diag-table">
+      <thead><tr><th>Propriété recherchée</th><th>◄►</th><th>Matériau le plus adapté</th></tr></thead>
+      <tbody>
+        <tr><td class="col-fixed">Légèreté + résistance (aéronautique)</td><td class="col-arrow">—</td><td>
+          <select id="q2-r1" data-correct="Aluminium">
+            <option value="">— choisir —</option>
+            <option>Acier</option><option>Aluminium</option><option>PVC</option><option>Verre</option>
+          </select><div class="fb" id="fb-q2-r1"></div></td></tr>
+        <tr><td class="col-fixed">Isolation électrique + souplesse (câble)</td><td class="col-arrow">—</td><td>
+          <select id="q2-r2" data-correct="PVC">
+            <option value="">— choisir —</option>
+            <option>Acier</option><option>Aluminium</option><option>PVC</option><option>Verre</option>
+          </select><div class="fb" id="fb-q2-r2"></div></td></tr>
+        <tr><td class="col-fixed">Transparence + rigidité (fenêtre)</td><td class="col-arrow">—</td><td>
+          <select id="q2-r3" data-correct="Verre">
+            <option value="">— choisir —</option>
+            <option>Acier</option><option>Aluminium</option><option>PVC</option><option>Verre</option>
+          </select><div class="fb" id="fb-q2-r3"></div></td></tr>
+        <tr><td class="col-fixed">Dureté + résistance à la traction (pont)</td><td class="col-arrow">—</td><td>
+          <select id="q2-r4" data-correct="Acier">
+            <option value="">— choisir —</option>
+            <option>Acier</option><option>Aluminium</option><option>PVC</option><option>Verre</option>
+          </select><div class="fb" id="fb-q2-r4"></div></td></tr>
+      </tbody>
+    </table>
+    </div>
+  </div>
+  <div class="btn-row">
+    <button class="btn btn-primary" onclick="evaluer()">🎯 Évaluer</button>
+    <button class="btn btn-secondary" onclick="reinitialiser()">↩ Recommencer</button>
+    <button class="btn btn-accent" id="btn-correction" onclick="afficherCorrection()" disabled>💡 Voir la correction</button>
+    <button class="btn btn-vert" onclick="ouvrirModalProf()">📤 Exporter les notes (Prof)</button>
+    <button class="btn btn-rouge" onclick="ouvrirModalReinit()">🗑 Réinitialiser les notes (Admin)</button>
+  </div>
+  <div id="compteur-notes" style="margin-top:.75rem;font-size:.85rem;color:var(--gris);text-align:center;font-style:italic;"></div>
+
+  <!-- ══ SCORE ══ -->
+  <div id="score-bloc">
+    <h3>Résultat — <span id="score-nom"></span></h3>
+    <div class="score-value" id="score-val">0 / 0</div>
+    <div class="score-label">bonnes réponses</div>
+    <div class="mention" id="score-mention"></div>
+    <div id="envoi-statut" style="margin-top:.75rem;font-size:.82rem;color:#16a34a;font-weight:600;display:none;">
+      ✅ Note transmise au professeur
+    </div>
+  </div>
+
+</main>
+
+<script>
+
+/* ═══════════════════════════════════════════
+   Correction Q1
+   ═══════════════════════════════════════════ */
+const q1data = [
+  { name:'q1a', fb:'fb-q1a', correct:'Métal' },
+  { name:'q1b', fb:'fb-q1b', correct:'Polymère' },
+  { name:'q1c', fb:'fb-q1c', correct:'Bois' },
+  { name:'q1d', fb:'fb-q1d', correct:'Céramique' },
+  { name:'q1e', fb:'fb-q1e', correct:'Composite' },
+];
+
+/* ═══════════════════════════════════════════
+   Correction Q2
+   ═══════════════════════════════════════════ */
+const q2data = ['q2-r1','q2-r2','q2-r3','q2-r4'];
+
+// stockage de la dernière note calculée
+let dernierResultat = null;
+
+function noteSur20(score, total) {
+  return Math.round((score / total) * 20 * 10) / 10; // arrondi à 0.5 près
+}
+
+function dateAujourdhui() {
+  const d = new Date();
+  return d.toLocaleDateString('fr-FR');
+}
+
+// registre des évaluations déjà enregistrées (doublon = même nom+prénom+classe)
+const registreDoublons = new Set();
+
+function validerIdentite() {
+  const nom    = document.getElementById('nom').value.trim();
+  const prenom = document.getElementById('prenom').value.trim();
+  const classe = document.getElementById('classe').value;
+  const niveau = document.getElementById('niveau').value;
+  let ok = true;
+
+  [['nom', nom], ['prenom', prenom]].forEach(([id, val]) => {
+    const el = document.getElementById(id);
+    if (!val) { el.classList.add('champ-erreur'); ok = false; }
+    else       { el.classList.remove('champ-erreur'); }
+  });
+  const selClasse = document.getElementById('classe');
+  if (!classe) { selClasse.classList.add('champ-erreur'); ok = false; }
+  else         { selClasse.classList.remove('champ-erreur'); }
+
+  const selNiveau = document.getElementById('niveau');
+  if (!niveau) { selNiveau.classList.add('champ-erreur'); ok = false; }
+  else         { selNiveau.classList.remove('champ-erreur'); }
+
+  const msgEl = document.getElementById('msg-identite');
+  if (!ok) {
+    msgEl.textContent = '⚠ Veuillez renseigner votre nom, prénom, niveau et sélectionner votre classe.';
+    msgEl.style.display = 'block';
+    document.getElementById('nom').scrollIntoView({ behavior:'smooth', block:'center' });
+    return false;
+  }
+
+  // Contrôle doublon
+  const cle = (nom + '|' + prenom + '|' + niveau + '|' + classe).toLowerCase();
+  if (registreDoublons.has(cle)) {
+    msgEl.textContent = `⚠ ${prenom} ${nom} (${classe}) a déjà été évalué(e). Utilisez "Recommencer" pour une nouvelle tentative.`;
+    msgEl.style.display = 'block';
+    document.getElementById('nom').scrollIntoView({ behavior:'smooth', block:'center' });
+    return false;
+  }
+
+  msgEl.style.display = 'none';
+  return { nom, prenom, niveau, classe, cle };
+}
+
+function evaluer() {
+  const identite = validerIdentite();
+  if (!identite) return;
+
+  let score = 0;
+  const total = q1data.length + q2data.length;
+
+  // Q1
+  q1data.forEach(q => {
+    const checked = document.querySelector(`input[name="${q.name}"]:checked`);
+    const fb = document.getElementById(q.fb);
+    const labels = document.querySelectorAll(`input[name="${q.name}"]`);
+    labels.forEach(inp => { inp.parentElement.classList.remove('correct','incorrect'); });
+    fb.style.display = 'block';
+    if (checked) {
+      if (checked.value === q.correct) {
+        checked.parentElement.classList.add('correct');
+        fb.textContent = '✓ Correct !'; fb.className = 'fb ok'; score++;
+      } else {
+        checked.parentElement.classList.add('incorrect');
+        labels.forEach(inp => { if (inp.value === q.correct) inp.parentElement.classList.add('correct'); });
+        fb.textContent = `✗ Réponse attendue : ${q.correct}`; fb.className = 'fb err';
+      }
+    } else {
+      labels.forEach(inp => { if (inp.value === q.correct) inp.parentElement.classList.add('correct'); });
+      fb.textContent = `✗ Réponse attendue : ${q.correct}`; fb.className = 'fb err';
+    }
+  });
+
+  // Q2
+  q2data.forEach(id => {
+    const sel = document.getElementById(id);
+    const fb  = document.getElementById('fb-' + id);
+    const correct = sel.dataset.correct;
+    sel.classList.remove('correct','incorrect');
+    if (fb) fb.style.display = 'block';
+    if (sel.value === correct) {
+      sel.classList.add('correct');
+      if (fb) { fb.textContent = '✓ Correct !'; fb.className = 'fb ok'; } score++;
+    } else {
+      sel.classList.add('incorrect');
+      if (fb) { fb.textContent = `✗ Attendu : ${correct}`; fb.className = 'fb err'; }
+    }
+  });
+
+  const nom    = identite.nom;
+  const prenom = identite.prenom;
+  const niveau = identite.niveau;
+  const classe = identite.classe;
+  const note   = noteSur20(score, total);
+  const date   = dateAujourdhui();
+
+  // Enregistrer dans le registre doublon
+  registreDoublons.add(identite.cle);
+
+  // Verrouiller les champs identité
+  document.getElementById('nom').disabled    = true;
+  document.getElementById('prenom').disabled = true;
+  document.getElementById('classe').disabled = true;
+  document.getElementById('niveau').disabled = true;
+
+  dernierResultat = { nom, prenom, niveau, classe, date, score, total, note };
+  sauvegarderNote(dernierResultat);
+  envoyerNoteServeur(dernierResultat);
+  mettreAJourCompteur();
+
+  // Score bloc
+  const bloc = document.getElementById('score-bloc');
+  bloc.style.display = 'block';
+  document.getElementById('score-nom').textContent = `${prenom} ${nom} — ${classe}`;
+  document.getElementById('score-val').textContent = `${score} / ${total}`;
+
+  const pct = score / total;
+  let mention = '';
+  if      (pct >= .9)  mention = `🏆 Excellent ! Note : ${note}/20`;
+  else if (pct >= .75) mention = `👍 Très bien ! Note : ${note}/20`;
+  else if (pct >= .55) mention = `🙂 Bien, continuez vos efforts. Note : ${note}/20`;
+  else                 mention = `📖 À retravailler — relisez le cours. Note : ${note}/20`;
+  document.getElementById('score-mention').textContent = mention;
+
+  // Note sous le bloc identité
+  const noteBloc = document.getElementById('note-affichee');
+  noteBloc.style.display = 'flex';
+  document.getElementById('note-val').textContent = `${note} / 20`;
+  document.getElementById('note-detail').textContent =
+    `${prenom} ${nom} · ${classe} · ${date} · ${score}/${total} bonne${score > 1 ? 's' : ''} réponse${score > 1 ? 's' : ''}`;
+
+  bloc.scrollIntoView({ behavior:'smooth', block:'center' });
+  if (URL_SCRIPT && URL_SCRIPT !== 'COLLER_ICI_URL_APPS_SCRIPT') {
+    document.getElementById('envoi-statut').style.display = 'block';
+  }
+  debloquerCorrection();
+}
+
+/* ═══════════════════════════════════════════
+   Export CSV
+   ═══════════════════════════════════════════ */
+/* ═══════════════════════════════════════════
+   STOCKAGE CUMULATIF DES NOTES (localStorage)
+   ═══════════════════════════════════════════ */
+const STORAGE_KEY  = 'techexplorer_notes_eval_5e_s1';
+const CODE_EXPORT  = 'prof2024';   // ← Code 1 : exporter les notes
+const CODE_REINIT  = 'admin9999';  // ← Code 2 : réinitialiser toutes les notes
+
+/* ── URL de votre Google Apps Script (à remplir après déploiement) ── */
+const URL_SCRIPT = 'COLLER_ICI_URL_APPS_SCRIPT';
+
+/* Envoie la note au Google Sheet via Apps Script */
+function envoyerNoteServeur(r) {
+  if (!URL_SCRIPT || URL_SCRIPT === 'COLLER_ICI_URL_APPS_SCRIPT') return;
+  const params = new URLSearchParams({
+    nom:    r.nom,
+    prenom: r.prenom,
+    niveau: r.niveau,
+    classe: r.classe,
+    date:   r.date,
+    score:  r.score,
+    total:  r.total,
+    note:   r.note,
+    eval:   'Objets techniques et matériaux'
+  });
+  // fetch no-cors : on ne lit pas la réponse, juste on envoie
+  fetch(URL_SCRIPT + '?' + params.toString(), { method: 'GET', mode: 'no-cors' })
+    .catch(() => {}); // silencieux si hors-ligne
+}
+
+function chargerNotes() {
+  try { return JSON.parse(localStorage.getItem(STORAGE_KEY) || '[]'); }
+  catch(e) { return []; }
+}
+
+function sauvegarderNote(r) {
+  const notes = chargerNotes();
+  notes.push(r);
+  localStorage.setItem(STORAGE_KEY, JSON.stringify(notes));
+}
+
+function compterNotes() { return chargerNotes().length; }
+
+function mettreAJourCompteur() {
+  const n = compterNotes();
+  const el = document.getElementById('compteur-notes');
+  if (el) el.textContent = n === 0
+    ? 'Aucune note enregistrée pour cette évaluation.'
+    : `${n} note${n > 1 ? 's' : ''} enregistrée${n > 1 ? 's' : ''} pour cette évaluation.`;
+}
+
+/* ═══════════════════════════════════════════
+   Export CSV cumulatif — tri par niveau + classe
+   ═══════════════════════════════════════════ */
+function exporterCSV() {
+  const notes = chargerNotes();
+  if (notes.length === 0) {
+    alert('Aucune note enregistrée à exporter.');
+    return;
+  }
+  // Tri : niveau → classe → nom → prénom
+  const ordreNiveau = {'5ème':1,'4ème':2,'3ème':3};
+  notes.sort((a, b) => {
+    const niv = (ordreNiveau[a.niveau]||9) - (ordreNiveau[b.niveau]||9);
+    if (niv !== 0) return niv;
+    const cl = (a.classe||'').localeCompare(b.classe||'');
+    if (cl !== 0) return cl;
+    const nom = (a.nom||'').localeCompare(b.nom||'');
+    if (nom !== 0) return nom;
+    return (a.prenom||'').localeCompare(b.prenom||'');
+  });
+  const bom     = '\uFEFF';
+  const entetes = 'Nom;Prénom;Niveau;Classe;Date;Score brut;Total;Note /20\n';
+  const lignes  = notes.map(r =>
+    `${r.nom};${r.prenom};${r.niveau||''};${r.classe};${r.date};${r.score};${r.total};${String(r.note).replace('.',',')}` 
+  ).join('\n');
+  const csv = bom + entetes + lignes + '\n';
+
+  const blob = new Blob([csv], { type: 'text/csv;charset=utf-8;' });
+  const url  = URL.createObjectURL(blob);
+  const a    = document.createElement('a');
+  a.href     = url;
+  const today = new Date().toLocaleDateString('fr-FR').replace(/\//g,'-');
+  a.download  = `notes_export_${today}.csv`;
+  document.body.appendChild(a); a.click();
+  document.body.removeChild(a);
+  URL.revokeObjectURL(url);
+}
+
+/* ═══════════════════════════════════════════
+   État correction
+   ═══════════════════════════════════════════ */
+let evaluationValidee = false;
+
+function debloquerCorrection() {
+  evaluationValidee = true;
+  const btn = document.getElementById('btn-correction');
+  btn.disabled = false; btn.title = '';
+}
+
+/* ═══════════════════════════════════════════
+   2 codes professeur
+   ═══════════════════════════════════════════ */
+let actionModal = 'export';
+
+function ouvrirModalProf() {
+  if (!dernierResultat) {
+    alert("Veuillez d'abord évaluer le QCM avant d'exporter.");
+    return;
+  }
+  actionModal = 'export';
+  document.getElementById('modal-titre').textContent = '📤 Exporter les notes';
+  document.getElementById('modal-desc').textContent  =
+    'Entrez le code professeur pour télécharger toutes les notes en CSV (triées par niveau et classe).';
+  document.getElementById('code-prof').value = '';
+  document.getElementById('modal-erreur').textContent = '';
+  document.getElementById('modal-prof').classList.add('open');
+  setTimeout(() => document.getElementById('code-prof').focus(), 100);
+}
+
+function ouvrirModalReinit() {
+  actionModal = 'reinit';
+  document.getElementById('modal-titre').textContent = '🗑 Réinitialiser les notes';
+  document.getElementById('modal-desc').textContent  =
+    'Entrez le code administrateur pour effacer TOUTES les notes enregistrées. Action irréversible.';
+  document.getElementById('code-prof').value = '';
+  document.getElementById('modal-erreur').textContent = '';
+  document.getElementById('modal-prof').classList.add('open');
+  setTimeout(() => document.getElementById('code-prof').focus(), 100);
+}
+
+function fermerModal() {
+  document.getElementById('modal-prof').classList.remove('open');
+}
+
+function validerCode() {
+  const saisi = document.getElementById('code-prof').value;
+  if (actionModal === 'export') {
+    if (saisi === CODE_EXPORT) {
+      fermerModal(); exporterCSV();
+    } else {
+      document.getElementById('modal-erreur').textContent = '❌ Code incorrect, réessayez.';
+      document.getElementById('code-prof').value = '';
+      document.getElementById('code-prof').focus();
+    }
+  } else {
+    if (saisi === CODE_REINIT) {
+      fermerModal();
+      localStorage.removeItem(STORAGE_KEY);
+      mettreAJourCompteur();
+      alert('✅ Toutes les notes ont été effacées.');
+    } else {
+      document.getElementById('modal-erreur').textContent = '❌ Code administrateur incorrect.';
+      document.getElementById('code-prof').value = '';
+      document.getElementById('code-prof').focus();
+    }
+  }
+}
+
+document.addEventListener('DOMContentLoaded', function() {
+  document.getElementById('modal-prof').addEventListener('click', function(e) {
+    if (e.target === this) fermerModal();
+  });
+  mettreAJourCompteur();
+});
+
+
+function reinitialiser() {
+  evaluationValidee = false;
+  const btn = document.getElementById('btn-correction');
+  btn.disabled = true;
+  // Déverrouiller les champs identité
+  document.getElementById('nom').disabled    = false;
+  document.getElementById('prenom').disabled = false;
+  document.getElementById('classe').disabled = false;
+  document.getElementById('niveau').disabled = false;
+  document.getElementById('nom').classList.remove('champ-erreur');
+  document.getElementById('prenom').classList.remove('champ-erreur');
+  document.getElementById('classe').classList.remove('champ-erreur');
+  document.getElementById('niveau').classList.remove('champ-erreur');
+  document.getElementById('msg-identite').style.display = 'none';
+  q1data.forEach(q => {
+    document.querySelectorAll(`input[name="${q.name}"]`).forEach(inp => {
+      inp.checked = false; inp.parentElement.classList.remove('correct','incorrect');
+    });
+    const fb = document.getElementById(q.fb);
+    fb.style.display = 'none'; fb.textContent = '';
+  });
+  q2data.forEach(id => {
+    const sel = document.getElementById(id);
+    sel.value = ''; sel.classList.remove('correct','incorrect');
+    const fb = document.getElementById('fb-' + id);
+    if (fb) { fb.style.display = 'none'; fb.textContent = ''; }
+  });
+  document.getElementById('score-bloc').style.display = 'none';
+  document.getElementById('note-affichee').style.display = 'none';
+  dernierResultat = null;
+}
+
+function afficherCorrection() {
+  q1data.forEach(q => {
+    document.querySelectorAll(`input[name="${q.name}"]`).forEach(inp => {
+      inp.parentElement.classList.remove('correct','incorrect');
+      if (inp.value === q.correct) { inp.checked = true; inp.parentElement.classList.add('correct'); }
+    });
+    const fb = document.getElementById(q.fb);
+    fb.textContent = `✓ Réponse : ${q.correct}`; fb.className = 'fb ok'; fb.style.display = 'block';
+  });
+  q2data.forEach(id => {
+    const sel = document.getElementById(id);
+    sel.value = sel.dataset.correct;
+    sel.classList.remove('incorrect'); sel.classList.add('correct');
+    const fb = document.getElementById('fb-' + id);
+    if (fb) { fb.textContent = `✓ Réponse : ${sel.dataset.correct}`; fb.className = 'fb ok'; fb.style.display = 'block'; }
+  });
+}
+</script>
+<!-- ════ MODAL CODE PROF ════ -->
+<div class="modal-overlay" id="modal-prof">
+  <div class="modal-box">
+    <div class="lock-icon">🔐</div>
+    <h3 id="modal-titre">Accès réservé</h3>
+    <p id="modal-desc">Entrez le code pour continuer.</p>
+    <input type="password" id="code-prof" placeholder="••••" maxlength="12"
+           onkeydown="if(event.key==='Enter') validerCode()">
+    <div class="modal-erreur" id="modal-erreur"></div>
+    <div class="modal-btns">
+      <button class="btn btn-secondary" onclick="fermerModal()">Annuler</button>
+      <button class="btn btn-vert" onclick="validerCode()">✔ Valider</button>
+    </div>
+  </div>
+</div>
+
+</body>
+</html>
